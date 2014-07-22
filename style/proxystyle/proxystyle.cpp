@@ -1,3 +1,10 @@
+/*
+qt-helper 0.0.1
+Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
+
+Released under the MIT license
+*/
+
 #include "proxystyle.h"
 #include <QAbstractItemView>
 #include <QComboBox>
