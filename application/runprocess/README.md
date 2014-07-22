@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	QString tmpFolder = QDir::tempPath() + "process";
+	QString tmpFolder = QDir::toNativeSeparators(QDir::tempPath() + "process");
 
 	if (runProcess::test(global::userPath + "process")) {
 		runProcess *rp = new runProcess(this); //Set window in parent process
