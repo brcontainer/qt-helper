@@ -2,6 +2,13 @@
 #define NETWORK_H
 
 /*
+qt-helper 0.0.1
+Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
+
+Released under the MIT license
+*/
+
+/*
 * Some servers do not respond to "QT script", this lib fixed the problem
 */
 
