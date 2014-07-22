@@ -1,3 +1,4 @@
+```cpp
 #include "mainwindow.h"
 #include "proxystyle.h"
 #include <QApplication>
@@ -8,3 +9,4 @@ int main(int argc, char *argv[]) {
 
     return a.exec();
 }
+```
