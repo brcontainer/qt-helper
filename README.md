@@ -1,2 +1,2 @@
-qt-helper
+qt-helper 0.0.1
 =========
