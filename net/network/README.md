@@ -1,3 +1,5 @@
+This class fix problems with "Response unknown" that occurs with some servers
+
 Usage:
 
 ```
