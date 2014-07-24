@@ -1,3 +1,7 @@
+Is class is for you to use if you need your application to open only once (usually in desktop system you can open several times the same application).
+
+Usage:
+
 ```
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
