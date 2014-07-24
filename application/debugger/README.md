@@ -1,3 +1,5 @@
+This class eases enable or disable the logs (`qDebug()`) at different locations (different classes).
+
 Usage:
 
 main.cpp:
