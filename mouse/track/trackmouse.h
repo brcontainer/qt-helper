@@ -17,6 +17,7 @@ class trackMouse : public QThread
 public:
     explicit trackMouse(QObject *parent = 0);
     void enable(const bool enable = true);
+    void detectMove(const bool enable = true);
     void setDelay(const int value);
     void end();
 
