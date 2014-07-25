@@ -27,6 +27,7 @@ private:
     int delay;
     bool track;
     bool running;
+    bool lastPosActive;
 
 signals:
     void mousePos(const QPoint pos);
