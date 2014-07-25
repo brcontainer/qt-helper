@@ -13,7 +13,8 @@ trackMouse::trackMouse(QObject *parent) :
     QThread(parent),
     delay(100),
     track(false),
-    running(true)
+    running(true),
+    lastPosActive(false)
 {
 }
 
@@ -21,6 +22,10 @@ void trackMouse::end() {
     running = false;
     wait();
     terminate();
+}
+
+void trackMouse::detectMove(const bool enable) {
+    lastPosActive = enable;
 }
 
 void trackMouse::enable(const bool enable) {
