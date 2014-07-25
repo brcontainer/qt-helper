@@ -1,17 +1,10 @@
-/*
-qt-helper 0.0.1
-Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
-
-Released under the MIT license
-*/
-
 #include "trackmouse.h"
 #include <QCursor>
 #include <QDebug>
 
 trackMouse::trackMouse(QObject *parent) :
     QThread(parent),
-    delay(100),
+    delay(10),
     track(false),
     running(true),
     lastPosActive(false)
@@ -24,12 +17,12 @@ void trackMouse::end() {
     terminate();
 }
 
-void trackMouse::detectMove(const bool enable) {
-    lastPosActive = enable;
-}
-
 void trackMouse::enable(const bool enable) {
     track = enable;
+}
+
+void trackMouse::detectMove(const bool enable) {
+    lastPosActive = enable;
 }
 
 void trackMouse::setDelay(const int value) {
@@ -37,10 +30,15 @@ void trackMouse::setDelay(const int value) {
 }
 
 void trackMouse::run() {
+    QPoint lastPos;
+    QPoint currentPost;
+
     while(running) {
         QThread::msleep(delay);
-        if (track == true) {
-            emit mousePos(QCursor::pos());
+        currentPost = QCursor::pos();
+        if (track == true && (lastPosActive == false || lastPos != currentPost)) {
+            lastPos = currentPost;
+            emit mousePos(currentPost);
         }
     }
 }
