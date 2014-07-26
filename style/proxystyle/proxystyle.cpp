@@ -28,12 +28,13 @@ int proxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWid
         QAbstractItemView *view = 0;
         QString className = "";
         bool hasView = false;
+        int i;
 
         /*
         at this point I have not used combo->view() because he "crash" the application without explanation
         so I had to make a loop to find the "view"
         */
-        for(int i = 0; i < j; ++i) {
+        for(i = 0; i < j; ++i) {
             const QObjectList b = a.at(i)->children();
             const int y = b.count();
 
@@ -55,22 +56,22 @@ int proxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWid
             const int iconSize = combo->iconSize().width();
             const QFontMetrics fontMetrics1 = view->fontMetrics();
             const QFontMetrics fontMetrics2 = combo->fontMetrics();
-            const int j = combo->count();
-            int width = combo->width(); //default width
+            const int z = combo->count();
+            int lastWidth = combo->width(); //default width
 
-            for(int i = 0; i < j; ++i) {
+            for(i = 0; i < z; ++i) {
                 const int textWidth = qMax(
                     fontMetrics1.width(combo->itemText(i) + "WW"),
                     fontMetrics2.width(combo->itemText(i) + "WW")
                 );
                 if(combo->itemIcon(i).isNull()) {
-                    width = qMax(width, textWidth);
+                    lastWidth = qMax(lastWidth, textWidth);
                 } else {
-                    width = qMax(width, textWidth + iconSize);
+                    lastWidth = qMax(lastWidth, textWidth + iconSize);
                 }
             }
 
-            view->setFixedWidth(width);
+            view->setFixedWidth(lastWidth);
         }
     }
     return QProxyStyle::styleHint(hint, option, widget, returnData);
