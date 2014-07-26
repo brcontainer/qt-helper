@@ -14,8 +14,8 @@ SOURCES += \
     lib/style/proxystyle/proxystyle.cpp
 
 HEADERS  += \
-    3rdparty/application/debugger/debugger.h \
-    lib/lib/openexternal/openexternal.h \
+    lib/application/debugger/debugger.h \
+    lib/openexternal/openexternal.h \
     lib/application/runprocess/runprocess.h \
     lib/mouse/trackmouse/trackmouse.h \
     lib/net/network/network.h \
