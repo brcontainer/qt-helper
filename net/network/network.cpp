@@ -62,13 +62,23 @@ QNetworkReply * netWork::createRequest(Operation op, const QNetworkRequest &requ
     int i = 0;
 
     QNetworkRequest req(request.url());
+    bool hasContentType = false;
+
     for(; i < j; ++i) {
         req.setRawHeader(a[i], request.rawHeader(a[i]));
+        if(QString(a[i]).toLower() == "content-type") {
+            hasContentType = true;
+        }
     }
 
     QNetworkReply *p;
 
     if(op == PostOperation || op == PutOperation) {
+        if(hasContentType == false) {
+            //If don't have "Content-Type" then force "application/x-www-form-urlencoded"
+            req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
+        }
+
         const QByteArray data = outgoingData->readAll();
 
         if(op == PostOperation) {
