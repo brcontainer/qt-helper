@@ -10,6 +10,7 @@ Released under the MIT license
 
 #include <QThread>
 #include <QPoint>
+#include <QWidget>
 
 class trackMouse : public QThread
 {
@@ -19,16 +20,20 @@ public:
     void enable(const bool enable = true);
     void detectMove(const bool enable = true);
     void setDelay(const int value);
+    void setWidget(QWidget *widget = 0, bool limit = false);
     void end();
+    QPoint cursorPosition();
 
 protected:
-    virtual void run();
+    virtual void run(void);
 
 private:
     int delay;
     bool track;
     bool running;
     bool lastPosActive;
+    QWidget *byWidget;
+    bool limitWidget;
 
 signals:
     void mousePos(const QPoint pos);
