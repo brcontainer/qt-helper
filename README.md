@@ -1,5 +1,7 @@
-qt-helper (Simple QT library to improve and help in their projects)
+qt-helper
 =========
+
+Simple QT library to improve and help in their projects
 
 Usage (pro or pri file):
 
