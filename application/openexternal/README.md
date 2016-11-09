@@ -8,8 +8,21 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	openExternal::local("C:", this);//Open default file manager ("explorer" in Windows and "Finder" in MacOSX)
-	openExternal::local("C:/file.txt", this);//Open default file manager (if explorer.exe select/highlight file - like this `explorer /select,C:\file.txt`)
-	openExternal::url("http://github.com", this); //Open default web-browser
+    // Open default file manager ("explorer" in Windows and "Finder" in MacOSX)
+	OpenExternal::local("C:");
+
+    // Try open with default program, if failed try use OpenExternal::showInFolder
+    OpenExternal::local("C:/foder/file.txt");
+
+    /*
+     * Open default file manager:
+     * like this `explorer /select,C:\file.txt` in Windows
+     * like this `open -R /home/file.txt` in Mac
+     * if failed try only open folder
+     */
+	OpenExternal::showInFolder("C:/foder/file.txt");
+
+    // Open default web-browser
+	OpenExternal::url("http://github.com");
 }
 ```

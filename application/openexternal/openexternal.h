@@ -2,35 +2,23 @@
 #define OPENEXTERNAL_H
 
 /*
-qt-helper 0.0.1
-Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * qt-helper
+ *
+ * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ *
+ * Released under the MIT license
+ */
 
-Released under the MIT license
-*/
+#include <QString>
 
-/*
-* Open external applications can sometimes cause crashes/freezes (especially when we use "QDesktopServices::openUrl")
-*/
-
-#include <QThread>
-
-class openExternal : public QThread
+class OpenExternal
 {
-    Q_OBJECT
-
-private:
-    bool isLocal;
-    QString uri;
-    void setUrl(const QString a, const bool b = false);
-    void init();
 
 public:
-    explicit openExternal(QObject *parent = 0);
-    static void local(const QString a, QObject *parent = 0);
-    static void url(const QString a, QObject *parent = 0);
+    static bool showInFolder(QString file);
+    static bool local(QString file);
+    static bool url(QString uri);
 
-protected:
-    virtual void run(void);
 };
 
 #endif // OPENEXTERNAL_H

@@ -1,47 +1,26 @@
 /*
-qt-helper 0.0.1
-Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
-
-Released under the MIT license
-*/
+ * qt-helper
+ *
+ * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ *
+ * Released under the MIT license
+ */
 
 #include "network.h"
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QDir>
+#include <QDebug>
 
-netWork::netWork(QObject *parent) :
-    QNetworkAccessManager(parent)
+Network::Network(QObject *parent) : QNetworkAccessManager(parent)
 {
-    n = new QNetworkAccessManager(parent);
+    originalNetwork = new QNetworkAccessManager(this);
 }
 
-void netWork::setConfiguration(const QNetworkConfiguration &config) {
-    n->setConfiguration(config);
-}
-
-void netWork::setNetworkAccessible(NetworkAccessibility accessible) {
-    n->setNetworkAccessible(accessible);
-}
-
-void netWork::setProxy(const QNetworkProxy &proxy) {
-    n->setProxy(proxy);
-}
-
-void netWork::setProxyFactory(QNetworkProxyFactory *factory) {
-    n->setProxyFactory(factory);
-}
-
-void netWork::setCache(QAbstractNetworkCache *cache) {
-    n->setCache(cache);
-}
-
-void netWork::setCookieJar(QNetworkCookieJar *cookieJar) {
-    n->setCookieJar(cookieJar);
-}
-
-QNetworkReply * netWork::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
+QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
+{
     const QString scheme = request.url().scheme().toLower().trimmed();
+
     if("file" == scheme) {
         if(
             QDir(
@@ -52,28 +31,29 @@ QNetworkReply * netWork::createRequest(Operation op, const QNetworkRequest &requ
         ) {
             //network.cpp: unsupported file folder
         }
-    } else if("ftp" == scheme) {
+    } else if ("ftp" == scheme) {
         //"network.cpp: Unsupported FTP"
     }
 
-    const QList<QByteArray>a = request.rawHeaderList();
+    const QList<QByteArray> headers = request.rawHeaderList();
 
-    int j = a.length();
+    bool hasContentType = false;
+    int j = headers.length();
     int i = 0;
 
     QNetworkRequest req(request.url());
-    bool hasContentType = false;
 
-    for(; i < j; ++i) {
-        req.setRawHeader(a[i], request.rawHeader(a[i]));
-        if(QString(a[i]).toLower() == "content-type") {
+    for (; i < j; i++) {
+        req.setRawHeader(headers[i], request.rawHeader(headers[i]));
+
+        if (QString(headers[i]).toLower() == "content-type") {
             hasContentType = true;
         }
     }
 
-    QNetworkReply *p;
+    QNetworkReply *reply;
 
-    if(op == PostOperation || op == PutOperation) {
+    if (op == PostOperation || op == PutOperation) {
         if(hasContentType == false) {
             //If don't have "Content-Type" then force "application/x-www-form-urlencoded"
             req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -81,18 +61,18 @@ QNetworkReply * netWork::createRequest(Operation op, const QNetworkRequest &requ
 
         const QByteArray data = outgoingData->readAll();
 
-        if(op == PostOperation) {
-            p = n->post(req, data);
+        if (op == PostOperation) {
+            reply = originalNetwork->post(req, data);
         } else {
-            p = n->put(req, data);
+            reply = originalNetwork->put(req, data);
         }
     } else if(op == DeleteOperation) {
-        p = n->deleteResource(req);
+        reply = deleteResource(req);
     } else if(op == HeadOperation) {
-        p = n->head(req);
+        reply = originalNetwork->head(req);
     } else {
-        p = n->get(req);
+        reply = originalNetwork->get(req);
     }
 
-    return p;
+    return reply;
 }

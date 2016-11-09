@@ -1,194 +1,219 @@
 /*
-qt-helper 0.0.1
-Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
-
-Released under the MIT license
-*/
+ * qt-helper
+ *
+ * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ *
+ * Released under the MIT license
+ */
 
 #include "debugger.h"
 #include <QDebug>
 
-bool enable = true;
+bool Debugger::enable = true;
 
-debugger::debugger(const bool active) {
-    enable = active;
+Debugger::Debugger(const bool active)
+{
+    Debugger::enable = active;
 }
 
-void debugger::show(QChar t) {
-    if(enable) {
-        qDebug() << t;
-    } else {
-        Q_UNUSED(t);
-    }
-}
-
-void debugger::show(bool t) {
-    if(enable) {
+void Debugger::show(QChar t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(char t) {
-    if(enable) {
+void Debugger::show(bool t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(signed short t) {
-    if(enable) {
+void Debugger::show(char t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(unsigned short t) {
-    if(enable) {
+void Debugger::show(signed short t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(signed int t) {
-    if(enable) {
+void Debugger::show(unsigned short t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(unsigned int t) {
-    if(enable) {
-        qDebug() << t;
-    } else {
-        Q_UNUSED(t);
-    }
-}
-void debugger::show(signed long t) {
-    if(enable) {
+void Debugger::show(signed int t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(unsigned long t) {
-    if(enable) {
+void Debugger::show(unsigned int t)
+{
+    if (Debugger::enable) {
+        qDebug() << t;
+    } else {
+        Q_UNUSED(t);
+    }
+}
+void Debugger::show(signed long t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(qint64 t) {
-    if(enable) {
+void Debugger::show(unsigned long t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(quint64 t) {
-    if(enable) {
+void Debugger::show(qint64 t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(float t) {
-    if(enable) {
+void Debugger::show(quint64 t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(double t) {
-    if(enable) {
+void Debugger::show(float t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(const char* t) {
-    if(enable) {
+void Debugger::show(double t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(const QString & t) {
-    if(enable) {
-        qDebug() << t;
-    } else {
-        Q_UNUSED(t);
-    }
-}
-void debugger::show(const QStringRef & t) {
-    if(enable) {
+void Debugger::show(const char* t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(QLatin1String t) {
-    if(enable) {
+void Debugger::show(const QString & t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
-void debugger::show(const QByteArray & t) {
-    if(enable) {
-        qDebug() << t;
-    } else {
-        Q_UNUSED(t);
-    }
-}
-
-void debugger::show(const void * t) {
-    if(enable) {
+void Debugger::show(const QStringRef & t)
+{
+    if (Debugger::enable) {
         qDebug() << t;
     } else {
         Q_UNUSED(t);
     }
 }
 
-void debugger::show(QTextStreamFunction f) {
-    if(enable) {
+void Debugger::show(QLatin1String t)
+{
+    if (Debugger::enable) {
+        qDebug() << t;
+    } else {
+        Q_UNUSED(t);
+    }
+}
+void Debugger::show(const QByteArray & t)
+{
+    if (Debugger::enable) {
+        qDebug() << t;
+    } else {
+        Q_UNUSED(t);
+    }
+}
+
+void Debugger::show(const void * t)
+{
+    if (Debugger::enable) {
+        qDebug() << t;
+    } else {
+        Q_UNUSED(t);
+    }
+}
+
+void Debugger::show(QTextStreamFunction f)
+{
+    if (Debugger::enable) {
         qDebug() << f;
     } else {
         Q_UNUSED(f);
     }
 }
 
-void debugger::show(QTextStreamManipulator m) {
-    if(enable) {
+void Debugger::show(QTextStreamManipulator m)
+{
+    if (Debugger::enable) {
         qDebug() << m;
     } else {
         Q_UNUSED(m);
     }
 }
 
-void debugger::show(QObject *o) {
-    if(enable) {
+void Debugger::show(QObject *o)
+{
+    if (Debugger::enable) {
         qDebug() << o;
     } else {
         Q_UNUSED(o);
     }
 }
 
-void debugger::show(QObject o) {
-    if(enable) {
+void Debugger::show(QObject o)
+{
+    if (Debugger::enable) {
         qDebug() << "[" << o.objectName() << "]";
     } else {
         Q_UNUSED(o);

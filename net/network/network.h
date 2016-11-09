@@ -2,43 +2,27 @@
 #define NETWORK_H
 
 /*
-qt-helper 0.0.1
-Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
-
-Released under the MIT license
-*/
-
-/*
-* Some servers do not respond to "QT script", this lib fixed the problem
-*/
+ * qt-helper
+ *
+ * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ *
+ * Released under the MIT license
+ */
 
 #include <QNetworkAccessManager>
 
-class netWork : public QNetworkAccessManager
+class Network : public QNetworkAccessManager
 {
     Q_OBJECT
 
 private:
-    QNetworkAccessManager *n;
+    QNetworkAccessManager *originalNetwork;
 
 protected:
     virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0);
 
 public:
-    explicit netWork(QObject *parent = 0);
-
-public:
-    void setConfiguration(const QNetworkConfiguration &config);
-    void setNetworkAccessible(NetworkAccessibility accessible);
-    void setProxy(const QNetworkProxy &proxy);
-    void setProxyFactory(QNetworkProxyFactory *factory);
-    void setCache(QAbstractNetworkCache *cache);
-    void setCookieJar(QNetworkCookieJar *cookieJar);
-
-signals:
-
-public slots:
-
+    explicit Network(QObject *parent = 0);
 };
 
 #endif // NETWORK_H

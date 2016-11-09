@@ -15,8 +15,6 @@ See image with class:
 
 ![combobox/popup-menu with  class](http://s29.postimg.org/62q7dlm2v/image.png)
 
-
-
 Usage:
 
 ```cpp

@@ -2,21 +2,26 @@
 #define DEBUGGER_H
 
 /*
-qt-helper 0.0.1
-Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
-
-Released under the MIT license
-*/
+ * qt-helper
+ *
+ * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ *
+ * Released under the MIT license
+ */
 
 #include <QString>
 #include <QObject>
 #include <QTextStreamFunction>
 #include <QTextStreamManipulator>
 
-class debugger
+class Debugger
 {
+
+private:
+    static bool enable;
+
 public:
-    debugger(const bool active = true);
+    Debugger(const bool active = true);
     static void show(QChar t);
     static void show(bool t);
     static void show(char t);
@@ -35,10 +40,11 @@ public:
     static void show(const QStringRef & t);
     static void show(QLatin1String t);
     static void show(const QByteArray & t);
-    static void show(const void * t);
+    static void show(const void* t);
     static void show(QTextStreamFunction f);
     static void show(QTextStreamManipulator m);
-    static void show(QObject *o);
+    static void show(QObject* o);
     static void show(QObject o);
 };
-#endif
+
+#endif //DEBUGGER_H

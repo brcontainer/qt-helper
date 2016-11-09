@@ -2,11 +2,11 @@ This class fix problems with "Response unknown" that occurs with some servers
 
 Usage:
 
-```
-    net = new netWork;
-    net->setCookieJar(new QNetworkCookieJar);
-    net->setCache(new QNetworkDiskCache);
+```cpp
+net = new netWork;
+net->setCookieJar(new QNetworkCookieJar);
+net->setCache(new QNetworkDiskCache);
 
-    QWebPage *page = ui->webView->page();//or new QWebView->page(); or new QWebPage();
-    page->setNetworkAccessManager(net);
+QWebPage *page = ui->webView->page();//or new QWebView->page(); or new QWebPage();
+page->setNetworkAccessManager(net);
 ```

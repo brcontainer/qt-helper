@@ -1,11 +1,13 @@
 /*
-qt-helper 0.0.1
-Copyright (c) 2014 Guilherme Nascimento (brcontainer@yahoo.com.br)
-
-Released under the MIT license
-*/
+ * qt-helper
+ *
+ * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ *
+ * Released under the MIT license
+ */
 
 #include "openexternal.h"
+
 #include <QUrl>
 #include <QDir>
 #include <QFile>
@@ -13,62 +15,54 @@ Released under the MIT license
 #include <QFileInfo>
 #include <QDesktopServices>
 
-openExternal::openExternal(QObject *parent) :
-    QThread(parent)
+bool OpenExternal::showInFolder(QString file)
 {
-}
+    QStringList params;
+    const QString uri = QDir::toNativeSeparators(file);
+    bool showed = false;
 
-void openExternal::local(const QString a, QObject *parent) {
-    openExternal *b = new openExternal(parent);
-    b->setUrl(a, true);//true = local files
-    b->start();
-}
+    if (QFile(file).exists()) {
+        #if defined(Q_OS_WIN)
+            params << QLatin1String("/select,");
+            params << uri;
 
-void openExternal::url(const QString a, QObject *parent) {
-    openExternal *b = new openExternal(parent);
-    b->setUrl(a, false);//false = non local file (eg. webpages)
-    b->start();
-}
+            showed = QProcess::startDetached("explorer", params);
+        #elif defined(Q_OS_OSX)
+            params << QLatin1String("-R");
+            params << uri;
 
-void openExternal::setUrl(const QString a, const bool b) {
-    uri = a;
-    isLocal = b;
-}
+            showed = QProcess::startDetached("open", params);
+        #endif
 
-void openExternal::init() {
-    if(isLocal == true) {
-        //Open with DesktopService
-        if(!QDesktopServices::openUrl(QUrl(uri.replace("#", "%23")))) {
-            //If failed in open file, find in "explorer" (windows)
-            bool o = false;
-            #if defined(Q_OS_WIN)
-				//Open explorer in Windows
-                if(QFile(uri).exists()) {
-                    QStringList params;
-                    params << QLatin1String("/select,");
-                    params << QDir::toNativeSeparators(uri);
-                    if(QProcess::startDetached("explorer", params)) {
-                        o = true;
-                    }
-                }
-            #endif
-
-            if(o==false) {
-                //Open folder with DesktopService (If file non exists or "block")
-                QFileInfo fi(uri);
-                QDesktopServices::openUrl(QUrl("file:///" + fi.absoluteDir().canonicalPath().replace("#", "%23")));//Replace # by %23
-            }
+        if (showed) {
+            return showed;
         }
-    } else {
-        //Find an App for try open an other urls (non file)
-        QDesktopServices::openUrl(QUrl(uri));
+
+        const QString fi = "file:///" +
+                            QFileInfo(uri)
+                                .absoluteDir()
+                                .canonicalPath()
+                                .replace("#", "%23");
+
+        return url(fi);
     }
 
-    //terminate process
-    terminate();
-    wait();
+    return false;
 }
 
-void openExternal::run( void ) {
-    init();
+bool OpenExternal::local(QString file)
+{
+    const QString uri = "file:///" + file.replace("#", "%23");
+
+    // Open with DesktopService
+    if (!QDesktopServices::openUrl(QUrl(uri))) {
+        return showInFolder(file);
+    }
+
+    return false;
+}
+
+bool OpenExternal::url(QString uri)
+{
+    return QDesktopServices::openUrl(QUrl(uri));
 }

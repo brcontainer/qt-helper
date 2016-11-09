@@ -12,12 +12,12 @@ int main(int argc, char *argv[])
 {
 //show "logs" only in DEBUG (build in debug)
 #ifdef QT_DEBUG
-    debugger(true);
+    Debugger(true);
 #else
-    debugger(false);
+    Debugger(false);
 #endif
 
-    debugger::show("main.cpp");
+    Debugger::show("main.cpp");
 
     QApplication a(argc, argv);
     MainWindow w;
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 ```
 
 mainwindow.cpp:
-```
+```cpp
 #include "debugger.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"

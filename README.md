@@ -3,23 +3,40 @@ qt-helper
 
 Simple QT library to improve and help in their projects
 
-Usage (pro or pri file):
+Usage:
+-----
 
-Example:
+For use all classes add in your project something like this:
+
 ```
-SOURCES += \
-    lib/application/debugger/debugger.cpp \
-    lib/application/openexternal/openexternal.cpp \
-    lib/application/runprocess/runprocess.cpp \
-    lib/mouse/trackmouse/trackmouse.cpp \
-    lib/net/network/network.cpp \
-    lib/style/proxystyle/proxystyle.cpp
+QT += core gui webkitwidgets network
 
-HEADERS  += \
-    lib/application/debugger/debugger.h \
-    lib/openexternal/openexternal.h \
-    lib/application/runprocess/runprocess.h \
-    lib/mouse/trackmouse/trackmouse.h \
-    lib/net/network/network.h \
-    lib/style/proxystyle/proxystyle.h
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = application
+TEMPLATE = app
+
+SOURCES  += main.cpp
+
+include($$PWD/libs/qthelper/qthelper.pri)
+```
+
+Add application classes:
+
+```
+include($$PWD/libs/qthelper/application/application.pri)
+```
+
+Add net classes:
+
+```
+include($$PWD/libs/qthelper/net/net.pri)
+```
+
+Only add a class, example Debugger:
+
+```
+SOURCE += $$PWD/libs/qthelper/application/debugger/debugger.cpp
+
+HEADERS += $$PWD/libs/qthelper/application/debugger/debugger.h
 ```
