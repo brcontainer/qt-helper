@@ -1,38 +1,44 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
 
 #include "network.h"
+
+#include <QNetworkInterface>
+#include <QNetworkCookieJar>
+#include <QNetworkDiskCache>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QDir>
-#include <QDebug>
 
 Network::Network(QObject *parent) : QNetworkAccessManager(parent)
 {
-    originalNetwork = new QNetworkAccessManager(this);
+    setCookieJar(new QNetworkCookieJar(this));
 }
 
 QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
+    if (request.hasRawHeader("X-QtHelper-Rewrited")) {
+        return QNetworkAccessManager::createRequest(op, request, outgoingData);
+    }
+
+    if (networkAccessible() != NetworkAccessibility::Accessible) {
+        tryReconnect();
+    }
+
     const QString scheme = request.url().scheme().toLower().trimmed();
 
-    if("file" == scheme) {
-        if(
-            QDir(
-                request.url().url().replace(
-                    QRegExp("^(file[:]///|file[:]//)", Qt::CaseInsensitive), ""
-                )
-            ).exists()
-        ) {
-            //network.cpp: unsupported file folder
+    if (scheme != "http" && scheme != "https") {
+        QNetworkReply *reply = 0;
+        proxyByScheme(scheme, reply);
+
+        if (reply != 0) {
+            return reply;
         }
-    } else if ("ftp" == scheme) {
-        //"network.cpp: Unsupported FTP"
     }
 
     const QList<QByteArray> headers = request.rawHeaderList();
@@ -43,6 +49,8 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
 
     QNetworkRequest req(request.url());
 
+    req.setRawHeader("X-QtHelper-Rewrited", "true");
+
     for (; i < j; i++) {
         req.setRawHeader(headers[i], request.rawHeader(headers[i]));
 
@@ -51,28 +59,58 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
         }
     }
 
+    if (op == PostOperation || op == PutOperation) {
+        if(hasContentType == false) {
+            req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
+        }
+    }
+
+    if ("file" == scheme) {
+        const QString path = request.url().url()
+                .replace(QRegExp("^(file[:]///|file[:]//)", Qt::CaseInsensitive), "");
+
+        if (QDir(path).exists()) {
+            //network.cpp: unsupported file folder
+        }
+    } else if ("ftp" == scheme) {
+        //"network.cpp: Unsupported FTP"
+    }
+
     QNetworkReply *reply;
 
     if (op == PostOperation || op == PutOperation) {
         if(hasContentType == false) {
-            //If don't have "Content-Type" then force "application/x-www-form-urlencoded"
             req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
         }
 
-        const QByteArray data = outgoingData->readAll();
-
         if (op == PostOperation) {
-            reply = originalNetwork->post(req, data);
+            reply = post(req, outgoingData->readAll());
         } else {
-            reply = originalNetwork->put(req, data);
+            reply = put(req, outgoingData->readAll());
         }
     } else if(op == DeleteOperation) {
         reply = deleteResource(req);
     } else if(op == HeadOperation) {
-        reply = originalNetwork->head(req);
+        reply = head(req);
     } else {
-        reply = originalNetwork->get(req);
+        reply = get(req);
     }
 
     return reply;
+}
+
+void Network::tryReconnect()
+{
+    QList<QNetworkInterface> ifaces = QNetworkInterface::allInterfaces();
+
+    for (int i = 0; i < ifaces.count(); i++) {
+        QNetworkInterface iface = ifaces.at(i);
+
+        if (iface.flags().testFlag(QNetworkInterface::IsUp) &&
+                !iface.flags().testFlag(QNetworkInterface::IsLoopBack))
+        {
+            setNetworkAccessible(NetworkAccessibility::Accessible);
+            break;
+        }
+    }
 }

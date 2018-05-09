@@ -1,4 +1,8 @@
-INCLUDEPATH += $$PWD
+INCLUDEPATH += \
+    $$PWD/debugger \
+    $$PWD/keysequence \
+    $$PWD/openexternal \
+    $$PWD/singleinstance
 
 HEADERS  += \
     $$PWD/debugger/debugger.h \

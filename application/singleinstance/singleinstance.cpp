@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -9,7 +9,6 @@
 #include "singleinstance.h"
 
 #include <QLockFile>
-#include <QDebug>
 
 SingleInstance::SingleInstance(QObject *parent) : QThread(parent)
 {

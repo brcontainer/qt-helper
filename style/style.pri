@@ -1,4 +1,5 @@
-INCLUDEPATH += $$PWD
+INCLUDEPATH += \
+    $$PWD/proxystyle
 
 HEADERS  += \
     $$PWD/proxystyle/proxystyle.h

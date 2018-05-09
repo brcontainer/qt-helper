@@ -1,4 +1,5 @@
-INCLUDEPATH += $$PWD
+INCLUDEPATH += \
+    $$PWD/webglobals
 
 HEADERS  += \
     $$PWD/webglobals/webglobals.h

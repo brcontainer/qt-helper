@@ -4,7 +4,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -13,11 +13,11 @@
 #include <QPoint>
 #include <QWidget>
 
-class trackMouse : public QThread
+class TrackMouse : public QThread
 {
     Q_OBJECT
 public:
-    explicit trackMouse(QObject *parent = 0);
+    explicit TrackMouse(QObject *parent = 0);
     void enable(const bool enable = true);
     void detectMove(const bool enable = true);
     void setDelay(const int value);

@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -9,7 +9,7 @@
 #include "trackmouse.h"
 #include <QCursor>
 
-trackMouse::trackMouse(QObject *parent) :
+TrackMouse::TrackMouse(QObject *parent) :
     QThread(parent),
     delay(10),
     track(false),
@@ -20,40 +20,40 @@ trackMouse::trackMouse(QObject *parent) :
 {
 }
 
-void trackMouse::enable(const bool enable) {
+void TrackMouse::enable(const bool enable) {
     track = enable;
 }
 
-void trackMouse::detectMove(const bool enable) {
+void TrackMouse::detectMove(const bool enable) {
     lastPosActive = enable;
 }
 
-void trackMouse::setDelay(const int value) {
+void TrackMouse::setDelay(const int value) {
     delay = value;
 }
 
-void trackMouse::setWidget(QWidget *widget, bool limit) {
+void TrackMouse::setWidget(QWidget *widget, bool limit) {
     byWidget = widget;
     limitWidget = limit;
 }
 
-void trackMouse::run(void) {
+void TrackMouse::run(void) {
     QPoint lastPos;
     QPoint currentPost;
 
-    while(running) {
+    while (running) {
         QThread::msleep(delay);
         currentPost = cursorPosition();
 
         if (
-            track == true && //If trackMouse::enable(true)
-            (lastPosActive == false || lastPos != currentPost) && //If trackMouse::detectMove(true)
+            track == true && //If TrackMouse::enable(true)
+            (lastPosActive == false || lastPos != currentPost) && //If TrackMouse::detectMove(true)
             (limitWidget == false || (
                  currentPost.x() > -1 &&
                  currentPost.y() > -1 &&
                  currentPost.x() <= byWidget->width() &&
                  currentPost.y() <= byWidget->height()
-            )) //If trackMouse::setWidget(widget, true)
+            )) //If TrackMouse::setWidget(widget, true)
         ) {
             lastPos = currentPost;
             emit mousePos(currentPost);
@@ -61,16 +61,16 @@ void trackMouse::run(void) {
     }
 }
 
-void trackMouse::end() {
+void TrackMouse::end() {
     running = false;
     wait();
     terminate();
 }
 
-QPoint trackMouse::cursorPosition() {
+QPoint TrackMouse::cursorPosition() {
     if (byWidget == 0) {
         return QCursor::pos();
-    } else {
-        return byWidget->mapFromGlobal(QCursor::pos());
     }
+
+    return byWidget->mapFromGlobal(QCursor::pos());
 }

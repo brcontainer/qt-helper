@@ -4,47 +4,44 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
 
-#include <QString>
 #include <QObject>
+#include <QString>
 #include <QTextStreamFunction>
 #include <QTextStreamManipulator>
 
-class Debugger
+namespace Debugger
 {
+    extern bool enable;
 
-private:
-    static bool enable;
-
-public:
-    Debugger(const bool active = true);
-    static void show(QChar t);
-    static void show(bool t);
-    static void show(char t);
-    static void show(signed short t);
-    static void show(unsigned short t);
-    static void show(signed int t);
-    static void show(unsigned int t);
-    static void show(signed long t);
-    static void show(unsigned long t);
-    static void show(qint64 t);
-    static void show(quint64 t);
-    static void show(float t);
-    static void show(double t);
-    static void show(const char* t);
-    static void show(const QString & t);
-    static void show(const QStringRef & t);
-    static void show(QLatin1String t);
-    static void show(const QByteArray & t);
-    static void show(const void* t);
-    static void show(QTextStreamFunction f);
-    static void show(QTextStreamManipulator m);
-    static void show(QObject* o);
-    static void show(QObject o);
-};
+    void setEnable(const bool active);
+    void show(QChar t);
+    void show(bool t);
+    void show(char t);
+    void show(signed short t);
+    void show(unsigned short t);
+    void show(signed int t);
+    void show(unsigned int t);
+    void show(signed long t);
+    void show(unsigned long t);
+    void show(qint64 t);
+    void show(quint64 t);
+    void show(float t);
+    void show(double t);
+    void show(const char* t);
+    void show(const QString & t);
+    void show(const QStringRef & t);
+    void show(QLatin1String t);
+    void show(const QByteArray & t);
+    void show(const void* t);
+    void show(QTextStreamFunction f);
+    void show(QTextStreamManipulator m);
+    void show(QObject* o);
+    void show(QObject o);
+}
 
 #endif //DEBUGGER_H

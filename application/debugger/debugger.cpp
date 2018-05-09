@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -11,7 +11,7 @@
 
 bool Debugger::enable = true;
 
-Debugger::Debugger(const bool active)
+void Debugger::setEnable(const bool active)
 {
     Debugger::enable = active;
 }

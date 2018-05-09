@@ -1,4 +1,5 @@
-INCLUDEPATH += $$PWD
+INCLUDEPATH += \
+    $$PWD/network
 
 HEADERS  += \
     $$PWD/network/network.h

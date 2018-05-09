@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -17,8 +17,11 @@
 
 bool OpenExternal::showInFolder(QString file)
 {
-    QStringList params;
+    file = file.replace("//", "/").replace("\\\\", "\\");
+
     const QString uri = QDir::toNativeSeparators(file);
+
+    QStringList params;
     bool showed = false;
 
     if (QFile(file).exists()) {
@@ -59,7 +62,7 @@ bool OpenExternal::local(QString file)
         return showInFolder(file);
     }
 
-    return false;
+    return true;
 }
 
 bool OpenExternal::url(QString uri)

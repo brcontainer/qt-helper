@@ -4,7 +4,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -32,7 +32,7 @@ public:
     void setPath(const QString a);
     void setStyle(const QString path);
     void setFont(const int size, const QString font);
-    bool remove(const WebData type) const;
+    bool erase(const WebData type) const;
     QString getPath(const WebData type) const;
     static bool createFolder(const QString folder);
 

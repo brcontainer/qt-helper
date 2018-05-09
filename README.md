@@ -1,10 +1,8 @@
-qt-helper
-=========
+# qt-helper
 
-Simple Qt library to improve and help in their projects
+Simple QT library to improve and help in their projects
 
-Usage:
------
+## Usage:
 
 For use all classes add in your project something like this:
 
@@ -21,17 +19,36 @@ SOURCES  += main.cpp
 include($$PWD/libs/qthelper/qthelper.pri)
 ```
 
-Add application classes:
+## Application
 
 ```
 include($$PWD/libs/qthelper/application/application.pri)
 ```
 
-Add net classes:
+[x] debugger helpful for use `qDebug`
+[x] keysequence helpful key sequences for all objects
+[x] openexternal helpful for open protocols from system
+[x] singleinstance prevent open a app multiples on Desktop
+
+## Mouse
+
+[x] `TrackMouse` used for track mouse in `QMainWindow` or other `QWidget`
+
+## NET
 
 ```
 include($$PWD/libs/qthelper/net/net.pri)
 ```
+
+[x] network fix bugs in download, ajax and network disabled
+
+## Style
+
+[x]
+
+## Webkit
+
+[x] webglobals used for pre-setup configurations
 
 Only add a class, example Debugger:
 

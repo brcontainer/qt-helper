@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -10,8 +10,8 @@
 #include <QObject>
 #include <QAction>
 
-QAction *KeySequence::widget(QWidget *widget, const QString &sequence, const QObject *receiver,
-                         const char *member, const bool portableText)
+QAction *KeySequence::widget(QWidget *widget, const QString &sequence,
+    const QObject *receiver, const char *member, const bool portableText)
 {
     QKeySequence seq;
 
@@ -24,36 +24,36 @@ QAction *KeySequence::widget(QWidget *widget, const QString &sequence, const QOb
     return KeySequence::widget(widget, seq, receiver, member);
 }
 
-QAction *KeySequence::widget(QWidget *widget, const QKeySequence &shortcut, const QObject *receiver,
-                         const char *member)
+QAction *KeySequence::widget(QWidget *widget, const QKeySequence &shortcut,
+    const QObject *receiver, const char *member)
 {
-    QAction *a = KeySequence::action(widget, receiver, member);
-    a->setShortcut(shortcut);
-    return a;
+    QAction *act = KeySequence::action(widget, receiver, member);
+    act->setShortcut(shortcut);
+    return act;
 }
 
 QAction *KeySequence::widget(QWidget *widget, const QList<QKeySequence> &shortcuts,
-                         const QObject *receiver, const char *member)
+    const QObject *receiver, const char *member)
 {
-    QAction *a = KeySequence::action(widget, receiver, member);
-    a->setShortcuts(shortcuts);
-    return a;
+    QAction *act = KeySequence::action(widget, receiver, member);
+    act->setShortcuts(shortcuts);
+    return act;
 }
 
 QAction *KeySequence::widget(QWidget *widget, QKeySequence::StandardKey standardkey,
-                         const QObject *receiver, const char *member)
+    const QObject *receiver, const char *member)
 {
-    QAction *a = KeySequence::action(widget, receiver, member);
-    a->setShortcuts(standardkey);
-    return a;
+    QAction *act = KeySequence::action(widget, receiver, member);
+    act->setShortcuts(standardkey);
+    return act;
 }
 
-QAction *KeySequence::widget(QWidget *widget, Qt::ShortcutContext context, const QObject *receiver,
-                         const char *member)
+QAction *KeySequence::widget(QWidget *widget, Qt::ShortcutContext context,
+    const QObject *receiver, const char *member)
 {
-    QAction *a = KeySequence::action(widget, receiver, member);
-    a->setShortcutContext(context);
-    return a;
+    QAction *act = KeySequence::action(widget, receiver, member);
+    act->setShortcutContext(context);
+    return act;
 }
 
 QAction *KeySequence::action(QWidget *widget, const QObject *receiver, const char *member)

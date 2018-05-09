@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2016 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -13,6 +13,7 @@
 WebGlobals::WebGlobals()
 {
     settings = QWebSettings::globalSettings();
+
     settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
     settings->setAttribute(QWebSettings::OfflineStorageDatabaseEnabled, true);
     settings->setAttribute(QWebSettings::LocalStorageEnabled, true);
@@ -36,6 +37,12 @@ WebGlobals::WebGlobals()
     settings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
     settings->setAttribute(QWebSettings::JavascriptCanAccessClipboard, false);
     settings->setAttribute(QWebSettings::ScrollAnimatorEnabled, true);
+
+    QWebSettings::setMaximumPagesInCache(999999);
+    QWebSettings::setObjectCacheCapacities(0, 999999, 999999);
+
+    QWebSettings::setOfflineWebApplicationCacheQuota(999999);
+    QWebSettings::setOfflineStorageDefaultQuota(999999);
 }
 
 void WebGlobals::developer(const bool enable)
@@ -53,10 +60,11 @@ void WebGlobals::setPath(const QString path)
     createFolder(configpath + "icons");
     createFolder(configpath + "tmp");
 
-    settings->setOfflineWebApplicationCachePath(configpath + "appcache");
-    settings->setOfflineStoragePath(configpath + "offlinestorage");
+    QWebSettings::setOfflineWebApplicationCachePath(configpath + "appcache");
+    QWebSettings::setOfflineStoragePath(configpath + "offlinestorage");
+    QWebSettings::setIconDatabasePath(configpath + "icons");
+
     settings->setLocalStoragePath(configpath + "localstorage");
-    settings->setIconDatabasePath(configpath + "icons");
 }
 
 bool WebGlobals::createFolder(const QString folder)
@@ -93,49 +101,66 @@ QString WebGlobals::getPath(const WebData type) const
         case AppCache:
             return configpath + "appcache";
         break;
+
         case OfflineStorage:
             return configpath + "offlinestorage";
         break;
+
         case LocalStorage:
             return configpath + "localstorage";
         break;
+
         case Icons:
             return configpath + "icons";
         break;
+
         case Temporary:
             return configpath + "tmp";
         break;
+
         default:
             return configpath;
     }
 }
 
-bool WebGlobals::remove(const WebData type) const
+bool WebGlobals::erase(const WebData type) const
 {
     switch (type)
     {
         case AppCache:
-            return QDir(configpath + "appcache").removeRecursively();
+            return QDir(configpath + "appcache").removeRecursively() &&
+                   createFolder(configpath + "appcache");
         break;
+
         case OfflineStorage:
-            return QDir(configpath + "offlinestorage").removeRecursively();
+            return QDir(configpath + "offlinestorage").removeRecursively() &&
+                   createFolder(configpath + "offlinestorage");
         break;
+
         case LocalStorage:
-            return QDir(configpath + "localstorage").removeRecursively();
+            return QDir(configpath + "localstorage").removeRecursively() &&
+                   createFolder(configpath + "localstorage");
         break;
+
         case Icons:
-            return QDir(configpath + "icons").removeRecursively();
+            settings->clearIconDatabase();
+
+            return QDir(configpath + "icons").removeRecursively() &&
+                   createFolder(configpath + "icons");
         break;
+
         case Temporary:
-            return QDir(configpath + "tmp").removeRecursively();
+            return QDir(configpath + "tmp").removeRecursively() &&
+                   createFolder(configpath + "tmp");
         break;
+
         default:
             return (
-                remove(AppCache) &&
-                remove(OfflineStorage) &&
-                remove(LocalStorage) &&
-                remove(Icons) &&
-                remove(Temporary)
+                erase(AppCache) &&
+                erase(OfflineStorage) &&
+                erase(LocalStorage) &&
+                erase(Icons) &&
+                erase(Temporary)
             );
     }
 }
