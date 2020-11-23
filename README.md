@@ -1,6 +1,6 @@
-# qt-helper
+# Qt-helper
 
-Simple QT library to improve and help in their projects
+Simple Qt library to improve and help in their projects
 
 ## Usage:
 
@@ -25,10 +25,10 @@ include($$PWD/libs/qthelper/qthelper.pri)
 include($$PWD/libs/qthelper/application/application.pri)
 ```
 
-[x] debugger helpful for use `qDebug`
-[x] keysequence helpful key sequences for all objects
-[x] openexternal helpful for open protocols from system
-[x] singleinstance prevent open a app multiples on Desktop
+- [x] debugger helpful for use `qDebug`
+- [x] keysequence helpful key sequences for all objects
+- [x] openexternal helpful for open protocols from system
+- [x] singleinstance prevent open a app multiples on Desktop
 
 ## Mouse
 
@@ -40,15 +40,15 @@ include($$PWD/libs/qthelper/application/application.pri)
 include($$PWD/libs/qthelper/net/net.pri)
 ```
 
-[x] network fix bugs in download, ajax and network disabled
+- [x] network fix bugs in download, ajax and network disabled
 
 ## Style
 
-[x]
+- [x] proxystyle corrige "pop-up" em comboboxes no WebKit
 
 ## Webkit
 
-[x] webglobals used for pre-setup configurations
+- [x] webglobals used for pre-setup configurations
 
 Only add a class, example Debugger:
 
