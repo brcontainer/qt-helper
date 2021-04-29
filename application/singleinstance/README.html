@@ -1055,55 +1055,28 @@ body .markdown-body
 .codehilite .vi{color:teal}
 .codehilite .il{color:#009999}
 .codehilite .gc{color:#999;background-color:#EAF2F5}
-</style><title>README</title></head><body><article class="markdown-body"><h1 id="qt-helper">qt-helper<a class="headerlink" href="#qt-helper" title="Permanent link"></a></h1>
-<p>Simple Qt library to improve and help in their projects</p>
-<h2 id="usage">Usage:<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
-<p>For use all classes add in your project something like this:</p>
-<div class="codehilite"><pre>QT += core gui webkitwidgets network
+</style><title>README</title></head><body><article class="markdown-body"><p>This class is for you to use if you need your application to open only once (usually in desktop system you can open several times the same application).</p>
+<p>Usage:</p>
+<div class="codehilite"><pre><span class="n">MainWindow</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span>
+    <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span>
+    <span class="n">ui</span><span class="p">(</span><span class="k">new</span> <span class="n">Ui</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ui</span><span class="o">-&gt;</span><span class="n">setupUi</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+    <span class="n">SingleInstance</span> <span class="o">*</span><span class="n">si</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SingleInstance</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-TARGET = application
-TEMPLATE = app
+    <span class="n">si</span><span class="o">-&gt;</span><span class="n">file</span><span class="p">(</span><span class="s">&quot;C:/DATA/test&quot;</span><span class="p">);</span> <span class="c1">//Session file used for detect multiple instances</span>
 
-SOURCES  += main.cpp
+    <span class="c1">//Application allready running</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">si</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">alreadyRunning</span><span class="p">()),</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">quit</span><span class="p">()));</span>
 
-include($$PWD/libs/qthelper/qthelper.pri)
-</pre></div>
+    <span class="c1">//Faild to write session file</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">si</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">notPerformed</span><span class="p">()),</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">quit</span><span class="p">()));</span>
 
-<h2 id="application">Application<a class="headerlink" href="#application" title="Permanent link"></a></h2>
-<p>For use only &ldquo;application&rdquo; classes put this in your <code>.pro</code> file:</p>
-<div class="codehilite"><pre>include($$PWD/libs/qthelper/application/application.pri)
-</pre></div>
+    <span class="n">si</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
 
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> debugger helpful for use <code>qDebug</code></li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> singleinstance prevent open a app multiples on Desktop</li>
-</ul>
-<h2 id="desktop">Desktop<a class="headerlink" href="#desktop" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> keysequence helpful key sequences for all objects</li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> openexternal helpful for open protocols from system</li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> <code>TrackMouse</code> used for track mouse in <code>QMainWindow</code> or other <code>QWidget</code></li>
-</ul>
-<h2 id="style">Style<a class="headerlink" href="#style" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> Improved sizes, prevent trim text in select combo</li>
-</ul>
-<h2 id="net">NET<a class="headerlink" href="#net" title="Permanent link"></a></h2>
-<p>For use only &ldquo;net&rdquo; classes put this in your <code>.pro</code> file:</p>
-<div class="codehilite"><pre>include($$PWD/libs/qthelper/net/net.pri)
-</pre></div>
-
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> network fix bugs in download, xmlhttprequest and network disabled</li>
-</ul>
-<h2 id="webkit">Webkit<a class="headerlink" href="#webkit" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> webglobals used for pre-setup configurations</li>
-</ul>
-<p>Only add a class, example Debugger:</p>
-<div class="codehilite"><pre>HEADERS += $$PWD/libs/qthelper/application/debugger/debugger.h
-
-SOURCE += $$PWD/libs/qthelper/application/debugger/debugger.cpp
+<span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">quitApp</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">qApp</span><span class="o">-&gt;</span><span class="n">quit</span><span class="p">();</span>
+<span class="p">}</span>
 </pre></div></article></body></html>

@@ -1,6 +1,7 @@
 Prevent freeze (or crash) apps with `QDesktopServices::openUrl`
 
 Usage:
+
 ```cpp
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -8,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-    // Open default file manager ("explorer" in Windows and "Finder" in MacOSX)
+    // Open default file manager ("explorer" in Windows and "Finder" in MacOS)
 	OpenExternal::local("C:");
 
     // Try open with default program, if failed try use OpenExternal::showInFolder

@@ -4,7 +4,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -16,6 +16,7 @@
 class TrackMouse : public QThread
 {
     Q_OBJECT
+
 public:
     explicit TrackMouse(QObject *parent = 0);
     void enable(const bool enable = true);

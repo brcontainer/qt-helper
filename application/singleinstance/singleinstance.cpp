@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -31,9 +31,9 @@ void SingleInstance::run()
 {
     sess = new QLockFile(path);
 
-    if(!sess->tryLock(200)) {
-        emit lockError();
-    } else {
+    if (sess->tryLock(200)) {
         emit done();
+    } else {
+        emit lockError();
     }
 }

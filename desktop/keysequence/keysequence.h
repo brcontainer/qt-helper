@@ -4,7 +4,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -23,7 +23,7 @@ public:
                             const char *member, const bool portableText = false);
 
     static QAction *widget(QWidget *widget, const QKeySequence &shortcut,
-        const QObject *receiver, const char *member);
+                            const QObject *receiver, const char *member);
 
     static QAction *widget(QWidget *widget, const QList<QKeySequence> &shortcuts,
                             const QObject *receiver, const char *member);

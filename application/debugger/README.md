@@ -3,6 +3,7 @@ This class eases enable or disable the logs (`qDebug()`) at different locations 
 Usage:
 
 main.cpp:
+
 ```cpp
 #include "debugger.h"
 #include "mainwindow.h"
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
 ```
 
 mainwindow.cpp:
+
 ```cpp
 #include "debugger.h"
 #include "mainwindow.h"
@@ -38,12 +40,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     debugger::show("mainwindow.cpp: Create MainWindow");
 }
 
 MainWindow::~MainWindow()
 {
     debugger::show("mainwindow.cpp: Delete MainWindow");
+
     delete ui;
 }
 ```

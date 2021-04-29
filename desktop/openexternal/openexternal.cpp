@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -22,6 +22,7 @@ bool OpenExternal::showInFolder(QString file)
     const QString uri = QDir::toNativeSeparators(file);
 
     QStringList params;
+
     bool showed = false;
 
     if (QFile(file).exists()) {
@@ -44,8 +45,8 @@ bool OpenExternal::showInFolder(QString file)
         const QString fi = "file:///" +
                             QFileInfo(uri)
                                 .absoluteDir()
-                                .canonicalPath()
-                                .replace("#", "%23");
+                                    .canonicalPath()
+                                        .replace("#", "%23");
 
         return url(fi);
     }
@@ -58,7 +59,7 @@ bool OpenExternal::local(QString file)
     const QString uri = "file:///" + file.replace("#", "%23");
 
     // Open with DesktopService
-    if (!QDesktopServices::openUrl(QUrl(uri))) {
+    if (!url(uri)) {
         return showInFolder(file);
     }
 

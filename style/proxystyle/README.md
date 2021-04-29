@@ -13,7 +13,7 @@ See image "without" class:
 
 See image with class:
 
-![combobox/popup-menu with  class](http://s29.postimg.org/62q7dlm2v/image.png)
+![combobox/popup-menu with class](http://s29.postimg.org/62q7dlm2v/image.png)
 
 Usage:
 
@@ -24,7 +24,7 @@ Usage:
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    a.setStyle(new proxyStyle); //Set proxyStyle
+    a.setStyle(new ProxyStyle);
 
     return a.exec();
 }

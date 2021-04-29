@@ -1,6 +1,6 @@
 Usage:
 
-```
+```cpp
 #include "keysequence.h"
 
 MainWindow::MainWindow(QWidget *parent) :

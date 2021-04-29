@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>body {
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="usage" content=""><style>body {
   max-width: 980px;
   border: 1px solid #ddd;
   outline: 1300px solid #fff;
@@ -1055,55 +1055,15 @@ body .markdown-body
 .codehilite .vi{color:teal}
 .codehilite .il{color:#009999}
 .codehilite .gc{color:#999;background-color:#EAF2F5}
-</style><title>README</title></head><body><article class="markdown-body"><h1 id="qt-helper">qt-helper<a class="headerlink" href="#qt-helper" title="Permanent link"></a></h1>
-<p>Simple Qt library to improve and help in their projects</p>
-<h2 id="usage">Usage:<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
-<p>For use all classes add in your project something like this:</p>
-<div class="codehilite"><pre>QT += core gui webkitwidgets network
+</style><title>README</title></head><body><article class="markdown-body"><div class="codehilite"><pre><span class="cp">#include &quot;keysequence.h&quot;</span>
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+<span class="n">MainWindow</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span>
+    <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span>
+    <span class="n">ui</span><span class="p">(</span><span class="k">new</span> <span class="n">Ui</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ui</span><span class="o">-&gt;</span><span class="n">setupUi</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
 
-TARGET = application
-TEMPLATE = app
-
-SOURCES  += main.cpp
-
-include($$PWD/libs/qthelper/qthelper.pri)
-</pre></div>
-
-<h2 id="application">Application<a class="headerlink" href="#application" title="Permanent link"></a></h2>
-<p>For use only &ldquo;application&rdquo; classes put this in your <code>.pro</code> file:</p>
-<div class="codehilite"><pre>include($$PWD/libs/qthelper/application/application.pri)
-</pre></div>
-
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> debugger helpful for use <code>qDebug</code></li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> singleinstance prevent open a app multiples on Desktop</li>
-</ul>
-<h2 id="desktop">Desktop<a class="headerlink" href="#desktop" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> keysequence helpful key sequences for all objects</li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> openexternal helpful for open protocols from system</li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> <code>TrackMouse</code> used for track mouse in <code>QMainWindow</code> or other <code>QWidget</code></li>
-</ul>
-<h2 id="style">Style<a class="headerlink" href="#style" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> Improved sizes, prevent trim text in select combo</li>
-</ul>
-<h2 id="net">NET<a class="headerlink" href="#net" title="Permanent link"></a></h2>
-<p>For use only &ldquo;net&rdquo; classes put this in your <code>.pro</code> file:</p>
-<div class="codehilite"><pre>include($$PWD/libs/qthelper/net/net.pri)
-</pre></div>
-
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> network fix bugs in download, xmlhttprequest and network disabled</li>
-</ul>
-<h2 id="webkit">Webkit<a class="headerlink" href="#webkit" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> webglobals used for pre-setup configurations</li>
-</ul>
-<p>Only add a class, example Debugger:</p>
-<div class="codehilite"><pre>HEADERS += $$PWD/libs/qthelper/application/debugger/debugger.h
-
-SOURCE += $$PWD/libs/qthelper/application/debugger/debugger.cpp
+    <span class="n">KeySequence</span><span class="o">::</span><span class="n">widget</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">&quot;Ctrl+w&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">close</span><span class="p">()));</span>
+    <span class="n">KeySequence</span><span class="o">::</span><span class="n">widget</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">&quot;Ctrl+w&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">close</span><span class="p">()));</span>
+<span class="p">}</span>
 </pre></div></article></body></html>

@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -130,29 +130,29 @@ bool WebGlobals::erase(const WebData type) const
         case AppCache:
             return QDir(configpath + "appcache").removeRecursively() &&
                    createFolder(configpath + "appcache");
-        break;
+            break;
 
         case OfflineStorage:
             return QDir(configpath + "offlinestorage").removeRecursively() &&
                    createFolder(configpath + "offlinestorage");
-        break;
+            break;
 
         case LocalStorage:
             return QDir(configpath + "localstorage").removeRecursively() &&
                    createFolder(configpath + "localstorage");
-        break;
+            break;
 
         case Icons:
             settings->clearIconDatabase();
 
             return QDir(configpath + "icons").removeRecursively() &&
                    createFolder(configpath + "icons");
-        break;
+            break;
 
         case Temporary:
             return QDir(configpath + "tmp").removeRecursively() &&
                    createFolder(configpath + "tmp");
-        break;
+            break;
 
         default:
             return (

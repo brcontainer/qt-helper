@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -34,7 +34,8 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
 
     if (scheme != "http" && scheme != "https") {
         QNetworkReply *reply = 0;
-        proxyByScheme(scheme, reply);
+
+        emit proxyByScheme(scheme, reply);
 
         if (reply != 0) {
             return reply;
@@ -45,13 +46,12 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
 
     bool hasContentType = false;
     int j = headers.length();
-    int i = 0;
 
     QNetworkRequest req(request.url());
 
     req.setRawHeader("X-QtHelper-Rewrited", "true");
 
-    for (; i < j; i++) {
+    for (int i = 0; i < j; i++) {
         req.setRawHeader(headers[i], request.rawHeader(headers[i]));
 
         if (QString(headers[i]).toLower() == "content-type") {
@@ -59,10 +59,8 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
         }
     }
 
-    if (op == PostOperation || op == PutOperation) {
-        if(hasContentType == false) {
-            req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
-        }
+    if ((op == PostOperation || op == PutOperation) && hasContentType == false) {
+        req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     }
 
     if ("file" == scheme) {
@@ -79,7 +77,7 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
     QNetworkReply *reply;
 
     if (op == PostOperation || op == PutOperation) {
-        if(hasContentType == false) {
+        if (hasContentType == false) {
             req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
         }
 
@@ -88,9 +86,9 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
         } else {
             reply = put(req, outgoingData->readAll());
         }
-    } else if(op == DeleteOperation) {
+    } else if (op == DeleteOperation) {
         reply = deleteResource(req);
-    } else if(op == HeadOperation) {
+    } else if (op == HeadOperation) {
         reply = head(req);
     } else {
         reply = get(req);

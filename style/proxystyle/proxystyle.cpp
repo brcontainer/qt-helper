@@ -1,7 +1,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -27,6 +27,7 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWid
         const QComboBox *combo = (QComboBox *) widget;
         const QObjectList a = combo->children();
         const int j = a.count();
+
         QAbstractItemView *view = 0;
         QString className = "";
         bool hasView = false;
@@ -42,6 +43,7 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWid
 
             for (int x = 0; x < y; ++x) {
                 className = b.at(x)->metaObject()->className();
+
                 if (className == "QComboBoxListView") {
                     view = (QAbstractItemView *) b.at(x);
                     hasView = true;
@@ -59,6 +61,7 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWid
             const QFontMetrics fontMetrics1 = view->fontMetrics();
             const QFontMetrics fontMetrics2 = combo->fontMetrics();
             const int z = combo->count();
+
             int lastWidth = combo->width(); //default width
 
             for (i = 0; i < z; ++i) {

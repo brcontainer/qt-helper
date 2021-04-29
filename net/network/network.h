@@ -4,7 +4,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -20,13 +20,12 @@ class Network : public QNetworkAccessManager
 public:
     explicit Network(QObject *parent = 0);
 
-signals:
-    void proxyByScheme(const QString scheme, QNetworkReply *reply);
-
 protected:
     virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0);
     void tryReconnect();
 
+signals:
+    void proxyByScheme(const QString scheme, QNetworkReply *reply);
 };
 
 #endif // NETWORK_H

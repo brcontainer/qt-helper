@@ -4,7 +4,7 @@
 /*
  * qt-helper
  *
- * Copyright (c) 2018 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -18,7 +18,6 @@ public:
     static bool showInFolder(QString file);
     static bool local(QString file);
     static bool url(QString uri);
-
 };
 
 #endif // OPENEXTERNAL_H
