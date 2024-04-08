@@ -2,9 +2,9 @@
 #define DEBUGGER_H
 
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */

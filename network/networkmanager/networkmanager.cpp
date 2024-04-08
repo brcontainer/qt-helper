@@ -1,12 +1,12 @@
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
 
-#include "network.h"
+#include "networkmanager.h"
 
 #include <QNetworkInterface>
 #include <QNetworkCookieJar>
@@ -15,24 +15,25 @@
 #include <QNetworkRequest>
 #include <QDir>
 
-Network::Network(QObject *parent) : QNetworkAccessManager(parent)
+NetworkManager::NetworkManager(QObject *parent) : QNetworkAccessManager(parent)
 {
     setCookieJar(new QNetworkCookieJar(this));
 }
 
-QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
+QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     if (request.hasRawHeader("X-QtHelper-Rewrited")) {
         return QNetworkAccessManager::createRequest(op, request, outgoingData);
     }
 
-    if (networkAccessible() != NetworkAccessibility::Accessible) {
-        tryReconnect();
-    }
+    // if (networkAccessible() != NetworkManageribility::Accessible) {
+    //    tryReconnect();
+    // }
 
-    const QString scheme = request.url().scheme().toLower().trimmed();
+    const QUrl url = request.url();
+    const QString scheme = url.scheme().toLower();
 
-    if (scheme != "http" && scheme != "https") {
+    if ("http" != scheme && "https" != scheme) {
         QNetworkReply *reply = 0;
 
         emit proxyByScheme(scheme, reply);
@@ -47,7 +48,7 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
     bool hasContentType = false;
     int j = headers.length();
 
-    QNetworkRequest req(request.url());
+    QNetworkRequest req(url);
 
     req.setRawHeader("X-QtHelper-Rewrited", "true");
 
@@ -59,15 +60,12 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
         }
     }
 
-    if ((op == PostOperation || op == PutOperation) && hasContentType == false) {
+    if (hasContentType == false && (op == PostOperation || op == PutOperation)) {
         req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     }
 
     if ("file" == scheme) {
-        const QString path = request.url().url()
-                .replace(QRegExp("^(file[:]///|file[:]//)", Qt::CaseInsensitive), "");
-
-        if (QDir(path).exists()) {
+        if (QDir(url.url()).exists()) {
             //network.cpp: unsupported file folder
         }
     } else if ("ftp" == scheme) {
@@ -97,17 +95,18 @@ QNetworkReply * Network::createRequest(Operation op, const QNetworkRequest &requ
     return reply;
 }
 
-void Network::tryReconnect()
+void NetworkManager::tryReconnect()
 {
     QList<QNetworkInterface> ifaces = QNetworkInterface::allInterfaces();
+    const int j = ifaces.count();
 
-    for (int i = 0; i < ifaces.count(); i++) {
-        QNetworkInterface iface = ifaces.at(i);
+    for (int i = 0; i < j; i++) {
+        // QNetworkInterface iface = ifaces.at(i);
+        const QNetworkInterface::InterfaceFlags flags = ifaces.at(i).flags();
 
-        if (iface.flags().testFlag(QNetworkInterface::IsUp) &&
-                !iface.flags().testFlag(QNetworkInterface::IsLoopBack))
+        if (flags.testFlag(QNetworkInterface::IsUp) && !flags.testFlag(QNetworkInterface::IsLoopBack))
         {
-            setNetworkAccessible(NetworkAccessibility::Accessible);
+            // setNetworkManagerible(NetworkManageribility::Accessible);
             break;
         }
     }

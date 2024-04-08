@@ -1,7 +1,7 @@
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -39,24 +39,24 @@ void TrackMouse::setWidget(QWidget *widget, bool limit) {
 
 void TrackMouse::run(void) {
     QPoint lastPos;
-    QPoint currentPost;
+    QPoint current;
 
     while (running) {
         QThread::msleep(delay);
-        currentPost = cursorPosition();
+        current = cursorPosition();
 
         if (
-            track == true && //If TrackMouse::enable(true)
-            (lastPosActive == false || lastPos != currentPost) && //If TrackMouse::detectMove(true)
+            track && //If TrackMouse::enable(true)
+            (lastPosActive == false || lastPos != current) && //If TrackMouse::detectMove(true)
             (limitWidget == false || (
-                 currentPost.x() > -1 &&
-                 currentPost.y() > -1 &&
-                 currentPost.x() <= byWidget->width() &&
-                 currentPost.y() <= byWidget->height()
+                 current.x() > -1 &&
+                 current.y() > -1 &&
+                 current.x() <= byWidget->width() &&
+                 current.y() <= byWidget->height()
             )) //If TrackMouse::setWidget(widget, true)
         ) {
-            lastPos = currentPost;
-            emit mousePos(currentPost);
+            lastPos = current;
+            emit position(current);
         }
     }
 }

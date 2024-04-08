@@ -2,9 +2,9 @@
 #define TRACKMOUSE_H
 
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -24,7 +24,6 @@ public:
     void setDelay(const int value);
     void setWidget(QWidget *widget = 0, bool limit = false);
     void end();
-    QPoint cursorPosition();
 
 protected:
     virtual void run(void);
@@ -36,9 +35,10 @@ private:
     bool lastPosActive;
     QWidget *byWidget;
     bool limitWidget;
+    QPoint cursorPosition();
 
 signals:
-    void mousePos(const QPoint pos);
+    void position(const QPoint pos);
 };
 
 #endif // TRACKMOUSE_H

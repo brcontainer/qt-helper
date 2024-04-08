@@ -2,9 +2,9 @@
 #define WEBGLOBALS_H
 
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -34,11 +34,11 @@ public:
     void setFont(const int size, const QString font);
     bool erase(const WebData type) const;
     QString getPath(const WebData type) const;
-    static bool createFolder(const QString folder);
 
 private:
     QWebSettings *settings;
     QString configpath;
+    static bool createFolder(const QString folder);
 };
 
 #endif // WEBGLOBALS_H

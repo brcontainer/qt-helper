@@ -1,7 +1,7 @@
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -9,6 +9,8 @@
 #include "proxystyle.h"
 #include <QAbstractItemView>
 #include <QComboBox>
+
+#include <QDebug>
 
 ProxyStyle::ProxyStyle(QStyle *style) :
     QProxyStyle(style)
@@ -20,32 +22,35 @@ ProxyStyle::ProxyStyle(const QString &key) :
 {
 }
 
-int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
+                            const QWidget *widget, QStyleHintReturn *returnData) const
 {
     if (hint == QStyle::SH_ComboBox_Popup) {
-        //convert qwidget in QComboBox
+        // Convert QWidget in QComboBox
         const QComboBox *combo = (QComboBox *) widget;
-        const QObjectList a = combo->children();
-        const int j = a.count();
+        const QObjectList list = combo->children();
 
         QAbstractItemView *view = 0;
-        QString className = "";
         bool hasView = false;
         int i;
+        int j = list.count();
 
         /*
-        at this point I have not used combo->view() because he "crash" the application without explanation
-        so I had to make a loop to find the "view"
+        At this point I have not used combo->view() because he "crash" the application
+        without explanation so I had to make a loop to find the "view"
         */
+        QString name;
+
         for (i = 0; i < j; ++i) {
-            const QObjectList b = a.at(i)->children();
-            const int y = b.count();
+            const QObjectList subList = list.at(i)->children();
+            const int y = subList.count();
 
             for (int x = 0; x < y; ++x) {
-                className = b.at(x)->metaObject()->className();
+                const QObject *ref = subList.at(x);
+                name = ref->metaObject()->className();
 
-                if (className == "QComboBoxListView") {
-                    view = (QAbstractItemView *) b.at(x);
+                if (name == "QComboBoxListView") {
+                    view = (QAbstractItemView *) ref;
                     hasView = true;
                     break;
                 }
@@ -58,13 +63,14 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWid
 
         if (hasView) {
             const int iconSize = combo->iconSize().width();
+            int lastWidth = combo->width(); // default width
+
             const QFontMetrics fontMetrics1 = view->fontMetrics();
             const QFontMetrics fontMetrics2 = combo->fontMetrics();
-            const int z = combo->count();
 
-            int lastWidth = combo->width(); //default width
+            j = combo->count();
 
-            for (i = 0; i < z; ++i) {
+            for (i = 0; i < j; ++i) {
                 const int textWidth = qMax(
                     fontMetrics1.width(combo->itemText(i) + "WW"),
                     fontMetrics2.width(combo->itemText(i) + "WW")

@@ -1,7 +1,7 @@
 INCLUDEPATH += $$PWD
 
 HEADERS  += \
-    $$PWD/keysequence.h
+    $$PWD/action.h
 
 SOURCES += \
-    $$PWD/keysequence.cpp
+    $$PWD/action.cpp

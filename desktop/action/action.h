@@ -1,10 +1,10 @@
-#ifndef KEYSEQ_H
-#define KEYSEQ_H
+#ifndef ACTION_H
+#define ACTION_H
 
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -15,7 +15,7 @@ class QWidget;
 class QObject;
 class QAction;
 
-class KeySequence
+class Action
 {
 
 public:
@@ -28,13 +28,13 @@ public:
     static QAction *widget(QWidget *widget, const QList<QKeySequence> &shortcuts,
                             const QObject *receiver, const char *member);
 
-    static QAction *widget(QWidget *widget, QKeySequence::StandardKey, const QObject *receiver,
-                            const char *member);
+    static QAction *widget(QWidget *widget, QKeySequence::StandardKey standardkey,
+                            const QObject *receiver, const char *member);
 
     static QAction *widget(QWidget *widget, Qt::ShortcutContext context, const QObject *receiver,
                             const char *member);
 
-    static QAction *action(QWidget *widget, const QObject *receiver, const char *member);
+    static QAction *bind(QWidget *widget, const QObject *receiver, const char *member);
 };
 
-#endif // KEYSEQ_H
+#endif // ACTION_H

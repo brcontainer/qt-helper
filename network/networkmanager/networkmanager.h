@@ -2,9 +2,9 @@
 #define NETWORK_H
 
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -13,12 +13,12 @@
 
 class QNetworkDiskCache;
 
-class Network : public QNetworkAccessManager
+class NetworkManager : public QNetworkAccessManager
 {
     Q_OBJECT
 
 public:
-    explicit Network(QObject *parent = 0);
+    explicit NetworkManager(QObject *parent = 0);
 
 protected:
     virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0);

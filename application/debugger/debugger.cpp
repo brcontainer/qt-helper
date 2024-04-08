@@ -1,7 +1,7 @@
 /*
- * qt-helper
+ * QtHelper
  *
- * Copyright (c) 2021 Guilherme Nascimento (brcontainer@yahoo.com.br)
+ * Copyright (c) 2024 Guilherme Nascimento (brcontainer@yahoo.com.br)
  *
  * Released under the MIT license
  */
@@ -20,8 +20,6 @@ void Debugger::show(QChar t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -29,8 +27,6 @@ void Debugger::show(bool t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -38,8 +34,6 @@ void Debugger::show(char t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -47,8 +41,6 @@ void Debugger::show(signed short t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -56,8 +48,6 @@ void Debugger::show(unsigned short t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -65,8 +55,6 @@ void Debugger::show(signed int t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -74,16 +62,12 @@ void Debugger::show(unsigned int t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 void Debugger::show(signed long t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -91,8 +75,6 @@ void Debugger::show(unsigned long t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -100,8 +82,6 @@ void Debugger::show(qint64 t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -109,8 +89,6 @@ void Debugger::show(quint64 t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -118,8 +96,6 @@ void Debugger::show(float t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -127,8 +103,6 @@ void Debugger::show(double t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -136,8 +110,6 @@ void Debugger::show(const char* t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -145,16 +117,12 @@ void Debugger::show(const QString & t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 void Debugger::show(const QStringRef & t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -162,16 +130,12 @@ void Debugger::show(QLatin1String t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 void Debugger::show(const QByteArray & t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 
@@ -179,8 +143,6 @@ void Debugger::show(const void * t)
 {
     if (Debugger::enable) {
         qDebug() << t;
-    } else {
-        Q_UNUSED(t);
     }
 }
 

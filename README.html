@@ -1,7 +1,5 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>body {
   max-width: 980px;
-  border: 1px solid #ddd;
-  outline: 1300px solid #fff;
   margin: 16px auto;
 }
 
@@ -118,23 +116,28 @@ body .markdown-body
   padding: 0;
 }
 
-.markdown-body .codehilitetable {
+.markdown-body .codehilitetable,
+.markdown-body .highlighttable {
   border: 0;
   border-spacing: 0;
 }
 
-.markdown-body .codehilitetable tr {
+.markdown-body .codehilitetable tr,
+.markdown-body .highlighttable {
   border: 0;
 }
 
 .markdown-body .codehilitetable pre,
-.markdown-body .codehilitetable div.codehilite {
+.markdown-body .codehilitetable div.codehilite,
+.markdown-body .highlighttable pre,
+.markdown-body .highlighttable div.highlight {
   margin: 0;
 }
 
 .markdown-body .linenos,
 .markdown-body .code,
-.markdown-body .codehilitetable td {
+.markdown-body .codehilitetable td,
+.markdown-body .highlighttable td {
   border: 0;
   padding: 0;
 }
@@ -497,8 +500,11 @@ body .markdown-body
   padding-bottom: 0.2em;
   margin: 0;
   font-size: 85%;
-  background-color: rgba(0,0,0,0.04);
   border-radius: 3px;
+}
+
+.markdown-body code:not(.highlight):not(.codehilite), .markdown-body samp {
+  background-color: rgba(0,0,0,0.04);
 }
 
 .markdown-body code:before,
@@ -517,21 +523,32 @@ body .markdown-body
   border: 0;
 }
 
-.markdown-body .codehilite {
+.markdown-body .codehilite,
+.markdown-body .highlight {
   margin-bottom: 16px;
 }
 
 .markdown-body .codehilite pre,
+.markdown-body .highlight pre,
 .markdown-body pre {
   padding: 16px;
   overflow: auto;
   font-size: 85%;
   line-height: 1.45;
-  background-color: #f7f7f7;
+}
+
+.markdown-body .codehilite,
+.markdown-body .highlight,
+.markdown-body pre {
   border-radius: 3px;
 }
 
-.markdown-body .codehilite pre {
+.markdown-body :not(.highlight) > pre {
+  background-color: #f7f7f7;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body .highlight pre {
   margin-bottom: 0;
   word-break: normal;
 }
@@ -891,6 +908,10 @@ body .markdown-body
   vertical-align: middle;
 }
 
+.markdown-body diagram-div, .markdown-body div.uml-sequence-diagram, .markdown-body, div.uml-flowchart {
+  overflow: auto;
+}
+
 /* Media */
 @media only screen and (min-width: 480px) {
   .markdown-body {
@@ -993,73 +1014,74 @@ body .markdown-body
   }
 }
 </style><style>/*GitHub*/
-.codehilite {background-color:#fff;color:#333333;}
-.codehilite .hll {background-color:#ffffcc;}
-.codehilite .c{color:#999988;font-style:italic}
-.codehilite .err{color:#a61717;background-color:#e3d2d2}
-.codehilite .k{font-weight:bold}
-.codehilite .o{font-weight:bold}
-.codehilite .cm{color:#999988;font-style:italic}
-.codehilite .cp{color:#999999;font-weight:bold}
-.codehilite .c1{color:#999988;font-style:italic}
-.codehilite .cs{color:#999999;font-weight:bold;font-style:italic}
-.codehilite .gd{color:#000000;background-color:#ffdddd}
-.codehilite .ge{font-style:italic}
-.codehilite .gr{color:#aa0000}
-.codehilite .gh{color:#999999}
-.codehilite .gi{color:#000000;background-color:#ddffdd}
-.codehilite .go{color:#888888}
-.codehilite .gp{color:#555555}
-.codehilite .gs{font-weight:bold}
-.codehilite .gu{color:#800080;font-weight:bold}
-.codehilite .gt{color:#aa0000}
-.codehilite .kc{font-weight:bold}
-.codehilite .kd{font-weight:bold}
-.codehilite .kn{font-weight:bold}
-.codehilite .kp{font-weight:bold}
-.codehilite .kr{font-weight:bold}
-.codehilite .kt{color:#445588;font-weight:bold}
-.codehilite .m{color:#009999}
-.codehilite .s{color:#dd1144}
-.codehilite .n{color:#333333}
-.codehilite .na{color:teal}
-.codehilite .nb{color:#0086b3}
-.codehilite .nc{color:#445588;font-weight:bold}
-.codehilite .no{color:teal}
-.codehilite .ni{color:purple}
-.codehilite .ne{color:#990000;font-weight:bold}
-.codehilite .nf{color:#990000;font-weight:bold}
-.codehilite .nn{color:#555555}
-.codehilite .nt{color:navy}
-.codehilite .nv{color:teal}
-.codehilite .ow{font-weight:bold}
-.codehilite .w{color:#bbbbbb}
-.codehilite .mf{color:#009999}
-.codehilite .mh{color:#009999}
-.codehilite .mi{color:#009999}
-.codehilite .mo{color:#009999}
-.codehilite .sb{color:#dd1144}
-.codehilite .sc{color:#dd1144}
-.codehilite .sd{color:#dd1144}
-.codehilite .s2{color:#dd1144}
-.codehilite .se{color:#dd1144}
-.codehilite .sh{color:#dd1144}
-.codehilite .si{color:#dd1144}
-.codehilite .sx{color:#dd1144}
-.codehilite .sr{color:#009926}
-.codehilite .s1{color:#dd1144}
-.codehilite .ss{color:#990073}
-.codehilite .bp{color:#999999}
-.codehilite .vc{color:teal}
-.codehilite .vg{color:teal}
-.codehilite .vi{color:teal}
-.codehilite .il{color:#009999}
-.codehilite .gc{color:#999;background-color:#EAF2F5}
-</style><title>README</title></head><body><article class="markdown-body"><h1 id="qt-helper">qt-helper<a class="headerlink" href="#qt-helper" title="Permanent link"></a></h1>
+.highlight {background-color:#f7f7f7;color:#333333;}
+.highlight .hll {background-color:#ffffcc;}
+.highlight .c{color:#999988;font-style:italic}
+.highlight .err{color:#a61717;background-color:#e3d2d2}
+.highlight .k{font-weight:bold}
+.highlight .o{font-weight:bold}
+.highlight .cm{color:#999988;font-style:italic}
+.highlight .cp{color:#999999;font-weight:bold}
+.highlight .c1{color:#999988;font-style:italic}
+.highlight .cs{color:#999999;font-weight:bold;font-style:italic}
+.highlight .gd{color:#000000;background-color:#ffdddd}
+.highlight .ge{font-style:italic}
+.highlight .gr{color:#aa0000}
+.highlight .gh{color:#999999}
+.highlight .gi{color:#000000;background-color:#ddffdd}
+.highlight .go{color:#888888}
+.highlight .gp{color:#555555}
+.highlight .gs{font-weight:bold}
+.highlight .gu{color:#800080;font-weight:bold}
+.highlight .gt{color:#aa0000}
+.highlight .kc{font-weight:bold}
+.highlight .kd{font-weight:bold}
+.highlight .kn{font-weight:bold}
+.highlight .kp{font-weight:bold}
+.highlight .kr{font-weight:bold}
+.highlight .kt{color:#445588;font-weight:bold}
+.highlight .m{color:#009999}
+.highlight .s{color:#dd1144}
+.highlight .n{color:#333333}
+.highlight .na{color:teal}
+.highlight .nb{color:#0086b3}
+.highlight .nc{color:#445588;font-weight:bold}
+.highlight .no{color:teal}
+.highlight .ni{color:purple}
+.highlight .ne{color:#990000;font-weight:bold}
+.highlight .nf{color:#990000;font-weight:bold}
+.highlight .nn{color:#555555}
+.highlight .nt{color:navy}
+.highlight .nv{color:teal}
+.highlight .ow{font-weight:bold}
+.highlight .w{color:#bbbbbb}
+.highlight .mf{color:#009999}
+.highlight .mh{color:#009999}
+.highlight .mi{color:#009999}
+.highlight .mo{color:#009999}
+.highlight .sb{color:#dd1144}
+.highlight .sc{color:#dd1144}
+.highlight .sd{color:#dd1144}
+.highlight .s2{color:#dd1144}
+.highlight .se{color:#dd1144}
+.highlight .sh{color:#dd1144}
+.highlight .si{color:#dd1144}
+.highlight .sx{color:#dd1144}
+.highlight .sr{color:#009926}
+.highlight .s1{color:#dd1144}
+.highlight .ss{color:#990073}
+.highlight .bp{color:#999999}
+.highlight .vc{color:teal}
+.highlight .vg{color:teal}
+.highlight .vi{color:teal}
+.highlight .il{color:#009999}
+.highlight .gc{color:#999;background-color:#EAF2F5}
+</style><title>README</title></head><body><article class="markdown-body"><h1 id="qt-helper">Qt-helper<a class="headerlink" href="#qt-helper" title="Permanent link"></a></h1>
 <p>Simple Qt library to improve and help in their projects</p>
+<p><img alt="Usage sample" src="/C:/DATA/projects/qt-helper/sample.png" /></p>
 <h2 id="usage">Usage:<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
 <p>For use all classes add in your project something like this:</p>
-<div class="codehilite"><pre>QT += core gui webkitwidgets network
+<div class="highlight"><pre>QT += core gui webkitwidgets network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -1068,42 +1090,295 @@ TEMPLATE = app
 
 SOURCES  += main.cpp
 
-include($$PWD/libs/qthelper/qthelper.pri)
+include($$PWD/vendor/qt-helper/qt-helper.pri)
+</pre></div>
+
+<p><strong>Note:</strong> vendor é apenas um exemplo de pasta aonde pode adicionar projetos bibliotecas de terceiros, um exemplo de estrutura de pastas:</p>
+<div class="highlight"><pre>sample/
+├───main.cpp
+├───mainwindow.cpp
+├───mainwindow.h
+├───mainwindow.ui
+├───sample.pro
+└───vendor/
+    └───qt-helper/
+        └───qt-helper.pri
 </pre></div>
 
 <h2 id="application">Application<a class="headerlink" href="#application" title="Permanent link"></a></h2>
-<p>For use only &ldquo;application&rdquo; classes put this in your <code>.pro</code> file:</p>
-<div class="codehilite"><pre>include($$PWD/libs/qthelper/application/application.pri)
+<p>The classes in this scope are used to adjust or control anything related to your application, or <code>QApplication</code>, or add extra functionality.</p>
+<h3 id="debugger">debugger<a class="headerlink" href="#debugger" title="Permanent link"></a></h3>
+<p>This class only has static methods, and they are equivalent to <code>qDebug</code>, with the difference of being able to enable or disable them as necessary. Usage example:</p>
+<div class="highlight"><pre><span class="cp">#include &quot;debugger.h&quot;</span>
+<span class="cp">#include &lt;QApplication&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+
+<span class="c1">// show &quot;logs&quot; only in DEBUG (build in debug)</span>
+<span class="cp">#ifdef QT_DEBUG</span>
+    <span class="n">Debugger</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="cp">#else</span>
+    <span class="n">Debugger</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+<span class="cp">#endif</span>
+
+    <span class="p">...</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
+<span class="p">}</span>
 </pre></div>
 
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> debugger helpful for use <code>qDebug</code></li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> singleinstance prevent open a app multiples on Desktop</li>
-</ul>
+<h3 id="oneinstanceapp">oneinstanceapp<a class="headerlink" href="#oneinstanceapp" title="Permanent link"></a></h3>
+<p>This class allows your application to only have one instance. Usage example:</p>
+<div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
+<span class="cp">#include &quot;oneinstanceapp.h&quot;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">OneInstanceApp</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+
+    <span class="n">MainWindow</span> <span class="n">win</span><span class="p">;</span>
+    <span class="n">win</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">(</span><span class="s">&quot;~instance&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
 <h2 id="desktop">Desktop<a class="headerlink" href="#desktop" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> keysequence helpful key sequences for all objects</li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> openexternal helpful for open protocols from system</li>
-<li class="task-list-item"><input type="checkbox" disabled checked/> <code>TrackMouse</code> used for track mouse in <code>QMainWindow</code> or other <code>QWidget</code></li>
-</ul>
-<h2 id="style">Style<a class="headerlink" href="#style" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> Improved sizes, prevent trim text in select combo</li>
-</ul>
-<h2 id="net">NET<a class="headerlink" href="#net" title="Permanent link"></a></h2>
-<p>For use only &ldquo;net&rdquo; classes put this in your <code>.pro</code> file:</p>
-<div class="codehilite"><pre>include($$PWD/libs/qthelper/net/net.pri)
+<p>Instructions for use and how to include individually:</p>
+<h3 id="action">action<a class="headerlink" href="#action" title="Permanent link"></a></h3>
+<div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
+<span class="cp">#include &quot;ui_mainwindow.h&quot;</span>
+
+<span class="cp">#include &quot;action.h&quot;</span>
+
+<span class="n">MainWindow</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span> <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">ui</span><span class="p">(</span><span class="k">new</span> <span class="n">Ui</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ui</span><span class="o">-&gt;</span><span class="n">setupUi</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="n">Action</span><span class="o">::</span><span class="n">widget</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">&quot;Ctrl+w&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">close</span><span class="p">()));</span>
+    <span class="n">Action</span><span class="o">::</span><span class="n">widget</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s">&quot;F12&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">screenshot</span><span class="p">()));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">screenshot</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
 </pre></div>
 
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> network fix bugs in download, xmlhttprequest and network disabled</li>
-</ul>
-<h2 id="webkit">Webkit<a class="headerlink" href="#webkit" title="Permanent link"></a></h2>
-<ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled checked/> webglobals used for pre-setup configurations</li>
-</ul>
-<p>Only add a class, example Debugger:</p>
-<div class="codehilite"><pre>HEADERS += $$PWD/libs/qthelper/application/debugger/debugger.h
+<h3 id="openexternal">openexternal<a class="headerlink" href="#openexternal" title="Permanent link"></a></h3>
+<div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
+<span class="cp">#include &quot;ui_mainwindow.h&quot;</span>
 
-SOURCE += $$PWD/libs/qthelper/application/debugger/debugger.cpp
-</pre></div></article></body></html>
+<span class="cp">#include &quot;action.h&quot;</span>
+
+<span class="n">MainWindow</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span> <span class="n">QMainWindow</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">ui</span><span class="p">(</span><span class="k">new</span> <span class="n">Ui</span><span class="o">::</span><span class="n">MainWindow</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ui</span><span class="o">-&gt;</span><span class="n">setupUi</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">ui</span><span class="o">-&gt;</span><span class="n">btn1</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">()),</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">showFileInExplorer</span><span class="p">()));</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">ui</span><span class="o">-&gt;</span><span class="n">btn2</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">clicked</span><span class="p">()),</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">openFile</span><span class="p">()));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">showFileInExplorer</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">OpenExternal</span><span class="o">::</span><span class="n">url</span><span class="p">(</span><span class="s">&quot;http://github.com&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">showFileInExplorer</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">OpenExternal</span><span class="o">::</span><span class="n">showInFolder</span><span class="p">(</span><span class="s">&quot;C:/foder/file.txt&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">openFile</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">OpenExternal</span><span class="o">::</span><span class="n">local</span><span class="p">(</span><span class="s">&quot;C:/foder/file.txt&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OpenExternal::local("C:/foo/bar/")</code></td>
+<td>Open default file manager (<code>explorer.exe</code> in Windows and <code>Finder</code> in macOS)</td>
+</tr>
+<tr>
+<td><code>OpenExternal::local("C:/foo/bar.txt")</code></td>
+<td>Try open with default program, if failed try use <code>OpenExternal::showInFolder</code></td>
+</tr>
+<tr>
+<td><code>OpenExternal::showInFolder("C:/foo/bar.txt")</code></td>
+<td>In Windows is equivalent to <code>explorer /select,C:\foder\file.txt</code> command</td>
+</tr>
+<tr>
+<td><code>OpenExternal::showInFolder("/home/foo.txt")</code></td>
+<td>In macOS is equivalent to <code>open -R /home/foo.txt</code> command</td>
+</tr>
+<tr>
+<td><code>OpenExternal::url("http://github.com")</code></td>
+<td>Open default web-browser</td>
+</tr>
+</tbody>
+</table>
+<h3 id="trackmouse">trackmouse<a class="headerlink" href="#trackmouse" title="Permanent link"></a></h3>
+<div class="highlight"><pre><span class="cp">#include &quot;trackmouse.h&quot;;</span>
+
+<span class="p">...</span>
+
+<span class="n">Sample</span><span class="o">::</span><span class="n">Sample</span><span class="p">(</span><span class="n">QWidget</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span> <span class="o">:</span> <span class="n">QWidget</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">TrackMouse</span> <span class="o">*</span><span class="n">track</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TrackMouse</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span><span class="n">track</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="n">QPoint</span><span class="p">)),</span> <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">capture</span><span class="p">(</span><span class="n">QPoint</span><span class="p">)));</span>
+    <span class="n">track</span><span class="o">-&gt;</span><span class="n">setDelay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span> <span class="c1">// Set delay (default is 100 ms)</span>
+    <span class="n">track</span><span class="o">-&gt;</span><span class="n">setWidget</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+    <span class="n">track</span><span class="o">-&gt;</span><span class="n">enable</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="n">track</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">Sample</span><span class="o">::</span><span class="n">capture</span><span class="p">(</span><span class="k">const</span> <span class="n">QPoint</span> <span class="n">position</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">position</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 id="network">Network<a class="headerlink" href="#network" title="Permanent link"></a></h2>
+<h3 id="networkmanager">networkmanager<a class="headerlink" href="#networkmanager" title="Permanent link"></a></h3>
+<div class="highlight"><pre><span class="cp">#include &quot;networkmanager.h&quot;</span>
+
+<span class="p">...</span>
+
+<span class="n">NetworkManager</span> <span class="o">*</span><span class="n">manager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NetworkManager</span><span class="p">;</span>
+<span class="n">manager</span><span class="o">-&gt;</span><span class="n">setCookieJar</span><span class="p">(</span><span class="k">new</span> <span class="n">QNetworkCookieJar</span><span class="p">);</span>
+<span class="n">manager</span><span class="o">-&gt;</span><span class="n">setCache</span><span class="p">(</span><span class="k">new</span> <span class="n">QNetworkDiskCache</span><span class="p">);</span>
+
+<span class="p">...</span>
+
+<span class="c1">// Set NetworkManager to QWebPage</span>
+<span class="n">ui</span><span class="o">-&gt;</span><span class="n">webView</span><span class="o">-&gt;</span><span class="n">page</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setNetworkAccessManager</span><span class="p">(</span><span class="n">manager</span><span class="p">);</span>
+
+<span class="p">...</span>
+</pre></div>
+
+<h2 id="style">Style<a class="headerlink" href="#style" title="Permanent link"></a></h2>
+<h3 id="proxystyle">proxystyle<a class="headerlink" href="#proxystyle" title="Permanent link"></a></h3>
+<div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
+<span class="cp">#include &quot;proxystyle.h&quot;</span>
+<span class="cp">#include &lt;QApplication&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+
+    <span class="n">app</span><span class="p">.</span><span class="n">setStyle</span><span class="p">(</span><span class="k">new</span> <span class="n">ProxyStyle</span><span class="p">);</span>
+
+    <span class="n">MainWindow</span> <span class="n">win</span><span class="p">;</span>
+    <span class="n">win</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">(</span><span class="s">&quot;~instance&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 id="webkit">Webkit<a class="headerlink" href="#webkit" title="Permanent link"></a></h2>
+<h3 id="webglobals">webglobals<a class="headerlink" href="#webglobals" title="Permanent link"></a></h3>
+<div class="highlight"><pre><span class="n">WebGlobals</span> <span class="nf">configs</span><span class="p">();</span>
+<span class="n">configs</span><span class="p">.</span><span class="n">developer</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span> <span class="c1">// Enable developer tools</span>
+<span class="n">configs</span><span class="p">.</span><span class="n">setPath</span><span class="p">(</span><span class="s">&quot;C:/foo/bar/&quot;</span><span class="p">);</span> <span class="c1">// Set folder for cookies, storage, and others</span>
+</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>WebGlobals::developer(const bool enable)</code></td>
+<td>Enable or disable developer tools</td>
+</tr>
+<tr>
+<td><code>QWebSettings *WebGlobals::configs()</code></td>
+<td>Same as <code>QWebSettings::globalSettings()</code></td>
+</tr>
+<tr>
+<td><code>WebGlobals::setStyle(const QString path)</code></td>
+<td>Specifies the location of a user stylesheet to load with every web page</td>
+</tr>
+<tr>
+<td><code>WebGlobals::setFont(const int size, const QString font)</code></td>
+<td>Sets the font size and sets the actual font family to family for the specified generic family, which.</td>
+</tr>
+<tr>
+<td><code>QIcon WebGlobals::getIcon(const QString url)</code></td>
+<td>Get icon from URL</td>
+</tr>
+<tr>
+<td><code>WebGlobals::setPath(const QString path)</code></td>
+<td>Define folder for your browser profile data</td>
+</tr>
+<tr>
+<td><code>QString WebGlobals::getPath(const WebData type)</code></td>
+<td>Get full path from your browser profile data</td>
+</tr>
+<tr>
+<td><code>WebGlobals::getPath(WebData::All)</code></td>
+<td>Get path your browser profile</td>
+</tr>
+<tr>
+<td><code>WebGlobals::getPath(WebData::AppCache)</code></td>
+<td>Get cache path from  your browser profile</td>
+</tr>
+<tr>
+<td><code>WebGlobals::getPath(WebData::LocalStorage)</code></td>
+<td>Get localstorage path from  from your browser profile</td>
+</tr>
+<tr>
+<td><code>WebGlobals::getPath(WebData::OfflineStorage)</code></td>
+<td>Get offline path from  from your browser profile</td>
+</tr>
+<tr>
+<td><code>WebGlobals::getPath(WebData::Icons)</code></td>
+<td>Get icons path from  from your browser profile</td>
+</tr>
+<tr>
+<td><code>WebGlobals::getPath(WebData::Temporary)</code></td>
+<td>Get temporary path from  your browser profile</td>
+</tr>
+<tr>
+<td><code>bool WebGlobals::erase(const WebData type)</code></td>
+<td>Erase data by type from your browser profile data</td>
+</tr>
+<tr>
+<td><code>WebGlobals::erase(WebData::All)</code></td>
+<td>Erase all data from your browser profile data</td>
+</tr>
+<tr>
+<td><code>WebGlobals::erase(WebData::AppCache)</code></td>
+<td>Erase cache from your browser profile data</td>
+</tr>
+<tr>
+<td><code>WebGlobals::erase(WebData::LocalStorage)</code></td>
+<td>Erase localstorage data from your browser profile data</td>
+</tr>
+<tr>
+<td><code>WebGlobals::erase(WebData::OfflineStorage)</code></td>
+<td>Erase offline data from your browser profile data</td>
+</tr>
+<tr>
+<td><code>WebGlobals::erase(WebData::Icons)</code></td>
+<td>Erase icons data from your browser profile data</td>
+</tr>
+<tr>
+<td><code>WebGlobals::erase(WebData::Temporary)</code></td>
+<td>Erase temporary data your browser profile data</td>
+</tr>
+</tbody>
+</table></article></body></html>
