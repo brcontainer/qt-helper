@@ -65,15 +65,15 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
             const int iconSize = combo->iconSize().width();
             int lastWidth = combo->width(); // default width
 
-            const QFontMetrics fontMetrics1 = view->fontMetrics();
-            const QFontMetrics fontMetrics2 = combo->fontMetrics();
+            const QFontMetrics metrics1 = view->fontMetrics();
+            const QFontMetrics metrics2 = combo->fontMetrics();
 
             j = combo->count();
 
             for (i = 0; i < j; ++i) {
                 const int textWidth = qMax(
-                    fontMetrics1.width(combo->itemText(i) + "WW"),
-                    fontMetrics2.width(combo->itemText(i) + "WW")
+                    metrics1.width(combo->itemText(i) + "WW"),
+                    metrics2.width(combo->itemText(i) + "WW")
                 );
 
                 if (combo->itemIcon(i).isNull()) {

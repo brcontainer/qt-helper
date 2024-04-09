@@ -39,31 +39,6 @@ sample/
 
 The classes in this scope are used to adjust or control anything related to your application, or `QApplication`, or add extra functionality.
 
-### debugger
-
-This class only has static methods, and they are equivalent to `qDebug`, with the difference of being able to enable or disable them as necessary. Usage example:
-
-```cpp
-#include "debugger.h"
-#include <QApplication>
-
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-
-// show "logs" only in DEBUG (build in debug)
-#ifdef QT_DEBUG
-    Debugger(true);
-#else
-    Debugger(false);
-#endif
-
-    ...
-
-    return app.exec();
-}
-```
-
 ### oneinstanceapp
 
 This class allows your application to only have one instance. Usage example:
@@ -137,17 +112,16 @@ void MainWindow::showFileInExplorer()
 
 void MainWindow::openFile()
 {
-    OpenExternal::local("C:/foder/file.txt");
+    OpenExternal::open("C:/foder/file.txt");
 }
 ```
 
 Method | Description
 --- | ---
-`OpenExternal::local("C:/foo/bar/")` | Open default file manager (`explorer.exe` in Windows and `Finder` in macOS)
-`OpenExternal::local("C:/foo/bar.txt")` | Try open with default program, if failed try use `OpenExternal::showInFolder`
-`OpenExternal::showInFolder("C:/foo/bar.txt")` | In Windows is equivalent to `explorer /select,C:\foder\file.txt` command
-`OpenExternal::showInFolder("/home/foo.txt")` | In macOS is equivalent to `open -R /home/foo.txt` command
-`OpenExternal::url("http://github.com")` | Open default web-browser
+`OpenExternal::open("C:/foo/bar/")` | Open default file manager (`explorer.exe` in Windows or `Finder` in macOS)
+`OpenExternal::open("C:/foo/file.txt")` | Try open with default program, if failed try use `OpenExternal::showInFolder`
+`OpenExternal::showInFolder("C:/foo/file.txt")` | In Windows is equivalent to `explorer /select,C:\foder\file.txt` command
+`OpenExternal::showInFolder("/Users/sample/Desktop/foo.txt")` | In macOS is equivalent to `open -R /Users/sample/Desktop/foo.txt` command
 
 ### trackmouse
 

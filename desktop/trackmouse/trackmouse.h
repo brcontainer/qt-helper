@@ -35,7 +35,7 @@ private:
     bool lastPosActive;
     QWidget *byWidget;
     bool limitWidget;
-    QPoint cursorPosition();
+    QPoint cursorPosition() const;
 
 signals:
     void position(const QPoint pos);

@@ -1,5 +1,4 @@
 # Application
-include($$PWD/application/debugger/debugger.pri)
 include($$PWD/application/oneinstanceapp/oneinstanceapp.pri)
 
 # Desktop

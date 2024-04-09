@@ -15,9 +15,8 @@ class OpenExternal
 {
 
 public:
-    static bool showInFolder(QString file);
-    static bool local(QString file);
-    static bool url(QString uri);
+    static bool showInFolder(const QString &path);
+    static bool open(const QString &path);
 };
 
 #endif // OPENEXTERNAL_H

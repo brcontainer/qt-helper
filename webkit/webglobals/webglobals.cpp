@@ -26,7 +26,7 @@ WebGlobals::WebGlobals()
     settings->setAttribute(QWebSettings::WebGLEnabled, true);
 
     settings->setAttribute(QWebSettings::PluginsEnabled, true);
-    settings->setAttribute(QWebSettings::JavaEnabled, false); //Desabilita java
+    settings->setAttribute(QWebSettings::JavaEnabled, false);
 
     settings->setAttribute(QWebSettings::AutoLoadImages, true);
 
@@ -50,7 +50,7 @@ void WebGlobals::developer(const bool enable)
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, enable);
 }
 
-void WebGlobals::setPath(const QString path)
+void WebGlobals::setPath(const QString &path)
 {
     configpath = path;
 
@@ -67,23 +67,17 @@ void WebGlobals::setPath(const QString path)
     settings->setLocalStoragePath(configpath + "localstorage");
 }
 
-bool WebGlobals::createFolder(const QString folder)
+bool WebGlobals::createFolder(const QString &folder)
 {
-    QDir tmp;
-
-    if (false == tmp.exists(folder) && false == tmp.mkpath(folder)) {
-        return false;
-    }
-
-    return true;
+    return QDir(folder).mkpath(".");
 }
 
-QIcon WebGlobals::getIcon(const QString u) const
+QIcon WebGlobals::getIcon(const QString &url) const
 {
-    return settings->iconForUrl(QUrl(u));
+    return settings->iconForUrl(QUrl(url));
 }
 
-void WebGlobals::setStyle(const QString path)
+void WebGlobals::setStyle(const QString &path)
 {
     settings->setUserStyleSheetUrl(QUrl(path));
 }
@@ -100,23 +94,18 @@ QString WebGlobals::getPath(const WebData type) const
     {
         case AppCache:
             return configpath + "appcache";
-        break;
 
         case OfflineStorage:
             return configpath + "offlinestorage";
-        break;
 
         case LocalStorage:
             return configpath + "localstorage";
-        break;
 
         case Icons:
             return configpath + "icons";
-        break;
 
         case Temporary:
             return configpath + "tmp";
-        break;
 
         default:
             return configpath;
@@ -130,29 +119,24 @@ bool WebGlobals::erase(const WebData type) const
         case AppCache:
             return QDir(configpath + "appcache").removeRecursively() &&
                    createFolder(configpath + "appcache");
-            break;
 
         case OfflineStorage:
             return QDir(configpath + "offlinestorage").removeRecursively() &&
                    createFolder(configpath + "offlinestorage");
-            break;
 
         case LocalStorage:
             return QDir(configpath + "localstorage").removeRecursively() &&
                    createFolder(configpath + "localstorage");
-            break;
 
         case Icons:
             settings->clearIconDatabase();
 
             return QDir(configpath + "icons").removeRecursively() &&
                    createFolder(configpath + "icons");
-            break;
 
         case Temporary:
             return QDir(configpath + "tmp").removeRecursively() &&
                    createFolder(configpath + "tmp");
-            break;
 
         default:
             return (

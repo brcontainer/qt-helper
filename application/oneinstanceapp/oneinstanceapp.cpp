@@ -11,6 +11,8 @@
 #include <QDir>
 #include <QLockFile>
 #include <QStandardPaths>
+#include <QDebug>
+#include <QDateTime>
 
 OneInstanceApp::OneInstanceApp(int &argc, char **argv) : QApplication(argc, argv)
 {

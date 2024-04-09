@@ -20,24 +20,29 @@ TrackMouse::TrackMouse(QObject *parent) :
 {
 }
 
-void TrackMouse::enable(const bool enable) {
+void TrackMouse::enable(const bool enable)
+{
     track = enable;
 }
 
-void TrackMouse::detectMove(const bool enable) {
+void TrackMouse::detectMove(const bool enable)
+{
     lastPosActive = enable;
 }
 
-void TrackMouse::setDelay(const int value) {
+void TrackMouse::setDelay(const int value)
+{
     delay = value;
 }
 
-void TrackMouse::setWidget(QWidget *widget, bool limit) {
+void TrackMouse::setWidget(QWidget *widget, bool limit)
+{
     byWidget = widget;
     limitWidget = limit;
 }
 
-void TrackMouse::run(void) {
+void TrackMouse::run(void)
+{
     QPoint lastPos;
     QPoint current;
 
@@ -67,7 +72,8 @@ void TrackMouse::end() {
     terminate();
 }
 
-QPoint TrackMouse::cursorPosition() {
+QPoint TrackMouse::cursorPosition() const
+{
     if (byWidget == 0) {
         return QCursor::pos();
     }

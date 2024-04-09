@@ -14,44 +14,24 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QUrl>
+#include <QDebug>
 
-bool OpenExternal::showInFolder(QString file)
+bool OpenExternal::showInFolder(const QString &path)
 {
-    file = file.replace("//", "/").replace("\\\\", "\\");
-
-    bool showed = false;
-
-    if (!QFile(file).exists()) {
+    if (!QFile(path).exists()) {
         return false;
     }
 
-    const QString uri = QDir::toNativeSeparators(file);
+    const QString uri = QDir::toNativeSeparators(path);
 
 #if defined(Q_OS_WIN)
-    showed = QProcess::startDetached("explorer", QStringList() << "/select," << uri);
-#elif defined(Q_OS_OSX)
-    showed = QProcess::startDetached("open", QStringList() << "-R" << uri);
+    return QProcess::startDetached("explorer", QStringList() << "/select," << uri);
+#else
+    return QProcess::startDetached("open", QStringList() << "-R" << uri);
 #endif
-
-    if (showed) {
-        return showed;
-    }
-
-    const QString fi = "file:///" +
-                        QFileInfo(uri)
-                            .absoluteDir()
-                                .canonicalPath()
-                                    .replace("#", "%23");
-
-    return url(fi);
 }
 
-bool OpenExternal::local(QString file)
+bool OpenExternal::open(const QString &path)
 {
-    return url("file:///" + file.replace("#", "%23")) || showInFolder(file);
-}
-
-bool OpenExternal::url(QString uri)
-{
-    return QDesktopServices::openUrl(QUrl(uri));
+    return QDesktopServices::openUrl(QUrl(QString(path).replace("#", "%23"))) || showInFolder(path);
 }
