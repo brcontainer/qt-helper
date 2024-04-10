@@ -28,6 +28,12 @@ public slots:
     void showFileInFolder();
     void tryOpenNotExists();
     void handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors);
+    void loadProgress(const int value = 0);
+    void titleChanged(const QString &title);
+    void statusBarMessage(const QString &message);
+    void iconChanged();
+
+    void unsupportedContent(QNetworkReply* reply);
     void capture(const QPoint &pos);
 };
 

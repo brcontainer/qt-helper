@@ -20,6 +20,11 @@ TrackMouse::TrackMouse(QObject *parent) :
 {
 }
 
+TrackMouse::~TrackMouse()
+{
+    end();
+}
+
 void TrackMouse::enable(const bool enable)
 {
     track = enable;

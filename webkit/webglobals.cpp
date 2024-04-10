@@ -60,11 +60,11 @@ void WebGlobals::setPath(const QString &path)
     createFolder("icons");
     createFolder("tmp");
 
-    QWebSettings::setOfflineWebApplicationCachePath(configpath + "appcache");
-    QWebSettings::setOfflineStoragePath(configpath + "offlinestorage");
-    QWebSettings::setIconDatabasePath(configpath + "icons");
+    QWebSettings::setOfflineWebApplicationCachePath(configpath + "/appcache");
+    QWebSettings::setOfflineStoragePath(configpath + "/offlinestorage");
+    QWebSettings::setIconDatabasePath(configpath + "/icons");
 
-    settings->setLocalStoragePath(configpath + "localstorage");
+    settings->setLocalStoragePath(configpath + "/localstorage");
 }
 
 bool WebGlobals::createFolder(const QString &folder) const
@@ -130,19 +130,19 @@ QString WebGlobals::getPath(const WebData &type) const
     switch (type)
     {
         case AppCache:
-            return configpath + "appcache";
+            return configpath + "/appcache";
 
         case OfflineStorage:
-            return configpath + "offlinestorage";
+            return configpath + "/offlinestorage";
 
         case LocalStorage:
-            return configpath + "localstorage";
+            return configpath + "/localstorage";
 
         case Icons:
-            return configpath + "icons";
+            return configpath + "/icons";
 
         case Temporary:
-            return configpath + "tmp";
+            return configpath + "/tmp";
 
         default:
             return configpath;

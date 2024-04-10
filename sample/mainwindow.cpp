@@ -2,11 +2,15 @@
 #include "ui_mainwindow.h"
 
 #include "action.h"
+#include "networkmanager.h"
 #include "openexternal.h"
 #include "trackmouse.h"
-#include "networkmanager.h"
+#include "webglobals.h"
 
 #include <QDebug>
+#include <QNetworkDiskCache>
+#include <QStandardPaths>
+#include <QWebPage>
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -27,13 +31,46 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->btn4, SIGNAL(clicked()), this, SLOT(showFileInFolder()));
     QObject::connect(ui->btn5, SIGNAL(clicked()), this, SLOT(tryOpenNotExists()));
 
+    const QString webDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    WebGlobals webconfig;
+    webconfig.developer(true);
+    webconfig.setPath(webDir);
+
+    qDebug() << "(WebGlobals::All):" << webconfig.getPath(WebGlobals::All);
+    qDebug() << "(WebGlobals::AppCache):" << webconfig.getPath(WebGlobals::AppCache);
+    qDebug() << "(WebGlobals::LocalStorage):" << webconfig.getPath(WebGlobals::LocalStorage);
+    qDebug() << "(WebGlobals::OfflineStorage):" << webconfig.getPath(WebGlobals::OfflineStorage);
+    qDebug() << "(WebGlobals::Icons):" << webconfig.getPath(WebGlobals::Icons);
+    qDebug() << "(WebGlobals::Temporary):" << webconfig.getPath(WebGlobals::Temporary);
+
+    QWebPage *page = ui->webView->page();
+    page->setForwardUnsupportedContent(true);
+
     // Network manager for fix issue some servers
     NetworkManager *manager = new NetworkManager(this);
 
     QObject::connect(manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
                      this, SLOT(handleSslErrors(QNetworkReply*,QList<QSslError>)));
 
-    ui->webView->page()->setNetworkAccessManager(manager);
+    QNetworkDiskCache *httpCache = new QNetworkDiskCache(this);
+    httpCache->setCacheDirectory(webDir + "/cache");
+
+    // Set HTTP location to network manager
+    manager->setCache(httpCache);
+
+    page->setNetworkAccessManager(manager);
+
+    QObject::connect(ui->webView, SIGNAL(loadStarted()), this, SLOT(loadProgress()));
+    QObject::connect(ui->webView, SIGNAL(loadProgress(int)), this, SLOT(loadProgress(int)));
+    QObject::connect(ui->webView, SIGNAL(loadFinished(bool)), this, SLOT(loadProgress()));
+
+    QObject::connect(ui->webView, SIGNAL(titleChanged(QString)), this, SLOT(titleChanged(QString)));
+    QObject::connect(ui->webView, SIGNAL(statusBarMessage(QString)), this, SLOT(statusBarMessage(QString)));
+    QObject::connect(ui->webView, SIGNAL(iconChanged()), this, SLOT(iconChanged()));
+
+    QObject::connect(page, SIGNAL(unsupportedContent(QNetworkReply*)),
+                     this, SLOT(unsupportedContent(QNetworkReply*)));
 
     loadHTML();
 
@@ -65,7 +102,23 @@ void MainWindow::loadHTML()
 {
     QStringList htmlContents;
     htmlContents << "<select style='width: 140px;'>";
-    htmlContents << "<option>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</option>";
+    htmlContents << "<optgroup label='Group 1'>";
+    htmlContents << "<option>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed";
+    htmlContents << "do eiusmod tempor incididunt ut labore et dolore magna aliqua</option>";
+    htmlContents << "<option>foo</option>";
+    htmlContents << "<option>bar</option>";
+    htmlContents << "<option>baz</option>";
+    htmlContents << "</optgroup>";
+    htmlContents << "<optgroup label='Group 2'>";
+    htmlContents << "<option>foo</option>";
+    htmlContents << "<option>bar</option>";
+    htmlContents << "<option>baz</option>";
+    htmlContents << "</optgroup>";
+    htmlContents << "</select>";
+    htmlContents << " ";
+    htmlContents << "<select style='width: 140px;'>";
+    htmlContents << "<option>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed";
+    htmlContents << "do eiusmod tempor incididunt ut labore et dolore magna aliqua</option>";
     htmlContents << "<option>foo</option>";
     htmlContents << "<option>bar</option>";
     htmlContents << "<option>baz</option>";
@@ -95,7 +148,34 @@ void MainWindow::handleSslErrors(QNetworkReply* reply, const QList<QSslError> &e
     reply->ignoreSslErrors();
 }
 
+void MainWindow::loadProgress(const int value)
+{
+    ui->progressBar->setValue(value == 100 ? 0 : value);
+}
+
+void MainWindow::titleChanged(const QString &title)
+{
+    qDebug() << "TITLE CHANGED: " << title;
+    setWindowTitle(title);
+}
+
+void MainWindow::statusBarMessage(const QString &message)
+{
+    ui->webStatusText->setText(message);
+}
+
+void MainWindow::iconChanged()
+{
+    setWindowIcon(ui->webView->icon());
+}
+
+void MainWindow::unsupportedContent(QNetworkReply* reply)
+{
+    qDebug() << "unsupported content:" << reply->url();
+    ui->webView->stop();
+}
+
 void MainWindow::capture(const QPoint &pos)
 {
-    qDebug() << pos;
+    ui->mousePositionText->setText(QString("%1x%2").arg(pos.x()).arg(pos.y()));
 }
