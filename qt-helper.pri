@@ -1,16 +1,14 @@
 # Application
-include($$PWD/application/oneinstanceapp/oneinstanceapp.pri)
+include($$PWD/application/oneinstanceapp.pri)
+include($$PWD/application/proxystyle.pri)
 
 # Desktop
-include($$PWD/desktop/action/action.pri)
-include($$PWD/desktop/openexternal/openexternal.pri)
-include($$PWD/desktop/trackmouse/trackmouse.pri)
+include($$PWD/desktop/action.pri)
+include($$PWD/desktop/openexternal.pri)
+include($$PWD/desktop/trackmouse.pri)
 
 # Network
-include($$PWD/network/networkmanager/networkmanager.pri)
-
-# Style
-include($$PWD/style/proxystyle/proxystyle.pri)
+include($$PWD/network/networkmanager.pri)
 
 # Webkit
-include($$PWD/webkit/webglobals/webglobals.pri)
+include($$PWD/webkit/webglobals.pri)

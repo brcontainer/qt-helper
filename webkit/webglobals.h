@@ -31,14 +31,14 @@ public:
     void developer(const bool enable);
     void setPath(const QString &path);
     void setStyle(const QString &path);
-    void setFont(const int size, const QString font);
-    bool erase(const WebData type) const;
-    QString getPath(const WebData type) const;
+    void setFont(const int size, const QString &font);
+    bool erase(const WebData &type) const;
+    QString getPath(const WebData &type) const;
 
 private:
     QWebSettings *settings;
     QString configpath;
-    static bool createFolder(const QString &folder);
+    bool createFolder(const QString &folder) const;
 };
 
 #endif // WEBGLOBALS_H

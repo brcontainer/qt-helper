@@ -15,32 +15,44 @@
 #include <QNetworkRequest>
 #include <QDir>
 
-NetworkManager::NetworkManager(QObject *parent) : QNetworkAccessManager(parent)
+NetworkManager::NetworkManager(QObject *parent) :
+    QNetworkAccessManager(parent)
 {
+    defaultSchemes << "file" << "ftp" << "http" << "https";
+    httpSchemes << "http" << "https";
+
     setCookieJar(new QNetworkCookieJar(this));
 }
 
 QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
-    if (request.hasRawHeader("X-QtHelper-Rewrited")) {
-        return QNetworkAccessManager::createRequest(op, request, outgoingData);
-    }
-
-    // if (networkAccessible() != NetworkManageribility::Accessible) {
-    //    tryReconnect();
-    // }
-
     const QUrl url = request.url();
     const QString scheme = url.scheme().toLower();
 
-    if ("http" != scheme && "https" != scheme) {
-        QNetworkReply *reply = 0;
+    /*
+    if (networkAccessible() != NetworkManageribility::Accessible) {
+       tryReconnect();
+    }
+    */
 
-        emit proxyByScheme(scheme, reply);
+    QNetworkReply *reply = 0;
 
-        if (reply != 0) {
-            return reply;
+    if (!httpSchemes.contains(scheme) || request.hasRawHeader("X-QtHelper-Rewrited")) {
+        if ("file" == scheme && QDir(url.url()).exists()) {
+            // Future implementation: directory navigation
+        } else if ("ftp" == scheme) {
+            // Future implementation: display FTP contents/navigation
+        } else if (!defaultSchemes.contains(scheme)) {
+            // Customize response for unknown schemes
+
+            emit proxyByScheme(scheme, reply);
+
+            if (reply != 0) {
+                return reply;
+            }
         }
+
+        return QNetworkAccessManager::createRequest(op, request, outgoingData);
     }
 
     const QList<QByteArray> headers = request.rawHeaderList();
@@ -63,16 +75,6 @@ QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkReques
     if (hasContentType == false && (op == PostOperation || op == PutOperation)) {
         req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     }
-
-    if ("file" == scheme) {
-        if (QDir(url.url()).exists()) {
-            //network.cpp: unsupported file folder
-        }
-    } else if ("ftp" == scheme) {
-        //"network.cpp: Unsupported FTP"
-    }
-
-    QNetworkReply *reply;
 
     if (op == PostOperation || op == PutOperation) {
         if (hasContentType == false) {

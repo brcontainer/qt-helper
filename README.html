@@ -1093,42 +1093,47 @@ SOURCES  += main.cpp
 include($$PWD/vendor/qt-helper/qt-helper.pri)
 </pre></div>
 
-<p><strong>Note:</strong> vendor é apenas um exemplo de pasta aonde pode adicionar projetos bibliotecas de terceiros, um exemplo de estrutura de pastas:</p>
+<p><strong>Note:</strong> <code>vendor</code> is just a suggestion on how to organize your folders, to add third-party libraries:</p>
 <div class="highlight"><pre>sample/
-├───main.cpp
-├───mainwindow.cpp
-├───mainwindow.h
-├───mainwindow.ui
-├───sample.pro
-└───vendor/
-    └───qt-helper/
-        └───qt-helper.pri
+├─── main.cpp
+├─── mainwindow.cpp
+├─── mainwindow.h
+├─── mainwindow.ui
+├─── sample.pro
+└─── vendor/
+     └─── qt-helper/
+          ├─── application/
+          │    ├─── oneinstanceapp.cpp
+          │    ├─── oneinstanceapp.h
+          │    ├─── oneinstanceapp.pri
+          │    ├─── proxystyle.cpp
+          │    ├─── proxystyle.h
+          │    └─── proxystyle.pri
+          │
+          ├─── desktop/
+          │    ├─── action.cpp
+          │    ├─── action.h
+          │    ├─── action.pri
+          │    ├─── openexternal.cpp
+          │    ├─── openexternal.h
+          │    ├─── openexternal.pri
+          │    ├─── trackmouse.cpp
+          │    ├─── trackmouse.h
+          │    └─── trackmouse.pri
+          │
+          ├─── network/
+          │    ├─── networkmanager.cpp
+          │    ├─── networkmanager.h
+          │    └─── networkmanager.pri
+          │
+          └─── webkit/
+               ├─── webglobals.cpp
+               ├─── webglobals.h
+               └─── webglobals.pri
 </pre></div>
 
 <h2 id="application">Application<a class="headerlink" href="#application" title="Permanent link"></a></h2>
 <p>The classes in this scope are used to adjust or control anything related to your application, or <code>QApplication</code>, or add extra functionality.</p>
-<h3 id="debugger">debugger<a class="headerlink" href="#debugger" title="Permanent link"></a></h3>
-<p>This class only has static methods, and they are equivalent to <code>qDebug</code>, with the difference of being able to enable or disable them as necessary. Usage example:</p>
-<div class="highlight"><pre><span class="cp">#include &quot;debugger.h&quot;</span>
-<span class="cp">#include &lt;QApplication&gt;</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-<span class="p">{</span>
-    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
-
-<span class="c1">// show &quot;logs&quot; only in DEBUG (build in debug)</span>
-<span class="cp">#ifdef QT_DEBUG</span>
-    <span class="n">Debugger</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
-<span class="cp">#else</span>
-    <span class="n">Debugger</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
-<span class="cp">#endif</span>
-
-    <span class="p">...</span>
-
-    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">();</span>
-<span class="p">}</span>
-</pre></div>
-
 <h3 id="oneinstanceapp">oneinstanceapp<a class="headerlink" href="#oneinstanceapp" title="Permanent link"></a></h3>
 <p>This class allows your application to only have one instance. Usage example:</p>
 <div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
@@ -1145,6 +1150,101 @@ include($$PWD/vendor/qt-helper/qt-helper.pri)
 <span class="p">}</span>
 </pre></div>
 
+<blockquote>
+<p>For include ony <code>OnceInstanceApp</code> in your application put in your <code>.pro</code>, eg.:</p>
+<div class="highlight"><pre>...
+
+SOURCES  += main.cpp
+
+include($$PWD/vendor/qt-helper/application/oneinstanceapp.pri)
+</pre></div>
+
+</blockquote>
+<h3 id="proxystyle">proxystyle<a class="headerlink" href="#proxystyle" title="Permanent link"></a></h3>
+<p>Adjust the style and improve the combobox popup:</p>
+<div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
+<span class="cp">#include &quot;proxystyle.h&quot;</span>
+<span class="cp">#include &lt;QApplication&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+
+    <span class="n">app</span><span class="p">.</span><span class="n">setStyle</span><span class="p">(</span><span class="k">new</span> <span class="n">ProxyStyle</span><span class="p">());</span>
+
+    <span class="n">MainWindow</span> <span class="n">win</span><span class="p">;</span>
+    <span class="n">win</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">(</span><span class="s">&quot;~instance&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new ProxyStyle()</code></td>
+<td>Default theme</td>
+</tr>
+<tr>
+<td><code>new ProxyStyle("Fusion")</code></td>
+<td>Define fusion theme in application¹</td>
+</tr>
+<tr>
+<td><code>new ProxyStyle("Windows")</code></td>
+<td>Define Windows theme in application¹</td>
+</tr>
+<tr>
+<td><code>new ProxyStyle("WindowsXP")</code></td>
+<td>Define Windows XP theme in application¹</td>
+</tr>
+<tr>
+<td><code>new ProxyStyle("WindowsVista")</code></td>
+<td>Define Windows Vista theme in application¹</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>¹ Default themes depend on system availability</p>
+</blockquote>
+<p>For custom theme you can extends like this:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">CustomStyle</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ProxyStyle</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">CustomStyle</span><span class="p">();</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">setStyle</span><span class="p">(</span><span class="k">new</span> <span class="n">CustomStyle</span><span class="p">());</span>
+
+<span class="p">...</span>
+</pre></div>
+
+<p>More details:</p>
+<ul>
+<li>Qt5: <a href="https://doc.qt.io/qt-5/qtwidgets-widgets-styles-example.html">https://doc.qt.io/qt-5/qtwidgets-widgets-styles-example.html</a></li>
+<li>Qt6: <a href="https://doc.qt.io/qt-6.2/qtwidgets-widgets-styles-example.html">https://doc.qt.io/qt-6.2/qtwidgets-widgets-styles-example.html</a></li>
+<li>Gallery: <a href="https://doc.qt.io/qt-6/gallery.html">https://doc.qt.io/qt-6/gallery.html</a></li>
+</ul>
+<blockquote>
+<p>For include ony <code>ProxyStyle</code> in your application put in your <code>.pro</code>, eg.:</p>
+<div class="highlight"><pre>...
+
+SOURCES  += main.cpp
+
+include($$PWD/vendor/qt-helper/aplication/proxystyle.pri)
+</pre></div>
+
+</blockquote>
 <h2 id="desktop">Desktop<a class="headerlink" href="#desktop" title="Permanent link"></a></h2>
 <p>Instructions for use and how to include individually:</p>
 <h3 id="action">action<a class="headerlink" href="#action" title="Permanent link"></a></h3>
@@ -1167,7 +1267,18 @@ include($$PWD/vendor/qt-helper/qt-helper.pri)
 <span class="p">}</span>
 </pre></div>
 
+<blockquote>
+<p>For include ony <code>OnceInstanceApp</code> in your application put in your <code>.pro</code>, eg.:</p>
+<div class="highlight"><pre>...
+
+SOURCES  += main.cpp
+
+include($$PWD/vendor/qt-helper/desktop/action.pri)
+</pre></div>
+
+</blockquote>
 <h3 id="openexternal">openexternal<a class="headerlink" href="#openexternal" title="Permanent link"></a></h3>
+<p>Prevent freeze (or crash) apps with <code>QDesktopServices::openUrl</code>:</p>
 <div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
 <span class="cp">#include &quot;ui_mainwindow.h&quot;</span>
 
@@ -1193,7 +1304,7 @@ include($$PWD/vendor/qt-helper/qt-helper.pri)
 
 <span class="kt">void</span> <span class="n">MainWindow</span><span class="o">::</span><span class="n">openFile</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="n">OpenExternal</span><span class="o">::</span><span class="n">local</span><span class="p">(</span><span class="s">&quot;C:/foder/file.txt&quot;</span><span class="p">);</span>
+    <span class="n">OpenExternal</span><span class="o">::</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;C:/foder/file.txt&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -1206,27 +1317,33 @@ include($$PWD/vendor/qt-helper/qt-helper.pri)
 </thead>
 <tbody>
 <tr>
-<td><code>OpenExternal::local("C:/foo/bar/")</code></td>
-<td>Open default file manager (<code>explorer.exe</code> in Windows and <code>Finder</code> in macOS)</td>
+<td><code>OpenExternal::open("C:/foo/bar/")</code></td>
+<td>Open default file manager (<code>explorer.exe</code> in Windows or <code>Finder</code> in macOS)</td>
 </tr>
 <tr>
-<td><code>OpenExternal::local("C:/foo/bar.txt")</code></td>
+<td><code>OpenExternal::open("C:/foo/file.txt")</code></td>
 <td>Try open with default program, if failed try use <code>OpenExternal::showInFolder</code></td>
 </tr>
 <tr>
-<td><code>OpenExternal::showInFolder("C:/foo/bar.txt")</code></td>
+<td><code>OpenExternal::showInFolder("C:/foo/file.txt")</code></td>
 <td>In Windows is equivalent to <code>explorer /select,C:\foder\file.txt</code> command</td>
 </tr>
 <tr>
-<td><code>OpenExternal::showInFolder("/home/foo.txt")</code></td>
-<td>In macOS is equivalent to <code>open -R /home/foo.txt</code> command</td>
-</tr>
-<tr>
-<td><code>OpenExternal::url("http://github.com")</code></td>
-<td>Open default web-browser</td>
+<td><code>OpenExternal::showInFolder("/Users/sample/Desktop/foo.txt")</code></td>
+<td>In macOS is equivalent to <code>open -R /Users/sample/Desktop/foo.txt</code> command</td>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>For include ony <code>OpenExternal</code> in your application put in your <code>.pro</code>, eg.:</p>
+<div class="highlight"><pre>...
+
+SOURCES  += main.cpp
+
+include($$PWD/vendor/qt-helper/desktop/openexternal.pri)
+</pre></div>
+
+</blockquote>
 <h3 id="trackmouse">trackmouse<a class="headerlink" href="#trackmouse" title="Permanent link"></a></h3>
 <div class="highlight"><pre><span class="cp">#include &quot;trackmouse.h&quot;;</span>
 
@@ -1248,8 +1365,19 @@ include($$PWD/vendor/qt-helper/qt-helper.pri)
 <span class="p">}</span>
 </pre></div>
 
+<blockquote>
+<p>For include ony <code>TrackMouse</code> in your application put in your <code>.pro</code>, eg.:</p>
+<div class="highlight"><pre>...
+
+SOURCES  += main.cpp
+
+include($$PWD/vendor/qt-helper/desktop/trackmouse.pri)
+</pre></div>
+
+</blockquote>
 <h2 id="network">Network<a class="headerlink" href="#network" title="Permanent link"></a></h2>
 <h3 id="networkmanager">networkmanager<a class="headerlink" href="#networkmanager" title="Permanent link"></a></h3>
+<p>This class fix problems with &ldquo;Response unknown&rdquo; that occurs with some servers:</p>
 <div class="highlight"><pre><span class="cp">#include &quot;networkmanager.h&quot;</span>
 
 <span class="p">...</span>
@@ -1266,27 +1394,19 @@ include($$PWD/vendor/qt-helper/qt-helper.pri)
 <span class="p">...</span>
 </pre></div>
 
-<h2 id="style">Style<a class="headerlink" href="#style" title="Permanent link"></a></h2>
-<h3 id="proxystyle">proxystyle<a class="headerlink" href="#proxystyle" title="Permanent link"></a></h3>
-<div class="highlight"><pre><span class="cp">#include &quot;mainwindow.h&quot;</span>
-<span class="cp">#include &quot;proxystyle.h&quot;</span>
-<span class="cp">#include &lt;QApplication&gt;</span>
+<blockquote>
+<p>For include ony <code>NetworkManager</code> in your application put in your <code>.pro</code>, eg.:</p>
+<div class="highlight"><pre>...
 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-<span class="p">{</span>
-    <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+SOURCES  += main.cpp
 
-    <span class="n">app</span><span class="p">.</span><span class="n">setStyle</span><span class="p">(</span><span class="k">new</span> <span class="n">ProxyStyle</span><span class="p">);</span>
-
-    <span class="n">MainWindow</span> <span class="n">win</span><span class="p">;</span>
-    <span class="n">win</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
-
-    <span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">exec</span><span class="p">(</span><span class="s">&quot;~instance&quot;</span><span class="p">);</span>
-<span class="p">}</span>
+include($$PWD/vendor/qt-helper/network/networkmanager.pri)
 </pre></div>
 
+</blockquote>
 <h2 id="webkit">Webkit<a class="headerlink" href="#webkit" title="Permanent link"></a></h2>
 <h3 id="webglobals">webglobals<a class="headerlink" href="#webglobals" title="Permanent link"></a></h3>
+<p>Adjustments for QtWebkit made easy:</p>
 <div class="highlight"><pre><span class="n">WebGlobals</span> <span class="nf">configs</span><span class="p">();</span>
 <span class="n">configs</span><span class="p">.</span><span class="n">developer</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span> <span class="c1">// Enable developer tools</span>
 <span class="n">configs</span><span class="p">.</span><span class="n">setPath</span><span class="p">(</span><span class="s">&quot;C:/foo/bar/&quot;</span><span class="p">);</span> <span class="c1">// Set folder for cookies, storage, and others</span>
@@ -1381,4 +1501,14 @@ include($$PWD/vendor/qt-helper/qt-helper.pri)
 <td>Erase temporary data your browser profile data</td>
 </tr>
 </tbody>
-</table></article></body></html>
+</table>
+<blockquote>
+<p>For include ony <code>WebGlobals</code> in your application put in your <code>.pro</code>, eg.:</p>
+<div class="highlight"><pre>...
+
+SOURCES  += main.cpp
+
+include($$PWD/vendor/qt-helper/web/webglobals.pri)
+</pre></div>
+
+</blockquote></article></body></html>

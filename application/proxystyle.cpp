@@ -10,8 +10,6 @@
 #include <QAbstractItemView>
 #include <QComboBox>
 
-#include <QDebug>
-
 ProxyStyle::ProxyStyle(QStyle *style) :
     QProxyStyle(style)
 {

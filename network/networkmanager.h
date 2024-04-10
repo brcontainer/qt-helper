@@ -1,5 +1,5 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef NETWORKMANAGER_H
+#define NETWORKMANAGER_H
 
 /*
  * QtHelper
@@ -10,6 +10,7 @@
  */
 
 #include <QNetworkAccessManager>
+#include <QStringList>
 
 class QNetworkDiskCache;
 
@@ -26,6 +27,10 @@ protected:
 
 signals:
     void proxyByScheme(const QString scheme, QNetworkReply *reply);
+
+private:
+    QStringList defaultSchemes; // { "file", "ftp", "http", "https" }
+    QStringList httpSchemes; // { "http", "https" }
 };
 
-#endif // NETWORK_H
+#endif // NETWORKMANAGER_H

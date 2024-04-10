@@ -11,9 +11,8 @@
 
 #include <QKeySequence>
 
-class QWidget;
-class QObject;
 class QAction;
+class QWidget;
 
 class Action
 {

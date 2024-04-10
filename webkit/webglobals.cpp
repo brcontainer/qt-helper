@@ -21,7 +21,7 @@ WebGlobals::WebGlobals()
     settings->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
     settings->setAttribute(QWebSettings::JavascriptEnabled, true);
 
-    //Enable OpenGL/webGL
+    // Enable OpenGL/webGL
     settings->setAttribute(QWebSettings::AcceleratedCompositingEnabled, true);
     settings->setAttribute(QWebSettings::WebGLEnabled, true);
 
@@ -54,11 +54,11 @@ void WebGlobals::setPath(const QString &path)
 {
     configpath = path;
 
-    createFolder(configpath + "appcache");
-    createFolder(configpath + "offlinestorage");
-    createFolder(configpath + "storage");
-    createFolder(configpath + "icons");
-    createFolder(configpath + "tmp");
+    createFolder("appcache");
+    createFolder("offlinestorage");
+    createFolder("storage");
+    createFolder("icons");
+    createFolder("tmp");
 
     QWebSettings::setOfflineWebApplicationCachePath(configpath + "appcache");
     QWebSettings::setOfflineStoragePath(configpath + "offlinestorage");
@@ -67,9 +67,9 @@ void WebGlobals::setPath(const QString &path)
     settings->setLocalStoragePath(configpath + "localstorage");
 }
 
-bool WebGlobals::createFolder(const QString &folder)
+bool WebGlobals::createFolder(const QString &folder) const
 {
-    return QDir(folder).mkpath(".");
+    return QDir(configpath).mkpath(folder);
 }
 
 QIcon WebGlobals::getIcon(const QString &url) const
@@ -82,13 +82,50 @@ void WebGlobals::setStyle(const QString &path)
     settings->setUserStyleSheetUrl(QUrl(path));
 }
 
-void WebGlobals::setFont(const int size, const QString font)
+void WebGlobals::setFont(const int size, const QString &font)
 {
     settings->setFontSize(QWebSettings::DefaultFontSize, size);
     settings->setFontFamily(QWebSettings::StandardFont, font);
 }
 
-QString WebGlobals::getPath(const WebData type) const
+bool WebGlobals::erase(const WebData &type) const
+{
+    switch (type)
+    {
+        case AppCache:
+            return QDir(configpath + "appcache").removeRecursively() &&
+                   createFolder("appcache");
+
+        case OfflineStorage:
+            return QDir(configpath + "offlinestorage").removeRecursively() &&
+                   createFolder("offlinestorage");
+
+        case LocalStorage:
+            return QDir(configpath + "localstorage").removeRecursively() &&
+                   createFolder("localstorage");
+
+        case Icons:
+            settings->clearIconDatabase();
+
+            return QDir(configpath + "icons").removeRecursively() &&
+                   createFolder("icons");
+
+        case Temporary:
+            return QDir(configpath + "tmp").removeRecursively() &&
+                   createFolder("tmp");
+
+        default:
+            return (
+                erase(AppCache) &&
+                erase(OfflineStorage) &&
+                erase(LocalStorage) &&
+                erase(Icons) &&
+                erase(Temporary)
+            );
+    }
+}
+
+QString WebGlobals::getPath(const WebData &type) const
 {
     switch (type)
     {
@@ -109,43 +146,6 @@ QString WebGlobals::getPath(const WebData type) const
 
         default:
             return configpath;
-    }
-}
-
-bool WebGlobals::erase(const WebData type) const
-{
-    switch (type)
-    {
-        case AppCache:
-            return QDir(configpath + "appcache").removeRecursively() &&
-                   createFolder(configpath + "appcache");
-
-        case OfflineStorage:
-            return QDir(configpath + "offlinestorage").removeRecursively() &&
-                   createFolder(configpath + "offlinestorage");
-
-        case LocalStorage:
-            return QDir(configpath + "localstorage").removeRecursively() &&
-                   createFolder(configpath + "localstorage");
-
-        case Icons:
-            settings->clearIconDatabase();
-
-            return QDir(configpath + "icons").removeRecursively() &&
-                   createFolder(configpath + "icons");
-
-        case Temporary:
-            return QDir(configpath + "tmp").removeRecursively() &&
-                   createFolder(configpath + "tmp");
-
-        default:
-            return (
-                erase(AppCache) &&
-                erase(OfflineStorage) &&
-                erase(LocalStorage) &&
-                erase(Icons) &&
-                erase(Temporary)
-            );
     }
 }
 

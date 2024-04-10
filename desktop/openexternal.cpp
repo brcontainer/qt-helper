@@ -14,15 +14,14 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QUrl>
-#include <QDebug>
 
 bool OpenExternal::showInFolder(const QString &path)
 {
-    if (!QFile(path).exists()) {
-        return false;
-    }
+    const QString uri = QDir::toNativeSeparators(adjust(path));
 
-    const QString uri = QDir::toNativeSeparators(path);
+    if (!QFile(uri).exists()) {
+        return true;
+    }
 
 #if defined(Q_OS_WIN)
     return QProcess::startDetached("explorer", QStringList() << "/select," << uri);
@@ -33,5 +32,11 @@ bool OpenExternal::showInFolder(const QString &path)
 
 bool OpenExternal::open(const QString &path)
 {
-    return QDesktopServices::openUrl(QUrl(QString(path).replace("#", "%23"))) || showInFolder(path);
+    return QDesktopServices::openUrl(QUrl("file:///" + adjust(path).replace("#", "%23"))) || showInFolder(path);
+}
+
+QString OpenExternal::adjust(const QString &path)
+{
+    const QRegularExpression regex("^file:[\\/]+", QRegularExpression::CaseInsensitiveOption);
+    return QUrl(QString(path).replace(regex, "")).fromPercentEncoding(path.toUtf8()).replace(regex, "");
 }

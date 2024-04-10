@@ -38,7 +38,7 @@ private:
     QPoint cursorPosition() const;
 
 signals:
-    void position(const QPoint pos);
+    void position(const QPoint &pos);
 };
 
 #endif // TRACKMOUSE_H

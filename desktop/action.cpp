@@ -7,8 +7,9 @@
  */
 
 #include "action.h"
-#include <QObject>
 #include <QAction>
+#include <QKeySequence>
+#include <QObject>
 
 QAction *Action::widget(QWidget *widget, const QString &sequence,
     const QObject *receiver, const char *member, const bool portableText)

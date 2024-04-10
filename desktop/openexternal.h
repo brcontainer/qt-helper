@@ -10,6 +10,7 @@
  */
 
 #include <QString>
+#include <QRegularExpression>
 
 class OpenExternal
 {
@@ -17,6 +18,9 @@ class OpenExternal
 public:
     static bool showInFolder(const QString &path);
     static bool open(const QString &path);
+
+private:
+    static QString adjust(const QString &path);
 };
 
 #endif // OPENEXTERNAL_H

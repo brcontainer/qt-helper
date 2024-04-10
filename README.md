@@ -21,18 +21,45 @@ SOURCES  += main.cpp
 include($$PWD/vendor/qt-helper/qt-helper.pri)
 ```
 
-**Note:** vendor é apenas um exemplo de pasta aonde pode adicionar projetos bibliotecas de terceiros, um exemplo de estrutura de pastas:
+**Note:** `vendor` is just a suggestion on how to organize your folders, to add third-party libraries:
 
 ```
 sample/
-├───main.cpp
-├───mainwindow.cpp
-├───mainwindow.h
-├───mainwindow.ui
-├───sample.pro
-└───vendor/
-    └───qt-helper/
-        └───qt-helper.pri
+├─── main.cpp
+├─── mainwindow.cpp
+├─── mainwindow.h
+├─── mainwindow.ui
+├─── sample.pro
+└─── vendor/
+     └─── qt-helper/
+          ├─── application/
+          │    ├─── oneinstanceapp.cpp
+          │    ├─── oneinstanceapp.h
+          │    ├─── oneinstanceapp.pri
+          │    ├─── proxystyle.cpp
+          │    ├─── proxystyle.h
+          │    └─── proxystyle.pri
+          │
+          ├─── desktop/
+          │    ├─── action.cpp
+          │    ├─── action.h
+          │    ├─── action.pri
+          │    ├─── openexternal.cpp
+          │    ├─── openexternal.h
+          │    ├─── openexternal.pri
+          │    ├─── trackmouse.cpp
+          │    ├─── trackmouse.h
+          │    └─── trackmouse.pri
+          │
+          ├─── network/
+          │    ├─── networkmanager.cpp
+          │    ├─── networkmanager.h
+          │    └─── networkmanager.pri
+          │
+          └─── webkit/
+               ├─── webglobals.cpp
+               ├─── webglobals.h
+               └─── webglobals.pri
 ```
 
 ## Application
@@ -57,6 +84,83 @@ int main(int argc, char *argv[])
     return app.exec("~instance");
 }
 ```
+
+> For include ony `OnceInstanceApp` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/application/oneinstanceapp.pri)
+> ```
+
+### proxystyle
+
+Adjust the style and improve the combobox popup:
+
+```cpp
+#include "mainwindow.h"
+#include "proxystyle.h"
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    app.setStyle(new ProxyStyle());
+
+    MainWindow win;
+    win.show();
+
+    return app.exec("~instance");
+}
+```
+
+Method | Description
+--- | ---
+`new ProxyStyle()` | Default theme
+`new ProxyStyle("Fusion")` | Define fusion theme in application¹
+`new ProxyStyle("Windows")` | Define Windows theme in application¹
+`new ProxyStyle("WindowsXP")` | Define Windows XP theme in application¹
+`new ProxyStyle("WindowsVista")` | Define Windows Vista theme in application¹
+
+> ¹ Default themes depend on system availability
+
+For custom theme you can extends like this:
+
+```cpp
+class CustomStyle : public ProxyStyle
+{
+    Q_OBJECT
+
+public:
+    CustomStyle();
+    ...
+}
+
+...
+
+app.setStyle(new CustomStyle());
+
+...
+```
+
+More details:
+
+- Qt5: https://doc.qt.io/qt-5/qtwidgets-widgets-styles-example.html
+- Qt6: https://doc.qt.io/qt-6.2/qtwidgets-widgets-styles-example.html
+- Gallery: https://doc.qt.io/qt-6/gallery.html
+
+> For include ony `ProxyStyle` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/aplication/proxystyle.pri)
+> ```
 
 ## Desktop
 
@@ -84,7 +188,19 @@ void MainWindow::screenshot()
 }
 ```
 
+> For include ony `OnceInstanceApp` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/desktop/action.pri)
+> ```
+
 ### openexternal
+
+Prevent freeze (or crash) apps with `QDesktopServices::openUrl`:
 
 ```cpp
 #include "mainwindow.h"
@@ -123,6 +239,16 @@ Method | Description
 `OpenExternal::showInFolder("C:/foo/file.txt")` | In Windows is equivalent to `explorer /select,C:\foder\file.txt` command
 `OpenExternal::showInFolder("/Users/sample/Desktop/foo.txt")` | In macOS is equivalent to `open -R /Users/sample/Desktop/foo.txt` command
 
+> For include ony `OpenExternal` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/desktop/openexternal.pri)
+> ```
+
 ### trackmouse
 
 ```cpp
@@ -146,9 +272,21 @@ Sample::capture(const QPoint position)
 }
 ```
 
+> For include ony `TrackMouse` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/desktop/trackmouse.pri)
+> ```
+
 ## Network
 
 ### networkmanager
+
+This class fix problems with "Response unknown" that occurs with some servers:
 
 ```cpp
 #include "networkmanager.h"
@@ -167,31 +305,21 @@ ui->webView->page()->setNetworkAccessManager(manager);
 ...
 ```
 
-## Style
-
-### proxystyle
-
-```cpp
-#include "mainwindow.h"
-#include "proxystyle.h"
-#include <QApplication>
-
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
-
-    app.setStyle(new ProxyStyle);
-
-    MainWindow win;
-    win.show();
-
-    return app.exec("~instance");
-}
-```
+> For include ony `NetworkManager` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/network/networkmanager.pri)
+> ```
 
 ## Webkit
 
 ### webglobals
+
+Adjustments for QtWebkit made easy:
 
 ```cpp
 WebGlobals configs();
@@ -221,3 +349,13 @@ Method | Description
 `WebGlobals::erase(WebData::OfflineStorage)` | Erase offline data from your browser profile data
 `WebGlobals::erase(WebData::Icons)` | Erase icons data from your browser profile data
 `WebGlobals::erase(WebData::Temporary)` | Erase temporary data your browser profile data
+
+> For include ony `WebGlobals` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/web/webglobals.pri)
+> ```

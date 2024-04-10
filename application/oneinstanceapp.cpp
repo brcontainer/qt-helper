@@ -8,17 +8,17 @@
 
 #include "oneinstanceapp.h"
 
+#include <QDateTime>
 #include <QDir>
 #include <QLockFile>
 #include <QStandardPaths>
-#include <QDebug>
-#include <QDateTime>
+#include <QString>
 
 OneInstanceApp::OneInstanceApp(int &argc, char **argv) : QApplication(argc, argv)
 {
 }
 
-int OneInstanceApp::exec(const QString file)
+int OneInstanceApp::exec(const QString &file)
 {
     const QString appDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 

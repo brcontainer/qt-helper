@@ -10,7 +10,8 @@
  */
 
 #include <QApplication>
-#include <QString>
+
+class QString;
 
 class OneInstanceApp : public QApplication
 {
@@ -18,7 +19,7 @@ class OneInstanceApp : public QApplication
 
 public:
     OneInstanceApp(int &argc, char **argv);
-    static int exec(const QString filepath);
+    static int exec(const QString &filepath);
 };
 
 #endif // ONEINSTANCEAPP_H
