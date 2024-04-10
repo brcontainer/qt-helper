@@ -45,7 +45,7 @@ QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkReques
         } else if (!defaultSchemes.contains(scheme)) {
             // Customize response for unknown schemes
 
-            emit proxyByScheme(scheme, reply);
+            emit unknownScheme(scheme, reply);
 
             if (reply != 0) {
                 return reply;

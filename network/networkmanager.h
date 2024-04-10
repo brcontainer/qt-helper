@@ -26,7 +26,7 @@ protected:
     void tryReconnect();
 
 signals:
-    void proxyByScheme(const QString scheme, QNetworkReply *reply);
+    void unknownScheme(const QString scheme, QNetworkReply *reply);
 
 private:
     QStringList defaultSchemes; // { "file", "ftp", "http", "https" }

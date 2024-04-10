@@ -3,8 +3,8 @@ include($$PWD/application/oneinstanceapp.pri)
 include($$PWD/application/proxystyle.pri)
 
 # Desktop
-include($$PWD/desktop/action.pri)
 include($$PWD/desktop/openexternal.pri)
+include($$PWD/desktop/shortcut.pri)
 include($$PWD/desktop/trackmouse.pri)
 
 # Network

@@ -9,11 +9,11 @@
  * Released under the MIT license
  */
 
-#include <QThread>
+#include <QTimer>
 #include <QPoint>
 #include <QWidget>
 
-class TrackMouse : public QThread
+class TrackMouse : public QObject
 {
     Q_OBJECT
 
@@ -26,20 +26,19 @@ public:
     void setWidget(QWidget *widget = 0, bool limit = false);
     void end();
 
-protected:
-    virtual void run(void);
-
 private:
-    int delay;
-    bool track;
-    bool running;
     bool lastPosActive;
     QWidget *byWidget;
     bool limitWidget;
+    QTimer *timer;
+    QPoint lastPos;
     QPoint cursorPosition() const;
 
 signals:
     void position(const QPoint &pos);
+
+public slots:
+    void refresh();
 };
 
 #endif // TRACKMOUSE_H

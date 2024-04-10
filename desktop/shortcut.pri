@@ -1,7 +1,7 @@
 INCLUDEPATH += $$PWD
 
 HEADERS  += \
-    $$PWD/action.h
+    $$PWD/shortcut.h
 
 SOURCES += \
-    $$PWD/action.cpp
+    $$PWD/shortcut.cpp

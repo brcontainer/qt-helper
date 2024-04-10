@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 Method | Description
 --- | ---
 `new ProxyStyle()` | Default theme
-`new ProxyStyle("Fusion")` | Define fusion theme in application¹
+`new ProxyStyle("Fusion")` | Define Fusion theme in application
 `new ProxyStyle("Windows")` | Define Windows theme in application¹
 `new ProxyStyle("WindowsXP")` | Define Windows XP theme in application¹
 `new ProxyStyle("WindowsVista")` | Define Windows Vista theme in application¹
@@ -164,50 +164,11 @@ More details:
 
 ## Desktop
 
-Instructions for use and how to include individually:
-
-### action
-
-```cpp
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-
-#include "action.h"
-
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-
-    Action::widget(this, "Ctrl+w", this, SLOT(close()));
-    Action::widget(this, "F12", this, SLOT(screenshot()));
-}
-
-void MainWindow::screenshot()
-{
-    ...
-}
-```
-
-> For include ony `OnceInstanceApp` in your application put in your `.pro`, eg.:
->
-> ```
-> ...
->
-> SOURCES  += main.cpp
->
-> include($$PWD/vendor/qt-helper/desktop/action.pri)
-> ```
-
 ### openexternal
 
 Prevent freeze (or crash) apps with `QDesktopServices::openUrl`:
 
 ```cpp
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-
-#include "action.h"
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -249,6 +210,61 @@ Method | Description
 > include($$PWD/vendor/qt-helper/desktop/openexternal.pri)
 > ```
 
+### shortcut
+
+These methods make it easier to add shortcuts to widgets. Using:
+
+```cpp
+Shortcut::keys(widget, "Alt+F5", this, SLOT(...));
+```
+
+Is equivalent to:
+
+```cpp
+QAction *action = new QAction(widget);
+QObject::connect(action, SIGNAL(triggered()), this, SLOT(...));
+widget->addAction(action);
+widget->setShortcuts(QKeySequence("Alt+F5"));
+```
+
+Example:
+
+```cpp
+#include "shortcut.h"
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    Shortcut::keys(this, "Ctrl+w", this, SLOT(close()));
+    Shortcut::keys(this, "F12", this, SLOT(screenshot()));
+}
+
+void MainWindow::screenshot()
+{
+    ...
+}
+```
+
+Method | Description
+--- | ---
+`Shortcut::bind(QWidget*, QObject*, char*)` | This makes it easier to create a shortcut with a slot and add it to a Widget
+`Shortcut::keys(QWidget*, QKeySequence &shortcut, QObject*, char*)` | Define shortcut to widget with `QKeySequence`
+`Shortcut::keys(QWidget*, QString, QObject*, char*, bool)` | Is equivalent to `Shortcut::keys(QWidget*, QKeySequence(QString*), ...)`
+`Shortcut::keys(QWidget*, QList<QKeySequence> &shortcuts, QObject*, char*)` | Define a shortcut of `QList<QKeySequence>`
+`Shortcut::keys(QWidget*, QKeySequence::StandardKey, QObject*, char*)` | Define a shortcut with a standard key
+`Shortcut::context(QWidget*, Qt::ShortcutContext, QObject*receiver, char*)` | Define a shortcut by context menu action
+
+> For include ony `OnceInstanceApp` in your application put in your `.pro`, eg.:
+>
+> ```
+> ...
+>
+> SOURCES  += main.cpp
+>
+> include($$PWD/vendor/qt-helper/desktop/shortcut.pri)
+> ```
+
 ### trackmouse
 
 ```cpp
@@ -263,7 +279,6 @@ Sample::Sample(QWidget *parent) : QWidget(parent)
     track->setDelay(1000); // Set delay (default is 100 ms)
     track->setWidget(this, true);
     track->enable(true);
-    track->start();
 }
 
 Sample::capture(const QPoint position)

@@ -22,6 +22,7 @@ private:
 
 public slots:
     void aboutQt();
+    void whatThis();
     void loadDuckduckgo();
     void loadHTML();
     void openFile();

@@ -1,9 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "action.h"
 #include "networkmanager.h"
 #include "openexternal.h"
+#include "shortcut.h"
 #include "trackmouse.h"
 #include "webglobals.h"
 
@@ -19,11 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Bind shortcut to widget
-    Action::widget(this, "Ctrl+w", this, SLOT(close()));
-    Action::widget(this, "F1", this, SLOT(aboutQt()));
-    Action::widget(this, "F3", this, SLOT(showNormal()));
-    Action::widget(this, "F4", this, SLOT(showMaximized()));
-    Action::widget(this, "F5", this, SLOT(showFullScreen()));
+    Shortcut::keys(this, "Ctrl+w", this, SLOT(close()));
+    Shortcut::keys(this, "F1", this, SLOT(aboutQt()));
+    Shortcut::keys(this, "F3", this, SLOT(showNormal()));
+    Shortcut::keys(this, "F4", this, SLOT(showMaximized()));
+    Shortcut::keys(this, "F5", this, SLOT(showFullScreen()));
+    Shortcut::keys(this, QKeySequence::WhatsThis, this, SLOT(whatThis())); // Shit+F1
 
     QObject::connect(ui->btn1, SIGNAL(clicked()), this, SLOT(loadDuckduckgo()));
     QObject::connect(ui->btn2, SIGNAL(clicked()), this, SLOT(loadHTML()));
@@ -77,10 +78,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Track mouse with delay
     TrackMouse *track = new TrackMouse(this);
     QObject::connect(track, SIGNAL(position(QPoint)), this, SLOT(capture(QPoint)));
-    track->setDelay(1000);
+    track->setDelay(500);
     track->setWidget(this, true);
     track->enable(true);
-    track->start();
 }
 
 MainWindow::~MainWindow()
@@ -91,6 +91,11 @@ MainWindow::~MainWindow()
 void MainWindow::aboutQt()
 {
     qApp->aboutQt();
+}
+
+void MainWindow::whatThis()
+{
+    qDebug() << "What This";
 }
 
 void MainWindow::loadDuckduckgo()

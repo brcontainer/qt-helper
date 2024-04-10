@@ -10,24 +10,28 @@
 #include <QCursor>
 
 TrackMouse::TrackMouse(QObject *parent) :
-    QThread(parent),
-    delay(10),
-    track(false),
-    running(true),
+    QObject(parent),
     lastPosActive(false),
     byWidget(0),
     limitWidget(false)
 {
+    timer = new QTimer(this);
+    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(refresh()));
 }
 
 TrackMouse::~TrackMouse()
 {
-    end();
+    enable(false);
+    timer = 0;
 }
 
 void TrackMouse::enable(const bool enable)
 {
-    track = enable;
+    if (enable) {
+        timer->start();
+    } else {
+        timer->stop();
+    }
 }
 
 void TrackMouse::detectMove(const bool enable)
@@ -37,7 +41,7 @@ void TrackMouse::detectMove(const bool enable)
 
 void TrackMouse::setDelay(const int value)
 {
-    delay = value;
+    timer->setInterval(value);
 }
 
 void TrackMouse::setWidget(QWidget *widget, bool limit)
@@ -46,35 +50,25 @@ void TrackMouse::setWidget(QWidget *widget, bool limit)
     limitWidget = limit;
 }
 
-void TrackMouse::run(void)
+void TrackMouse::refresh()
 {
-    QPoint lastPos;
-    QPoint current;
+    const QPoint current = cursorPosition();
 
-    while (running) {
-        QThread::msleep(delay);
-        current = cursorPosition();
+    if (
+        // If detectMove(false) or detectMove(true)
+        (lastPosActive == false || lastPos != current) &&
 
-        if (
-            track && //If TrackMouse::enable(true)
-            (lastPosActive == false || lastPos != current) && //If TrackMouse::detectMove(true)
-            (limitWidget == false || (
-                 current.x() > -1 &&
-                 current.y() > -1 &&
-                 current.x() <= byWidget->width() &&
-                 current.y() <= byWidget->height()
-            )) //If TrackMouse::setWidget(widget, true)
-        ) {
-            lastPos = current;
-            emit position(current);
-        }
+        // If setWidget(widget, false) or setWidget(widget, true)
+        (limitWidget == false || (
+             current.x() > -1 &&
+             current.y() > -1 &&
+             current.x() <= byWidget->width() &&
+             current.y() <= byWidget->height()
+        ))
+    ) {
+        lastPos = current;
+        emit position(current);
     }
-}
-
-void TrackMouse::end() {
-    running = false;
-    wait();
-    terminate();
 }
 
 QPoint TrackMouse::cursorPosition() const
