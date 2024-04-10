@@ -1,4 +1,4 @@
-# Qt-helper
+# QtHelper
 
 Simple Qt library to improve and help in their projects
 
@@ -41,12 +41,12 @@ sample/
           │    └─── proxystyle.pri
           │
           ├─── desktop/
-          │    ├─── action.cpp
-          │    ├─── action.h
-          │    ├─── action.pri
           │    ├─── openexternal.cpp
           │    ├─── openexternal.h
           │    ├─── openexternal.pri
+          │    ├─── shortcut.cpp
+          │    ├─── shortcut.h
+          │    ├─── shortcut.pri
           │    ├─── trackmouse.cpp
           │    ├─── trackmouse.h
           │    └─── trackmouse.pri
@@ -252,8 +252,7 @@ Method | Description
 `Shortcut::keys(QWidget*, QKeySequence &shortcut, QObject*, char*)` | Define shortcut to widget with `QKeySequence`
 `Shortcut::keys(QWidget*, QString, QObject*, char*, bool)` | Is equivalent to `Shortcut::keys(QWidget*, QKeySequence(QString*), ...)`
 `Shortcut::keys(QWidget*, QList<QKeySequence> &shortcuts, QObject*, char*)` | Define a shortcut of `QList<QKeySequence>`
-`Shortcut::keys(QWidget*, QKeySequence::StandardKey, QObject*, char*)` | Define a shortcut with a standard key
-`Shortcut::context(QWidget*, Qt::ShortcutContext, QObject*receiver, char*)` | Define a shortcut by context menu action
+`Shortcut::keys(QWidget*, QKeySequence::StandardKey, QObject*, char*)` | Define a shortcut with a standard key. More details in: https://doc.qt.io/qt-6/qkeysequence.html#standard-shortcuts
 
 > For include ony `OnceInstanceApp` in your application put in your `.pro`, eg.:
 >

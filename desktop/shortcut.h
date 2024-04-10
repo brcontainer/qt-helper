@@ -31,9 +31,6 @@ public:
 
     static QAction *keys(QWidget *widget, QKeySequence::StandardKey standardkey,
                             const QObject *receiver, const char *member);
-
-    static QAction *context(QWidget *widget, Qt::ShortcutContext context, const QObject *receiver,
-                            const char *member);
 };
 
 #endif // SHORTCUT_H

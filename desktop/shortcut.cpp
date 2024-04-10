@@ -56,11 +56,3 @@ QAction *Shortcut::keys(QWidget *widget, QKeySequence::StandardKey standardkey,
     action->setShortcuts(standardkey);
     return action;
 }
-
-QAction *Shortcut::context(QWidget *widget, Qt::ShortcutContext context,
-    const QObject *receiver, const char *member)
-{
-    QAction *action = Shortcut::bind(widget, receiver, member);
-    action->setShortcutContext(context);
-    return action;
-}
