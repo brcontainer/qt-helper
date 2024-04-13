@@ -69,10 +69,12 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
             j = combo->count();
 
             for (i = 0; i < j; ++i) {
-                const int textWidth = qMax(
-                    metrics1.width(combo->itemText(i) + "WW"),
-                    metrics2.width(combo->itemText(i) + "WW")
-                );
+//                const int textWidth = qMax(
+//                    metrics1.width(combo->itemText(i) + "WW"),
+//                    metrics2.width(combo->itemText(i) + "WW")
+//                );
+
+                const int textWidth = getSize(metrics1, metrics2, combo->itemText(i));
 
                 if (combo->itemIcon(i).isNull()) {
                     lastWidth = qMax(lastWidth, textWidth);
@@ -86,4 +88,13 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
     }
 
     return QProxyStyle::styleHint(hint, option, widget, returnData);
+}
+
+int ProxyStyle::getSize(const QFontMetrics &a, const QFontMetrics &b, const QString &text) const
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
+    return qMax(a.horizontalAdvance(text + "WW"), b.horizontalAdvance(text + "WW"));
+#else
+    return qMax(a.width(text + "WW"), b.width(text + "WW"));
+#endif
 }

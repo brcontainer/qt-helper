@@ -10,9 +10,11 @@
 #include <QDebug>
 #include <QNetworkDiskCache>
 #include <QStandardPaths>
-#include <QWebPage>
 
-MainWindow::MainWindow(QWidget *parent) :
+#include <QWebPage>
+#include <QWebView>
+
+MainWindow::MainWindow(QWidget *parent):
     QWidget(parent),
     ui(new Ui::MainWindow)
 {
@@ -38,14 +40,17 @@ MainWindow::MainWindow(QWidget *parent) :
     webconfig.developer(true);
     webconfig.setPath(webDir);
 
-    qDebug() << "(WebGlobals::All):" << webconfig.getPath(WebGlobals::All);
-    qDebug() << "(WebGlobals::AppCache):" << webconfig.getPath(WebGlobals::AppCache);
-    qDebug() << "(WebGlobals::LocalStorage):" << webconfig.getPath(WebGlobals::LocalStorage);
-    qDebug() << "(WebGlobals::OfflineStorage):" << webconfig.getPath(WebGlobals::OfflineStorage);
-    qDebug() << "(WebGlobals::Icons):" << webconfig.getPath(WebGlobals::Icons);
-    qDebug() << "(WebGlobals::Temporary):" << webconfig.getPath(WebGlobals::Temporary);
+    qDebug() << "WebGlobals::All:" << webconfig.getPath(WebGlobals::All);
+    qDebug() << "WebGlobals::AppCache:" << webconfig.getPath(WebGlobals::AppCache);
+    qDebug() << "WebGlobals::LocalStorage:" << webconfig.getPath(WebGlobals::LocalStorage);
+    qDebug() << "WebGlobals::OfflineStorage:" << webconfig.getPath(WebGlobals::OfflineStorage);
+    qDebug() << "WebGlobals::Icons:" << webconfig.getPath(WebGlobals::Icons);
+    qDebug() << "WebGlobals::Temporary:" << webconfig.getPath(WebGlobals::Temporary);
 
-    QWebPage *page = ui->webView->page();
+    webView = new QWebView(this);
+    ui->webViewFrame->layout()->addWidget(webView);
+
+    QWebPage *page = webView->page();
     page->setForwardUnsupportedContent(true);
 
     // Network manager for fix issue some servers
@@ -62,16 +67,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     page->setNetworkAccessManager(manager);
 
-    QObject::connect(ui->webView, SIGNAL(loadStarted()), this, SLOT(loadProgress()));
-    QObject::connect(ui->webView, SIGNAL(loadProgress(int)), this, SLOT(loadProgress(int)));
-    QObject::connect(ui->webView, SIGNAL(loadFinished(bool)), this, SLOT(loadProgress()));
+    QObject::connect(webView, SIGNAL(loadStarted()), this, SLOT(loadProgress()));
+    QObject::connect(webView, SIGNAL(loadProgress(int)), this, SLOT(loadProgress(int)));
+    QObject::connect(webView, SIGNAL(loadFinished(bool)), this, SLOT(loadProgress()));
 
-    QObject::connect(ui->webView, SIGNAL(titleChanged(QString)), this, SLOT(titleChanged(QString)));
-    QObject::connect(ui->webView, SIGNAL(statusBarMessage(QString)), this, SLOT(statusBarMessage(QString)));
-    QObject::connect(ui->webView, SIGNAL(iconChanged()), this, SLOT(iconChanged()));
+    QObject::connect(webView, SIGNAL(titleChanged(QString)), this, SLOT(titleChanged(QString)));
+    QObject::connect(webView, SIGNAL(statusBarMessage(QString)), this, SLOT(statusBarMessage(QString)));
+    QObject::connect(webView, SIGNAL(iconChanged()), this, SLOT(iconChanged()));
 
     QObject::connect(page, SIGNAL(unsupportedContent(QNetworkReply*)),
                      this, SLOT(unsupportedContent(QNetworkReply*)));
+
+    QObject::connect(page, SIGNAL(downloadRequested(QNetworkRequest)),
+                     this, SLOT(download(QNetworkRequest)));
 
     loadHTML();
 
@@ -88,6 +96,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::aboutQt()
 {
     qApp->aboutQt();
@@ -100,7 +109,7 @@ void MainWindow::whatThis()
 
 void MainWindow::loadDuckduckgo()
 {
-    ui->webView->load(QUrl("https://duckduckgo.com/"));
+    webView->load(QUrl("https://duckduckgo.com/"));
 }
 
 void MainWindow::loadHTML()
@@ -129,7 +138,7 @@ void MainWindow::loadHTML()
     htmlContents << "<option>baz</option>";
     htmlContents << "</select>";
 
-    ui->webView->setHtml(htmlContents.join("\n"));
+    webView->setHtml(htmlContents.join("\n"));
 }
 
 void MainWindow::openFile()
@@ -171,13 +180,18 @@ void MainWindow::statusBarMessage(const QString &message)
 
 void MainWindow::iconChanged()
 {
-    setWindowIcon(ui->webView->icon());
+    setWindowIcon(webView->icon());
 }
 
 void MainWindow::unsupportedContent(QNetworkReply* reply)
 {
     qDebug() << "unsupported content:" << reply->url();
-    ui->webView->stop();
+    webView->stop();
+}
+
+void MainWindow::download(const QNetworkRequest &request)
+{
+    qDebug() << "Download:" << request.url();
 }
 
 void MainWindow::capture(const QPoint &pos)

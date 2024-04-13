@@ -1,21 +1,28 @@
 #-------------------------------------------------
-#
 # QtHelper sample
-#
 #-------------------------------------------------
 
-QT       += core gui webkitwidgets network
+QT           += core gui network webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = sample
-TEMPLATE = app
+DEFINES      += QT_DEPRECATED_WARNINGS
 
-SOURCES  += main.cpp\
-            mainwindow.cpp
+# disables all the APIs deprecated before Qt 6.0.0
+DEFINES      += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
-HEADERS  += mainwindow.h
+SOURCES      += main.cpp\
+                mainwindow.cpp
 
-FORMS    += mainwindow.ui
+HEADERS      += mainwindow.h
+
+FORMS        += mainwindow.ui
+
+TRANSLATIONS += locales/en_US.ts
 
 include($$PWD/../qt-helper.pri)
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target

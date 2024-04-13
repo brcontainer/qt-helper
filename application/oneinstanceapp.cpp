@@ -14,7 +14,8 @@
 #include <QStandardPaths>
 #include <QString>
 
-OneInstanceApp::OneInstanceApp(int &argc, char **argv) : QApplication(argc, argv)
+OneInstanceApp::OneInstanceApp(int &argc, char **argv) :
+    QApplication(argc, argv)
 {
 }
 

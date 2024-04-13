@@ -21,16 +21,16 @@ class NetworkManager : public QNetworkAccessManager
 public:
     explicit NetworkManager(QObject *parent = 0);
 
+private:
+    QStringList defaultSchemes; // { "file", "ftp", "http", "https" }
+    QStringList httpSchemes; // { "http", "https" }
+
 protected:
     virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0);
     void tryReconnect();
 
 signals:
     void unknownScheme(const QString scheme, QNetworkReply *reply);
-
-private:
-    QStringList defaultSchemes; // { "file", "ftp", "http", "https" }
-    QStringList httpSchemes; // { "http", "https" }
 };
 
 #endif // NETWORKMANAGER_H
