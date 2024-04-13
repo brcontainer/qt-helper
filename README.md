@@ -179,11 +179,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::showFileInExplorer()
 {
-    OpenExternal::url("http://github.com");
-}
-
-void MainWindow::showFileInExplorer()
-{
     OpenExternal::showInFolder("C:/foder/file.txt");
 }
 
