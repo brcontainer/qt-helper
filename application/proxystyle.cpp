@@ -9,19 +9,28 @@
 #include "proxystyle.h"
 #include <QAbstractItemView>
 #include <QComboBox>
+#include <QDebug>
 
-ProxyStyle::ProxyStyle(QStyle *style) :
-    QProxyStyle(style)
+ProxyStyle::ProxyStyle(QStyle *style) : QProxyStyle(style)
 {
 }
 
-ProxyStyle::ProxyStyle(const QString &key) :
-    QProxyStyle(key)
+#if QT_VERSION >= 0x050000
+ProxyStyle::ProxyStyle(const QString &key) : QProxyStyle(key)
 {
 }
+#else
+ProxyStyle::ProxyStyle(const QString &key)
+{
+    qWarning() << "Unsupported application styles:"
+               << "ProxyStyle(" << key << ")"
+               << "on Qt" << QT_VERSION_STR
+               << "- try ProxyStyle(QStyle)";
+}
+#endif
 
 int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
-                            const QWidget *widget, QStyleHintReturn *returnData) const
+                          const QWidget *widget, QStyleHintReturn *returnData) const
 {
     if (hint == QStyle::SH_ComboBox_Popup) {
         // Convert QWidget in QComboBox
@@ -69,11 +78,6 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
             j = combo->count();
 
             for (i = 0; i < j; ++i) {
-//                const int textWidth = qMax(
-//                    metrics1.width(combo->itemText(i) + "WW"),
-//                    metrics2.width(combo->itemText(i) + "WW")
-//                );
-
                 const int textWidth = getSize(metrics1, metrics2, combo->itemText(i));
 
                 if (combo->itemIcon(i).isNull()) {
@@ -90,7 +94,8 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
     return QProxyStyle::styleHint(hint, option, widget, returnData);
 }
 
-int ProxyStyle::getSize(const QFontMetrics &a, const QFontMetrics &b, const QString &text) const
+int ProxyStyle::getSize(const QFontMetrics &a, const QFontMetrics &b,
+                        const QString &text) const
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
     return qMax(a.horizontalAdvance(text + "WW"), b.horizontalAdvance(text + "WW"));

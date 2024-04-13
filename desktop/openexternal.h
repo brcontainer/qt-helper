@@ -10,7 +10,6 @@
  */
 
 #include <QString>
-#include <QRegularExpression>
 
 class OpenExternal
 {

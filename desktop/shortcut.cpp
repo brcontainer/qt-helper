@@ -7,9 +7,6 @@
  */
 
 #include "shortcut.h"
-#include <QAction>
-#include <QKeySequence>
-#include <QObject>
 
 QAction *Shortcut::bind(QWidget *widget, const QObject *receiver, const char *member)
 {

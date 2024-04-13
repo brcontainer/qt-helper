@@ -10,6 +10,7 @@
  */
 
 #include <QProxyStyle>
+#include <QString>
 
 class ProxyStyle : public QProxyStyle
 {
@@ -19,10 +20,11 @@ public:
     ProxyStyle(QStyle *style = 0);
     ProxyStyle(const QString &key);
     int styleHint(StyleHint hint, const QStyleOption *option = 0,
-            const QWidget *widget = 0, QStyleHintReturn *returnData = 0) const;
+                  const QWidget *widget = 0, QStyleHintReturn *returnData = 0) const;
 
 private:
-    int getSize(const QFontMetrics &a, const QFontMetrics &b, const QString &text) const;
+    int getSize(const QFontMetrics &a, const QFontMetrics &b,
+                const QString &text) const;
 };
 
 #endif // PROXYSTYLE_H

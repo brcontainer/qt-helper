@@ -10,8 +10,20 @@
 #include <QDir>
 #include <QUrl>
 
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
+#include <QDesktopServices>
+#endif
+
 WebGlobals::WebGlobals()
 {
+#if QT_VERSION >= 0x050000
+    configpath = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+#else
+    configpath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#endif
+
     settings = QWebSettings::globalSettings();
 
     settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
@@ -36,7 +48,10 @@ WebGlobals::WebGlobals()
     settings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
     settings->setAttribute(QWebSettings::LocalStorageDatabaseEnabled, true);
     settings->setAttribute(QWebSettings::JavascriptCanAccessClipboard, false);
+
+#if QT_VERSION >= 0x050000
     settings->setAttribute(QWebSettings::ScrollAnimatorEnabled, true);
+#endif
 
     QWebSettings::setMaximumPagesInCache(999999);
     QWebSettings::setObjectCacheCapacities(0, 999999, 999999);
@@ -48,23 +63,6 @@ WebGlobals::WebGlobals()
 void WebGlobals::developer(const bool enable)
 {
     settings->setAttribute(QWebSettings::DeveloperExtrasEnabled, enable);
-}
-
-void WebGlobals::setPath(const QString &path)
-{
-    configpath = path;
-
-    createFolder("appcache");
-    createFolder("offlinestorage");
-    createFolder("storage");
-    createFolder("icons");
-    createFolder("tmp");
-
-    QWebSettings::setOfflineWebApplicationCachePath(configpath + "/appcache");
-    QWebSettings::setOfflineStoragePath(configpath + "/offlinestorage");
-    QWebSettings::setIconDatabasePath(configpath + "/icons");
-
-    settings->setLocalStoragePath(configpath + "/localstorage");
 }
 
 bool WebGlobals::createFolder(const QString &folder) const
@@ -90,29 +88,30 @@ void WebGlobals::setFont(const int size, const QString &font)
 
 bool WebGlobals::erase(const WebData &type) const
 {
+    QString path;
+
     switch (type)
     {
         case AppCache:
-            return QDir(configpath + "appcache").removeRecursively() &&
-                   createFolder("appcache");
+            path = getPath(AppCache);
+            return removeRecursively(path) && createFolder(path);
 
         case OfflineStorage:
-            return QDir(configpath + "offlinestorage").removeRecursively() &&
-                   createFolder("offlinestorage");
+            path = getPath(OfflineStorage);
+            return removeRecursively(path) && createFolder(path);
 
         case LocalStorage:
-            return QDir(configpath + "localstorage").removeRecursively() &&
-                   createFolder("localstorage");
+            path = getPath(LocalStorage);
+            return removeRecursively(path) && createFolder(path);
 
         case Icons:
+            path = getPath(Icons);
             settings->clearIconDatabase();
-
-            return QDir(configpath + "icons").removeRecursively() &&
-                   createFolder("icons");
+            return removeRecursively(path) && createFolder(path);
 
         case Temporary:
-            return QDir(configpath + "tmp").removeRecursively() &&
-                   createFolder("tmp");
+            path = getPath(Temporary);
+            return removeRecursively(path) && createFolder(path);
 
         default:
             return (
@@ -130,23 +129,52 @@ QString WebGlobals::getPath(const WebData &type) const
     switch (type)
     {
         case AppCache:
-            return configpath + "/appcache";
+            return QDir::toNativeSeparators(configpath + "/appcache");
 
         case OfflineStorage:
-            return configpath + "/offlinestorage";
+            return QDir::toNativeSeparators(configpath + "/offlinestorage");
 
         case LocalStorage:
-            return configpath + "/localstorage";
+            return QDir::toNativeSeparators(configpath + "/localstorage");
 
         case Icons:
-            return configpath + "/icons";
+            return QDir::toNativeSeparators(configpath + "/icons");
 
         case Temporary:
-            return configpath + "/tmp";
+            return QDir::toNativeSeparators(configpath + "/tmp");
 
         default:
             return configpath;
     }
+}
+
+bool WebGlobals::removeRecursively(const QString &folder) const
+{
+#if QT_VERSION >= 0x050000
+    return QDir(folder).removeRecursively();
+#else
+    bool result = true;
+
+    QDir dir(folder);
+
+    if (dir.exists()) {
+        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+            if (info.isDir()) {
+                result = removeRecursively(info.absoluteFilePath());
+            } else {
+                result = QFile::remove(info.absoluteFilePath());
+            }
+
+            if (!result) {
+                return result;
+            }
+        }
+
+        result = QDir().rmdir(folder);
+    }
+
+    return result;
+#endif
 }
 
 QWebSettings *WebGlobals::configs()

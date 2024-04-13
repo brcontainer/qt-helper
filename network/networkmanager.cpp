@@ -8,12 +8,17 @@
 
 #include "networkmanager.h"
 
+#include <QDir>
 #include <QNetworkInterface>
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
 #include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QDir>
+
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
+#include <QDesktopServices>
+#endif
 
 NetworkManager::NetworkManager(QObject *parent) :
     QNetworkAccessManager(parent)
@@ -21,6 +26,16 @@ NetworkManager::NetworkManager(QObject *parent) :
     defaultSchemes << "file" << "ftp" << "http" << "https";
     httpSchemes << "http" << "https";
 
+#if QT_VERSION >= 0x050000
+    const QString appDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+#else
+    const QString appDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+#endif
+
+    diskCache = new QNetworkDiskCache(this);
+    diskCache->setCacheDirectory(appDir + "/cache");
+
+    setCache(diskCache);
     setCookieJar(new QNetworkCookieJar(this));
 }
 
@@ -38,7 +53,7 @@ QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkReques
     QNetworkReply *reply = 0;
 
     if (!httpSchemes.contains(scheme) || request.hasRawHeader("X-QtHelper-Rewrited")) {
-        if ("file" == scheme && QDir(url.url()).exists()) {
+        if ("file" == scheme && QDir(url.toString()).exists()) {
             // Future implementation: directory navigation
         } else if ("ftp" == scheme) {
             // Future implementation: display FTP contents/navigation

@@ -10,24 +10,35 @@
 
 #include <QDateTime>
 #include <QDir>
-#include <QLockFile>
-#include <QStandardPaths>
-#include <QString>
 
-OneInstanceApp::OneInstanceApp(int &argc, char **argv) :
-    QApplication(argc, argv)
+OneInstanceApp::OneInstanceApp(const QString &key, int &argc, char **argv) :
+    QApplication(argc, argv),
+    lock(false)
 {
+    mem = new QSharedMemory(key, this);
+
+    if (mem->attach(QSharedMemory::ReadOnly)) {
+        mem->detach();
+    } else if (mem->create(1)) {
+        lock = true;
+    }
 }
 
-int OneInstanceApp::exec(const QString &file)
+OneInstanceApp::~OneInstanceApp()
 {
-    const QString appDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    if (mem->attach(QSharedMemory::ReadOnly)) {
+        mem->detach();
+    }
+}
 
-    QDir(appDir).mkdir(".");
+bool OneInstanceApp::locked() const
+{
+    return lock;
+}
 
-    QLockFile lock(appDir + "/" + file);
-
-    if (!lock.tryLock(200)) {
+int OneInstanceApp::exec() const
+{
+    if (!lock) {
         return -42;
     }
 

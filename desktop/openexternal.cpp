@@ -15,12 +15,18 @@
 #include <QProcess>
 #include <QUrl>
 
+#if QT_VERSION >= 0x050000
+#include <QRegularExpression>
+#else
+#include <QRegExp>
+#endif
+
 bool OpenExternal::showInFolder(const QString &path)
 {
     const QString uri = QDir::toNativeSeparators(adjust(path));
 
     if (!QFile(uri).exists()) {
-        return true;
+        return false;
     }
 
 #if defined(Q_OS_WIN)
@@ -37,6 +43,11 @@ bool OpenExternal::open(const QString &path)
 
 QString OpenExternal::adjust(const QString &path)
 {
+#if QT_VERSION >= 0x050000
     const QRegularExpression regex("^file:[\\/]+", QRegularExpression::CaseInsensitiveOption);
+#else
+    const QRegExp regex("^file:[\\/]+", Qt::CaseInsensitive);
+#endif
+
     return QUrl(QString(path).replace(regex, "")).fromPercentEncoding(path.toUtf8()).replace(regex, "");
 }

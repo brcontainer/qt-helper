@@ -9,7 +9,7 @@
 
 #include <QDebug>
 #include <QNetworkDiskCache>
-#include <QStandardPaths>
+#include <QSslError>
 
 #include <QWebPage>
 #include <QWebView>
@@ -34,11 +34,8 @@ MainWindow::MainWindow(QWidget *parent):
     QObject::connect(ui->btn4, SIGNAL(clicked()), this, SLOT(showFileInFolder()));
     QObject::connect(ui->btn5, SIGNAL(clicked()), this, SLOT(tryOpenNotExists()));
 
-    const QString webDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-
     WebGlobals webconfig;
     webconfig.developer(true);
-    webconfig.setPath(webDir);
 
     qDebug() << "WebGlobals::All:" << webconfig.getPath(WebGlobals::All);
     qDebug() << "WebGlobals::AppCache:" << webconfig.getPath(WebGlobals::AppCache);
@@ -58,12 +55,6 @@ MainWindow::MainWindow(QWidget *parent):
 
     QObject::connect(manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
                      this, SLOT(handleSslErrors(QNetworkReply*,QList<QSslError>)));
-
-    QNetworkDiskCache *httpCache = new QNetworkDiskCache(this);
-    httpCache->setCacheDirectory(webDir + "/cache");
-
-    // Set HTTP location to network manager
-    manager->setCache(httpCache);
 
     page->setNetworkAccessManager(manager);
 
@@ -95,7 +86,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 void MainWindow::aboutQt()
 {
@@ -158,7 +148,10 @@ void MainWindow::tryOpenNotExists()
 
 void MainWindow::handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors)
 {
-    qDebug() << errors;
+    Q_FOREACH(QSslError info, errors) {
+        qDebug() << "handleSslErrors:" << info.errorString();
+    }
+
     reply->ignoreSslErrors();
 }
 
@@ -169,7 +162,7 @@ void MainWindow::loadProgress(const int value)
 
 void MainWindow::titleChanged(const QString &title)
 {
-    qDebug() << "TITLE CHANGED: " << title;
+    // qDebug() << "TITLE CHANGED: " << title;
     setWindowTitle(title);
 }
 
@@ -185,13 +178,13 @@ void MainWindow::iconChanged()
 
 void MainWindow::unsupportedContent(QNetworkReply* reply)
 {
-    qDebug() << "unsupported content:" << reply->url();
+    qDebug() << "unsupported content:" << reply->url().toString();
     webView->stop();
 }
 
 void MainWindow::download(const QNetworkRequest &request)
 {
-    qDebug() << "Download:" << request.url();
+    qDebug() << "Download:" << request.url().toString();
 }
 
 void MainWindow::capture(const QPoint &pos)

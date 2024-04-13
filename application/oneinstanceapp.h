@@ -10,16 +10,22 @@
  */
 
 #include <QApplication>
-
-class QString;
+#include <QString>
+#include <QSharedMemory>
 
 class OneInstanceApp : public QApplication
 {
     Q_OBJECT
 
 public:
-    OneInstanceApp(int &argc, char **argv);
-    static int exec(const QString &filepath);
+    OneInstanceApp(const QString &key, int &argc, char **argv);
+    virtual ~OneInstanceApp();
+    bool locked() const;
+    int exec() const;
+
+private:
+    QSharedMemory *mem;
+    bool lock;
 };
 
 #endif // ONEINSTANCEAPP_H

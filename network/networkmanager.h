@@ -10,6 +10,7 @@
  */
 
 #include <QNetworkAccessManager>
+#include <QNetworkRequest>
 #include <QStringList>
 
 class QNetworkDiskCache;
@@ -22,8 +23,9 @@ public:
     explicit NetworkManager(QObject *parent = 0);
 
 private:
-    QStringList defaultSchemes; // { "file", "ftp", "http", "https" }
-    QStringList httpSchemes; // { "http", "https" }
+    QStringList defaultSchemes;
+    QStringList httpSchemes;
+    QNetworkDiskCache *diskCache;
 
 protected:
     virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0);

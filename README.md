@@ -76,12 +76,12 @@ This class allows your application to only have one instance. Usage example:
 
 int main(int argc, char *argv[])
 {
-    OneInstanceApp app(argc, argv);
+    OneInstanceApp app("instance", argc, argv);
 
     MainWindow win;
     win.show();
 
-    return app.exec("~instance");
+    return app.exec();
 }
 ```
 
@@ -120,12 +120,12 @@ int main(int argc, char *argv[])
 Method | Description
 --- | ---
 `new ProxyStyle()` | Default theme
-`new ProxyStyle("Fusion")` | Define Fusion theme in application
+`new ProxyStyle("Fusion")` | Define Fusion theme in application¹
 `new ProxyStyle("Windows")` | Define Windows theme in application¹
 `new ProxyStyle("WindowsXP")` | Define Windows XP theme in application¹
 `new ProxyStyle("WindowsVista")` | Define Windows Vista theme in application¹
 
-> ¹ Default themes depend on system availability
+> ¹ Application themes requires Qt5+; Default themes depend on system availability
 
 For custom theme you can extends like this:
 
@@ -308,8 +308,8 @@ This class fix problems with "Response unknown" that occurs with some servers:
 ...
 
 NetworkManager *manager = new NetworkManager;
-manager->setCookieJar(new QNetworkCookieJar);
-manager->setCache(new QNetworkDiskCache);
+manager->setCookieJar(new QNetworkCookieJar); // Set cache, or get default jar with `manager->cookieJar()`
+QNetworkDiskCache *diskCache = manager->cache(); // Get cache
 
 ...
 
@@ -338,7 +338,6 @@ Adjustments for QtWebkit made easy:
 ```cpp
 WebGlobals configs();
 configs.developer(true); // Enable developer tools
-configs.setPath("C:/foo/bar/"); // Set folder for cookies, storage, and others
 ```
 
 Method | Description
@@ -373,3 +372,25 @@ Method | Description
 >
 > include($$PWD/vendor/qt-helper/web/webglobals.pri)
 > ```
+
+## Application Sample
+
+The sample APIs are located at [./sampe](./sampe), you can open the "sample.pro" file in QtDesigner, or compile via the command line.
+
+Deploy in debug mode with command line:
+
+```
+cd sample
+qmake "CONFIG += console warn_on debug" sample.pro
+make
+./debug/sample
+```
+
+For release:
+
+```
+cd sample
+qmake "CONFIG += release" sample.pro
+make
+./release/sample
+```

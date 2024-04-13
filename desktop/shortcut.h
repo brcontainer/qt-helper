@@ -9,10 +9,9 @@
  * Released under the MIT license
  */
 
+#include <QAction>
 #include <QKeySequence>
-
-class QAction;
-class QWidget;
+#include <QObject>
 
 class Shortcut
 {

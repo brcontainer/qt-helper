@@ -29,7 +29,6 @@ public:
     QWebSettings *configs();
     QIcon getIcon(const QString &url) const;
     void developer(const bool enable);
-    void setPath(const QString &path);
     void setStyle(const QString &path);
     void setFont(const int size, const QString &font);
     bool erase(const WebData &type) const;
@@ -39,6 +38,7 @@ private:
     QWebSettings *settings;
     QString configpath;
     bool createFolder(const QString &folder) const;
+    bool removeRecursively(const QString &folder) const;
 };
 
 #endif // WEBGLOBALS_H

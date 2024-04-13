@@ -2,7 +2,7 @@
 # QtHelper sample
 #-------------------------------------------------
 
-QT           += core gui network webkitwidgets
+QT           += core gui network webkitwidgets webkit
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
