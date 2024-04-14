@@ -120,12 +120,16 @@ int main(int argc, char *argv[])
 Method | Description
 --- | ---
 `new ProxyStyle()` | Default theme
-`new ProxyStyle("Fusion")` | Define Fusion theme in application¹
-`new ProxyStyle("Windows")` | Define Windows theme in application¹
-`new ProxyStyle("WindowsXP")` | Define Windows XP theme in application¹
-`new ProxyStyle("WindowsVista")` | Define Windows Vista theme in application¹
+`new ProxyStyle("Fusion")` | Define Fusion theme in application
+`new ProxyStyle("Windows")` | Define Windows theme in application
+`new ProxyStyle("WindowsXP")` | Define Windows XP theme in application
+`new ProxyStyle("WindowsVista")` | Define Windows Vista theme in application
+`new ProxyStyle("Motif")` | Define Motif theme in application
+`new ProxyStyle("CDE")` | Define CDE theme in application
+`new ProxyStyle("Plastique")` | Define Plastique theme in application
+`new ProxyStyle("Cleanlooks")` | Define Cleanlooks theme in application
 
-> ¹ Application themes requires Qt5+; Default themes depend on system availability
+> **Note:** Default themes depend on system availability or Qt version
 
 For custom theme you can extends like this:
 

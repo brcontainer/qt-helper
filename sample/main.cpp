@@ -2,13 +2,11 @@
 #include "oneinstanceapp.h"
 #include "proxystyle.h"
 
-#include <QMessageBox>
-
 int main(int argc, char *argv[])
 {
     OneInstanceApp app("instance", argc, argv);
 
-    app.setStyle(new ProxyStyle("Fusion"));
+    app.setStyle(new ProxyStyle("WindowsVista"));
 
     MainWindow win;
     win.show();

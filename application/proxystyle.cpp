@@ -9,7 +9,7 @@
 #include "proxystyle.h"
 #include <QAbstractItemView>
 #include <QComboBox>
-#include <QDebug>
+#include <QStyleFactory>
 
 ProxyStyle::ProxyStyle(QStyle *style) : QProxyStyle(style)
 {
@@ -20,12 +20,8 @@ ProxyStyle::ProxyStyle(const QString &key) : QProxyStyle(key)
 {
 }
 #else
-ProxyStyle::ProxyStyle(const QString &key)
+ProxyStyle::ProxyStyle(const QString &key) : QProxyStyle(QStyleFactory::create(key))
 {
-    qWarning() << "Unsupported application styles:"
-               << "ProxyStyle(" << key << ")"
-               << "on Qt" << QT_VERSION_STR
-               << "- try ProxyStyle(QStyle)";
 }
 #endif
 
