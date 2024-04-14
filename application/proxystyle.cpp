@@ -65,11 +65,11 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
         }
 
         if (hasView) {
-            const int iconSize = combo->iconSize().width();
-            int lastWidth = combo->width(); // default width
-
             const QFontMetrics metrics1 = view->fontMetrics();
             const QFontMetrics metrics2 = combo->fontMetrics();
+            const int iconSize = combo->iconSize().width();
+
+            int lastWidth = combo->width(); // default width
 
             j = combo->count();
 
@@ -90,12 +90,14 @@ int ProxyStyle::styleHint(StyleHint hint, const QStyleOption *option,
     return QProxyStyle::styleHint(hint, option, widget, returnData);
 }
 
-int ProxyStyle::getSize(const QFontMetrics &a, const QFontMetrics &b,
-                        const QString &text) const
+int ProxyStyle::getSize(const QFontMetrics &a,
+                        const QFontMetrics &b, const QString &text) const
 {
+    const QString base(text + "WW");
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 11, 0)
-    return qMax(a.horizontalAdvance(text + "WW"), b.horizontalAdvance(text + "WW"));
+    return qMax(a.horizontalAdvance(base), b.horizontalAdvance(base));
 #else
-    return qMax(a.width(text + "WW"), b.width(text + "WW"));
+    return qMax(a.width(base), b.width(base));
 #endif
 }

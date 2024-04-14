@@ -101,11 +101,6 @@
         </property>
         <item>
          <property name="text">
-          <string>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>foo</string>
          </property>
         </item>
@@ -117,6 +112,11 @@
         <item>
          <property name="text">
           <string>baz</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</string>
          </property>
         </item>
        </widget>

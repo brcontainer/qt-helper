@@ -23,8 +23,8 @@ public:
                   const QWidget *widget = 0, QStyleHintReturn *returnData = 0) const;
 
 private:
-    int getSize(const QFontMetrics &a, const QFontMetrics &b,
-                const QString &text) const;
+    int getSize(const QFontMetrics &a,
+                const QFontMetrics &b, const QString &text) const;
 };
 
 #endif // PROXYSTYLE_H

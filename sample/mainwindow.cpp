@@ -116,16 +116,16 @@ void MainWindow::loadHTML()
     htmlContents << "<optgroup label='Group 2'>";
     htmlContents << "<option>foo</option>";
     htmlContents << "<option>bar</option>";
-    htmlContents << "<option>baz</option>";
+    htmlContents << "<option>WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</option>";
     htmlContents << "</optgroup>";
     htmlContents << "</select>";
     htmlContents << " ";
     htmlContents << "<select style='width: 140px;'>";
-    htmlContents << "<option>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed";
-    htmlContents << "do eiusmod tempor incididunt ut labore et dolore magna aliqua</option>";
+    htmlContents << "<option>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</option>";
     htmlContents << "<option>foo</option>";
     htmlContents << "<option>bar</option>";
     htmlContents << "<option>baz</option>";
+    htmlContents << "<option>WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</option>";
     htmlContents << "</select>";
 
     webView->setHtml(htmlContents.join("\n"));
