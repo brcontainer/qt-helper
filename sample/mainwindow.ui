@@ -67,19 +67,26 @@
       <item>
        <widget class="QPushButton" name="btn3">
         <property name="text">
-         <string>Open File</string>
+         <string>Clear Data</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn4">
         <property name="text">
-         <string>Show File</string>
+         <string>Open File</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn5">
+        <property name="text">
+         <string>Show File</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn6">
         <property name="text">
          <string>Non Existent file</string>
         </property>

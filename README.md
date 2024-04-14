@@ -305,17 +305,28 @@ This class fix problems with "Response unknown" that occurs with some servers:
 #include "networkmanager.h"
 
 ...
-
 NetworkManager *manager = new NetworkManager;
-manager->setCookieJar(new QNetworkCookieJar); // Set cache, or get default jar with `manager->cookieJar()`
-QNetworkDiskCache *diskCache = manager->cache(); // Get cache
-
-...
+manager->cookieJar(cookiejar); // Get default jar
 
 // Set NetworkManager to QWebPage
 ui->webView->page()->setNetworkAccessManager(manager);
+```
 
-...
+In requests for unknown schemes, you can implement a customized response or perform various actions, such as opening external programs:
+
+```cpp
+NetworkManager *manager = new NetworkManager;
+
+QObject::connect(manager, SIGNAL(unknownScheme(QString,QNetworkReply*)), this, SLOT(myImplemetation(QString,QNetworkReply*)));
+
+void MainWindow::myImplemetation(const QString &scheme, QNetworkReply *reply)
+{
+    if (scheme == "tel") {
+        // Open phone application (can try uses `QDesktopServices::openUrl(reply.url())`)
+    } else if (scheme == "custom") {
+        // custom reply
+    }
+}
 ```
 
 > For include ony `NetworkManager` in your application put in your `.pro`, eg.:
@@ -379,7 +390,7 @@ The sample APIs are located at [./sample](./sample), you can open the "sample.pr
 Deploy in debug mode with command line:
 
 ```
-cd sample
+cd /home/foo/bar/qt-helpder/sample
 qmake "CONFIG += console warn_on debug" sample.pro
 make
 ./debug/sample
@@ -388,7 +399,7 @@ make
 For release:
 
 ```
-cd sample
+cd /home/foo/bar/qt-helpder/sample
 qmake "CONFIG += release" sample.pro
 make
 ./release/sample

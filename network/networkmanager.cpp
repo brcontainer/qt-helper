@@ -59,7 +59,6 @@ QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkReques
             // Future implementation: display FTP contents/navigation
         } else if (!defaultSchemes.contains(scheme)) {
             // Customize response for unknown schemes
-
             emit unknownScheme(scheme, reply);
 
             if (reply != 0) {
@@ -127,4 +126,9 @@ void NetworkManager::tryReconnect()
             break;
         }
     }
+}
+
+void NetworkManager::clearData()
+{
+    diskCache->clear();
 }

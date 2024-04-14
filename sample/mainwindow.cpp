@@ -1,18 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "networkmanager.h"
 #include "openexternal.h"
 #include "shortcut.h"
 #include "trackmouse.h"
-#include "webglobals.h"
 
 #include <QDebug>
-#include <QNetworkDiskCache>
 #include <QSslError>
 
 #include <QWebPage>
 #include <QWebView>
+#include <QNetworkDiskCache>
 
 MainWindow::MainWindow(QWidget *parent):
     QWidget(parent),
@@ -30,19 +28,20 @@ MainWindow::MainWindow(QWidget *parent):
 
     QObject::connect(ui->btn1, SIGNAL(clicked()), this, SLOT(loadDuckduckgo()));
     QObject::connect(ui->btn2, SIGNAL(clicked()), this, SLOT(loadHTML()));
-    QObject::connect(ui->btn3, SIGNAL(clicked()), this, SLOT(openFile()));
-    QObject::connect(ui->btn4, SIGNAL(clicked()), this, SLOT(showFileInFolder()));
-    QObject::connect(ui->btn5, SIGNAL(clicked()), this, SLOT(tryOpenNotExists()));
+    QObject::connect(ui->btn3, SIGNAL(clicked()), this, SLOT(clearBrowserData()));
+    QObject::connect(ui->btn4, SIGNAL(clicked()), this, SLOT(openFile()));
+    QObject::connect(ui->btn5, SIGNAL(clicked()), this, SLOT(showFileInFolder()));
+    QObject::connect(ui->btn6, SIGNAL(clicked()), this, SLOT(tryOpenNotExists()));
 
-    WebGlobals webconfig;
-    webconfig.developer(true);
+    webconfig = new WebGlobals();
+    webconfig->developer(true);
 
-    qDebug() << "WebGlobals::All:" << webconfig.getPath(WebGlobals::All);
-    qDebug() << "WebGlobals::AppCache:" << webconfig.getPath(WebGlobals::AppCache);
-    qDebug() << "WebGlobals::LocalStorage:" << webconfig.getPath(WebGlobals::LocalStorage);
-    qDebug() << "WebGlobals::OfflineStorage:" << webconfig.getPath(WebGlobals::OfflineStorage);
-    qDebug() << "WebGlobals::Icons:" << webconfig.getPath(WebGlobals::Icons);
-    qDebug() << "WebGlobals::Temporary:" << webconfig.getPath(WebGlobals::Temporary);
+    qDebug() << "WebGlobals::All:" << webconfig->getPath(WebGlobals::All);
+    qDebug() << "WebGlobals::AppCache:" << webconfig->getPath(WebGlobals::AppCache);
+    qDebug() << "WebGlobals::LocalStorage:" << webconfig->getPath(WebGlobals::LocalStorage);
+    qDebug() << "WebGlobals::OfflineStorage:" << webconfig->getPath(WebGlobals::OfflineStorage);
+    qDebug() << "WebGlobals::Icons:" << webconfig->getPath(WebGlobals::Icons);
+    qDebug() << "WebGlobals::Temporary:" << webconfig->getPath(WebGlobals::Temporary);
 
     webView = new QWebView(this);
     ui->webViewFrame->layout()->addWidget(webView);
@@ -51,7 +50,10 @@ MainWindow::MainWindow(QWidget *parent):
     page->setForwardUnsupportedContent(true);
 
     // Network manager for fix issue some servers
-    NetworkManager *manager = new NetworkManager(this);
+    manager = new NetworkManager(this);
+
+    QObject::connect(manager, SIGNAL(unknownScheme(QString,QNetworkReply*)),
+                     this, SLOT(unknownScheme(QString,QNetworkReply*)));
 
     QObject::connect(manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
                      this, SLOT(handleSslErrors(QNetworkReply*,QList<QSslError>)));
@@ -127,8 +129,19 @@ void MainWindow::loadHTML()
     htmlContents << "<option>baz</option>";
     htmlContents << "<option>WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW</option>";
     htmlContents << "</select>";
+    htmlContents << "<hr>";
+    htmlContents << "<a href='mailto:foo@bar.baz'>mailto:foo@bar.baz</a>,";
+    htmlContents << "<a href='tel:+55010101010101'>+55010101010101</a>,";
+    htmlContents << "<a href='telegram:@foobar'>telegram:@foobar</a>,";
+    htmlContents << "<a href='skype:+55010101010101'>skype:+55010101010101</a>";
 
     webView->setHtml(htmlContents.join("\n"));
+}
+
+void MainWindow::clearBrowserData()
+{
+    manager->clearData();
+    qDebug() << "Clear icons, database:" << webconfig->erase(WebGlobals::All);
 }
 
 void MainWindow::openFile()
@@ -144,6 +157,11 @@ void MainWindow::showFileInFolder()
 void MainWindow::tryOpenNotExists()
 {
     OpenExternal::open("C:/foo/bar/invalid.jpg");
+}
+
+void MainWindow::unknownScheme(const QString &scheme, QNetworkReply *reply)
+{
+    qDebug() << scheme << "=>" << reply->url().toString();
 }
 
 void MainWindow::handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors)

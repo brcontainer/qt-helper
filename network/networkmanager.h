@@ -21,6 +21,7 @@ class NetworkManager : public QNetworkAccessManager
 
 public:
     explicit NetworkManager(QObject *parent = 0);
+    void clearData();
 
 private:
     QStringList defaultSchemes;
@@ -32,7 +33,7 @@ protected:
     void tryReconnect();
 
 signals:
-    void unknownScheme(const QString scheme, QNetworkReply *reply);
+    void unknownScheme(const QString &scheme, QNetworkReply *reply);
 };
 
 #endif // NETWORKMANAGER_H

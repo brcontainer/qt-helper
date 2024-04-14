@@ -24,6 +24,13 @@ WebGlobals::WebGlobals()
     configpath = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
 #endif
 
+    createFolder(configpath);
+    createFolder(getPath(AppCache));
+    createFolder(getPath(LocalStorage));
+    createFolder(getPath(Icons));
+    createFolder(getPath(OfflineStorage));
+    createFolder(getPath(AppCache));
+
     settings = QWebSettings::globalSettings();
 
     settings->setAttribute(QWebSettings::OfflineWebApplicationCacheEnabled, true);
@@ -58,6 +65,11 @@ WebGlobals::WebGlobals()
 
     QWebSettings::setOfflineWebApplicationCacheQuota(999999);
     QWebSettings::setOfflineStorageDefaultQuota(999999);
+    settings->setLocalStoragePath(getPath(LocalStorage));
+
+    QWebSettings::setIconDatabasePath(getPath(Icons));
+    QWebSettings::setOfflineStoragePath(getPath(OfflineStorage));
+    QWebSettings::setOfflineWebApplicationCachePath(getPath(AppCache));
 }
 
 void WebGlobals::developer(const bool enable)
@@ -90,38 +102,35 @@ bool WebGlobals::erase(const WebData &type) const
 {
     QString path;
 
-    switch (type)
-    {
-        case AppCache:
-            path = getPath(AppCache);
-            return removeRecursively(path) && createFolder(path);
-
-        case OfflineStorage:
-            path = getPath(OfflineStorage);
-            return removeRecursively(path) && createFolder(path);
-
-        case LocalStorage:
-            path = getPath(LocalStorage);
-            return removeRecursively(path) && createFolder(path);
-
-        case Icons:
-            path = getPath(Icons);
-            settings->clearIconDatabase();
-            return removeRecursively(path) && createFolder(path);
-
-        case Temporary:
-            path = getPath(Temporary);
-            return removeRecursively(path) && createFolder(path);
-
-        default:
-            return (
-                erase(AppCache) &&
-                erase(OfflineStorage) &&
-                erase(LocalStorage) &&
-                erase(Icons) &&
-                erase(Temporary)
-            );
+    if (type == AppCache) {
+        path = getPath(AppCache);
+        return removeRecursively(path) && createFolder(path);
     }
+
+    if (type == OfflineStorage) {
+        path = getPath(OfflineStorage);
+        return removeRecursively(path) && createFolder(path);
+    }
+
+    if (type == LocalStorage) {
+        path = getPath(LocalStorage);
+        return removeRecursively(path) && createFolder(path);
+    }
+
+    if (type == Icons) {
+        path = getPath(Icons);
+        settings->clearIconDatabase();
+        return true;
+    }
+
+    QWebSettings::clearMemoryCaches();
+
+    return (
+        erase(AppCache) &&
+        erase(OfflineStorage) &&
+        erase(LocalStorage) &&
+        erase(Icons)
+    );
 }
 
 QString WebGlobals::getPath(const WebData &type) const
@@ -144,7 +153,7 @@ QString WebGlobals::getPath(const WebData &type) const
             return QDir::toNativeSeparators(configpath + "/tmp");
 
         default:
-            return configpath;
+            return QDir::toNativeSeparators(configpath);
     }
 }
 
