@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
     OneInstanceApp app("instance", argc, argv);
 
-    app.setStyle(new ProxyStyle("WindowsVista"));
+    app.setStyle(new ProxyStyle("Fusion"));
 
     MainWindow win;
     win.show();
