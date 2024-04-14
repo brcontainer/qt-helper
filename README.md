@@ -372,9 +372,9 @@ Method | Description
 > include($$PWD/vendor/qt-helper/web/webglobals.pri)
 > ```
 
-## Application Sample
+## Sample/Example
 
-The sample APIs are located at [./sampe](./sampe), you can open the "sample.pro" file in QtDesigner, or compile via the command line.
+The sample APIs are located at [./sample](./sample), you can open the "sample.pro" file in QtDesigner, or compile via the command line.
 
 Deploy in debug mode with command line:
 
