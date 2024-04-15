@@ -29,11 +29,11 @@ private:
     QNetworkDiskCache *diskCache;
 
 protected:
-    virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0);
     void tryReconnect();
+    virtual QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData = 0);
 
 signals:
-    void unknownScheme(const QString &scheme, QNetworkReply *reply);
+    void unknownScheme(const QString &scheme, const QNetworkRequest &request, QNetworkReply *reply);
 };
 
 #endif // NETWORKMANAGER_H

@@ -52,8 +52,8 @@ MainWindow::MainWindow(QWidget *parent):
     // Network manager for fix issue some servers
     manager = new NetworkManager(this);
 
-    QObject::connect(manager, SIGNAL(unknownScheme(QString,QNetworkReply*)),
-                     this, SLOT(unknownScheme(QString,QNetworkReply*)));
+    QObject::connect(manager, SIGNAL(unknownScheme(QString,QNetworkRequest,QNetworkReply*)),
+                     this, SLOT(unknownScheme(QString,QNetworkRequest,QNetworkReply*)));
 
     QObject::connect(manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
                      this, SLOT(handleSslErrors(QNetworkReply*,QList<QSslError>)));
@@ -159,9 +159,10 @@ void MainWindow::tryOpenNotExists()
     OpenExternal::open("C:/foo/bar/invalid.jpg");
 }
 
-void MainWindow::unknownScheme(const QString &scheme, QNetworkReply *reply)
+void MainWindow::unknownScheme(const QString &scheme, const QNetworkRequest &request, QNetworkReply *reply)
 {
-    qDebug() << scheme << "=>" << reply->url().toString();
+    qDebug() << scheme << "=>" << request.url().toString();
+    reply = manager->sendCustomRequest(request, QByteArray(), QByteArray("TESTE!!!"));
 }
 
 void MainWindow::handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors)

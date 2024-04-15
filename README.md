@@ -352,26 +352,25 @@ configs.developer(true); // Enable developer tools
 
 Method | Description
 --- | ---
-`WebGlobals::developer(const bool enable)` | Enable or disable developer tools
+`void WebGlobals::developer(const bool enable)` | Enable or disable developer tools
 `QWebSettings *WebGlobals::configs()` | Same as `QWebSettings::globalSettings()`
-`WebGlobals::setStyle(const QString path)` | Specifies the location of a user stylesheet to load with every web page
-`WebGlobals::setFont(const int size, const QString font)` | Sets the font size and sets the actual font family to family for the specified generic family, which.
+`void WebGlobals::setStyle(const QString path)` | Specifies the location of a user stylesheet to load with every web page
+`void WebGlobals::setFont(const int size, const QString font)` | Sets the font size and sets the actual font family to family for the specified generic family, which
 `QIcon WebGlobals::getIcon(const QString url)` | Get icon from URL
-`WebGlobals::setPath(const QString path)` | Define folder for your browser profile data
 `QString WebGlobals::getPath(const WebData type)` | Get full path from your browser profile data
-`WebGlobals::getPath(WebData::All)` | Get path your browser profile
-`WebGlobals::getPath(WebData::AppCache)` | Get cache path from  your browser profile
-`WebGlobals::getPath(WebData::LocalStorage)` | Get localstorage path from  from your browser profile
-`WebGlobals::getPath(WebData::OfflineStorage)` | Get offline path from  from your browser profile
-`WebGlobals::getPath(WebData::Icons)` | Get icons path from  from your browser profile
-`WebGlobals::getPath(WebData::Temporary)` | Get temporary path from  your browser profile
+`QString WebGlobals::getPath(WebData::All)` | Get path your browser profile
+`QString WebGlobals::getPath(WebData::AppCache)` | Get cache path from  your browser profile
+`QString WebGlobals::getPath(WebData::LocalStorage)` | Get localstorage path from  from your browser profile
+`QString WebGlobals::getPath(WebData::OfflineStorage)` | Get offline path from  from your browser profile
+`QString WebGlobals::getPath(WebData::Icons)` | Get icons path from  from your browser profile
+`QString WebGlobals::getPath(WebData::Temporary)` | Get temporary path from  your browser profile
 `bool WebGlobals::erase(const WebData type)` | Erase data by type from your browser profile data
-`WebGlobals::erase(WebData::All)` | Erase all data from your browser profile data
-`WebGlobals::erase(WebData::AppCache)` | Erase cache from your browser profile data
-`WebGlobals::erase(WebData::LocalStorage)` | Erase localstorage data from your browser profile data
-`WebGlobals::erase(WebData::OfflineStorage)` | Erase offline data from your browser profile data
-`WebGlobals::erase(WebData::Icons)` | Erase icons data from your browser profile data
-`WebGlobals::erase(WebData::Temporary)` | Erase temporary data your browser profile data
+`bool WebGlobals::erase(WebData::All)` | Erase all data from your browser profile data
+`bool WebGlobals::erase(WebData::AppCache)` | Erase cache from your browser profile data
+`bool WebGlobals::erase(WebData::LocalStorage)` | Erase localstorage data from your browser profile data
+`bool WebGlobals::erase(WebData::OfflineStorage)` | Erase offline data from your browser profile data
+`bool WebGlobals::erase(WebData::Icons)` | Erase icons data from your browser profile data
+`bool WebGlobals::erase(WebData::Temporary)` | Erase temporary data your browser profile data
 
 > For include ony `WebGlobals` in your application put in your `.pro`, eg.:
 >

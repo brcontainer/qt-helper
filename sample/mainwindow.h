@@ -36,7 +36,7 @@ public slots:
     void openFile();
     void showFileInFolder();
     void tryOpenNotExists();
-    void unknownScheme(const QString &scheme, QNetworkReply *reply);
+    void unknownScheme(const QString &scheme, const QNetworkRequest &request, QNetworkReply *reply);
     void handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors);
     void loadProgress(const int value = 0);
     void titleChanged(const QString &title);

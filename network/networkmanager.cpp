@@ -13,6 +13,7 @@
 #include <QNetworkCookieJar>
 #include <QNetworkDiskCache>
 #include <QNetworkReply>
+#include <QBuffer>
 
 #if QT_VERSION >= 0x050000
 #include <QStandardPaths>
@@ -39,27 +40,39 @@ NetworkManager::NetworkManager(QObject *parent) :
     setCookieJar(new QNetworkCookieJar(this));
 }
 
-QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
+void NetworkManager::clearData()
 {
+    diskCache->clear();
+}
+
+QNetworkReply *NetworkManager::createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
+{
+    if (request.hasRawHeader("X-QtHelper-Rewrited")) {
+        return QNetworkAccessManager::createRequest(op, request, outgoingData);
+    }
+
     const QUrl url = request.url();
     const QString scheme = url.scheme().toLower();
 
     /*
     if (networkAccessible() != NetworkManageribility::Accessible) {
-       tryReconnect();
+        tryReconnect();
     }
     */
 
-    QNetworkReply *reply = 0;
-
-    if (!httpSchemes.contains(scheme) || request.hasRawHeader("X-QtHelper-Rewrited")) {
+    if (!httpSchemes.contains(scheme)) {
         if ("file" == scheme && QDir(url.toString()).exists()) {
             // Future implementation: directory navigation
         } else if ("ftp" == scheme) {
             // Future implementation: display FTP contents/navigation
         } else if (!defaultSchemes.contains(scheme)) {
             // Customize response for unknown schemes
-            emit unknownScheme(scheme, reply);
+            QNetworkRequest req(QUrl("about:blank"));
+            req.setRawHeader("X-QtHelper-Rewrited", "true");
+
+            QNetworkReply *reply = 0;
+
+            emit unknownScheme(scheme, req, reply);
 
             if (reply != 0) {
                 return reply;
@@ -96,19 +109,17 @@ QNetworkReply * NetworkManager::createRequest(Operation op, const QNetworkReques
         }
 
         if (op == PostOperation) {
-            reply = post(req, outgoingData->readAll());
+            return post(req, outgoingData->readAll());
         } else {
-            reply = put(req, outgoingData->readAll());
+            return put(req, outgoingData->readAll());
         }
     } else if (op == DeleteOperation) {
-        reply = deleteResource(req);
+        return deleteResource(req);
     } else if (op == HeadOperation) {
-        reply = head(req);
-    } else {
-        reply = get(req);
+        return head(req);
     }
 
-    return reply;
+    return get(req);
 }
 
 void NetworkManager::tryReconnect()
@@ -126,9 +137,4 @@ void NetworkManager::tryReconnect()
             break;
         }
     }
-}
-
-void NetworkManager::clearData()
-{
-    diskCache->clear();
 }
